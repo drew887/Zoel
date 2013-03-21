@@ -60,7 +60,7 @@ void enter(void){
 	//delete [] tes;
 	delete Me;
 	cout<<"\nPress enter to continue...\n";
-	clearin();
+	//clearin();
 	//usleep(10);
 	cin.ignore(1,'\n');
 	//system("pause");
