@@ -2,9 +2,6 @@
 #include "entity.h"
 #include "stdafx.h"
 class player :public entity{
-protected:
-	char name[9];
-
 public:
 	void save();
 	bool load(const char * name);

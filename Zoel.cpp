@@ -28,13 +28,13 @@ int main(int argc, char* argv[]){
 	}else{
 	    Me = new player();
 	    printf("herp\n");
+	    mprintf("You awake from the after math of an interesting event to find\nyourself in a fiery remnant of the city you used to live in...\nYou grab your head as you stumble onto your feet, dizzy and\nconfused you walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power,\nseems like there's no hiding now...\n");
+	    Sword.att = 4;
+	    Sword.spd = 2;
+	    strncpy(Sword.name,"Knife",sizeof("Knife"));
+	    mprintf("You find your trusty knife still in your pack!\n");
+	    Me->giveWep(Sword);
 	}
-	mprintf("You awake from the after math of an interesting event to find\nyourself in a fiery remnant of the city you used to live in...\nYou grab your head as you stumble onto your feet, dizzy and\nconfused you walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power,\nseems like there's no hiding now...\n");
-		Sword.att = 4;
-        Sword.spd = 2;
-	strncpy(Sword.name,"Knife",sizeof("Knife"));
-	mprintf("You find your trusty knife still in your pack!\n");
-	Me->giveWep(Sword);
 	startup();
 	try{
 	    rom = rooms[0]->start(Me);}catch(ROOM_ERR e){

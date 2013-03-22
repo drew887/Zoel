@@ -10,10 +10,9 @@ player::player(bool derp){
 
 player::player(void){
 	printf("Hello there!\nWhat is your name?\n");
-	scanf("%8s",name);
-	strcpy(classname,name);
+	scanf("%8s",classname);
 	clearin();
-	printf("So your name is %s?\nthat certainly is an...interesting name...\n",name);
+	printf("So your name is %s?\nthat certainly is an...interesting name...\n",classname);
 	srand( time(NULL) );
         hp = (rand() % 8 )+ 20;
 	srand( time(NULL) );
@@ -41,13 +40,13 @@ bool player::defend(entity * attacker){
 	printf("%s is attacking!\t",attacker->classname);
 	hp -= (attacker->getatt() - def ); //printf("%d\n",(attacker->getatt() - def));
 	printf("A Whopping %d damage!\t",(temphp-hp));
-	if(hp <=0){printf("%s has been defeated!\n",name); isalive=false; throw DEAD_PLAYER; return true;}
-	printf("%s has %dHP remaining!\n",name,hp);
+	if(hp <=0){printf("%s has been defeated!\n",classname); isalive=false; throw DEAD_PLAYER; return true;}
+	printf("%s has %dHP remaining!\n",classname,hp);
 	return false;
 }
 void player::giveWep(Weapon wepa){
 	wep = wepa;
-	printf("You got a %s\n",wepa.name);
+//	printf("You got a %s\n",wepa.name);
 }
 unsigned int player::getatt(){
 	return this->reatt();// + (rand() % wep.spd);
@@ -84,6 +83,7 @@ unsigned char te =0;
     fwrite(&att,sizeof(att),1,pp);
     fwrite(&def,sizeof(def),1,pp);
     fwrite(&hp,sizeof(hp),1,pp);
+    fwrite(&wep,sizeof(Weapon),1,pp);
     fwrite(classname,sizeof(classname),1,pp);
     fclose(pp);
     printf("Save complete!\n");
@@ -92,14 +92,16 @@ unsigned char te =0;
 bool player::load(const char *name){
     FILE * pp = fopen(name,"rb");
     if(!pp){mprintf("File not found, aborting load!\n"); return false;}
-	char check[5];
-	fread(check,5,1,pp);
-	if(strncmp(check,"zoel",4)){mprintf("CORRUPT OR IMPROPERLY MODDED SAVE\n");return false;}
+    char check[5];
+    fread(check,5,1,pp);
+    if(strncmp(check,"zoel",4)){mprintf("CORRUPT OR IMPROPERLY MODDED SAVE\n");return false;}
     fread(&att,sizeof(int),1,pp);
     fread(&def,sizeof(int),1,pp);
-    fread(&this->hp,sizeof(int),1,pp);
-	fread(&this->classname,8,1,pp);
-	printf("Loaded %s save!\n",this->classname);
+    fread(&hp,sizeof(int),1,pp);
+    fread(&this->wep,sizeof(Weapon),1,pp);
+    fread(&classname,9,1,pp);
+    printf("Loaded %s save! ",this->classname);
+    printf("%s\n",classname);
     throw LOADED_RES;
     return true;
 }
