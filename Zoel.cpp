@@ -7,7 +7,7 @@ room * rooms[10];
 player * Me;
 Weapon Sword;
 zombie fred;
-zombie tes[3];
+zombie tes[5];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
@@ -85,8 +85,8 @@ void catcher(ROOM_ERR e){
 				exit(0xDEAD);
 		break;
 		case ROOM_DONE:
-				printf("you win!\n");
-				exit(0xDEAD);
+		mprintf("You win!\n Thanks for beta testing Zoel, I very much appreciate it :D\n You can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
+				exit(0);
 		break;
 		case NO_ROOMS_ATTACHED:
 				printf("You made it into a nightmare room with no exits!\n......Game over.....\n");
@@ -105,15 +105,37 @@ void catcher(ROOM_ERR e){
 void startup(){
 rooms[0] = new room("You are in the room right outside of the locked train.\nAll around you can hear noises beyond imagination...");
 rooms[1] = new room("You Enter a room with a big hole in the ground.\nUpon closer inspection you see that the hole is \nactually a well with something in it.");
-    for (char i = 2; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
+rooms[2] = new room("a");
+rooms[3] = new room("b");
+    for (char i = 4; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
     try{
-	    rooms[0]->addper(&fred);
+	    //room0
 	    rooms[0]->attach(rooms[1],NORTH,true);
-	    rooms[0]->attach(rooms[2],SOUTH,true);
-	    rooms[0]->attach(rooms[3],WEST,true);
-	    rooms[0]->attach(rooms[4],EAST,true);
-	    for(char i=1;i<4;i++){
-		    rooms[i]->addper(&tes[i-1]);
+	    rooms[0]->attach(rooms[2],WEST,true);
+	    rooms[0]->attach(rooms[3],EAST,true);
+	    //room1
+	    //rooms[1]->attach(rooms[2],WEST,true);
+	    rooms[1]->attach(rooms[4],EAST,true);
+	    //room2
+	    printf("%d",2);
+	    rooms[2]->attach(rooms[6],NORTH,true);
+	    //room3
+	    printf("%d",3);
+	    rooms[3]->attach(rooms[4],NORTH,true);
+	    //room4
+	    printf("%d",4);
+	    rooms[4]->attach(rooms[5],EAST,true);
+	    //room6
+	    printf("%d",6);
+	    rooms[6]->attach(rooms[7],WEST,true);
+	    //room7
+	    printf("%d",7);
+	    rooms[7]->attach(rooms[8],NORTH,true);
+	    //rooms[8]
+	    printf("%d",8);
+	    rooms[8]->attach(rooms[9],WEST,true);
+	    for(char i=0;i<sizeof(tes);i++){
+		    //rooms[i]->addper(&tes[i]);
 	    }
     }catch(ROOM_ERR e){
             catcher(e);
