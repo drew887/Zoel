@@ -3,6 +3,7 @@
 class entity
 {
 protected:
+	unsigned int maxhp;
 	int hp;
 	unsigned int def;
 	unsigned int att;

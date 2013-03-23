@@ -8,6 +8,9 @@ exitroom::exitroom(ROOM_ERR loc){
     case MAIN_STREET:
 	direc = loc;
     break;
+    case ROOM_DONE:
+    direc = loc;
+    break;
     default:
     break;
     }

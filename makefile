@@ -15,7 +15,7 @@ Target:= $(notdir $(CURDIR))
 all:	$(obj:.cpp=.o) $(dep)
 	@echo "Build Begins...."
 	$(CC) $(obj:.cpp=.o) -o $(Target) $(CXXFLAGS)
-	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
+##	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
 	@echo "Build Complete"
 	
 lib:	

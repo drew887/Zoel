@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "room.h"
-
 room::room(const char * descr){
 	percount = 0;
 	attcount = 0;
@@ -102,7 +101,6 @@ room* room::start(player * playera){
 			}
 		break;
 		case 'q':
-			printf("Okay, exiting\n");
 			exit(0);
 		break;
 		case 'h':

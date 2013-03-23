@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "player.h"
-
+extern ROOM_ERR dep;
 player::player(bool derp){
     inventory = new inven[3];
     inventory[0] = SHIRT;
@@ -14,7 +14,7 @@ player::player(void){
 	clearin();
 	printf("So your name is %s?\nthat certainly is an...interesting name...\n",classname);
 	srand( time(NULL) );
-        hp = (rand() % 8 )+ 20;
+	hp = maxhp = (rand() % 8 )+ 20;
 	srand( time(NULL) );
 	def = (rand() % 3 )+ 1;
 	srand( time(NULL) );
@@ -46,14 +46,13 @@ bool player::defend(entity * attacker){
 }
 void player::giveWep(Weapon wepa){
 	wep = wepa;
-//	printf("You got a %s\n",wepa.name);
 }
 unsigned int player::getatt(){
 	return this->reatt();// + (rand() % wep.spd);
 }
 unsigned int player::reatt(){
     srand( time(NULL) );
-   // printf("THIS %s %d ,%d\t",this->wep.name,(this->att + this->wep.att),this->wep.att);
+   //printf("THIS %s %d ,%d\t",this->wep.name,(this->att + this->wep.att),this->wep.att);
     if(this->wep.spd == 0){return this->att + this->wep.att - 1;}
     return this->att + this->wep.att;// + (rand() % wep.spd);
 }
@@ -63,7 +62,6 @@ FILE * pp = fopen(this->classname,"r");
 unsigned char te =0;
     if(pp){
     mprintf("File already exsists. Overwrite? y/n\n");
-	clearin();
     scanf("%c",&te);
     clearin();
 	switch(te){
@@ -82,9 +80,11 @@ unsigned char te =0;
 	fwrite(check,sizeof(check),1,pp);
     fwrite(&att,sizeof(att),1,pp);
     fwrite(&def,sizeof(def),1,pp);
+    fwrite(&maxhp,sizeof(maxhp),1,pp);
     fwrite(&hp,sizeof(hp),1,pp);
     fwrite(&wep,sizeof(Weapon),1,pp);
     fwrite(classname,sizeof(classname),1,pp);
+    fwrite(&dep,sizeof(ROOM_ERR),1,pp);
     fclose(pp);
     printf("Save complete!\n");
 }//end player::save/////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\>>>>>>>>>>>>>>>>>>>>>
@@ -97,11 +97,14 @@ bool player::load(const char *name){
     if(strncmp(check,"zoel",4)){mprintf("CORRUPT OR IMPROPERLY MODDED SAVE\n");return false;}
     fread(&att,sizeof(int),1,pp);
     fread(&def,sizeof(int),1,pp);
+    fread(&maxhp,sizeof(int),1,pp);
     fread(&hp,sizeof(int),1,pp);
     fread(&this->wep,sizeof(Weapon),1,pp);
     fread(&classname,9,1,pp);
-    printf("Loaded %s save! ",this->classname);
-    printf("%s\n",classname);
+    fread(&dep,sizeof(ROOM_ERR),1,pp);
+    printf("Loaded %s save!\n",this->classname);
+    printf("Stats:\nMaxhp: %d\thp: %d\natt: %d\tdef: %d\n",maxhp,hp,att,def);
+    fclose(pp);
     throw LOADED_RES;
     return true;
 }

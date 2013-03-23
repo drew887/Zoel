@@ -3,7 +3,9 @@
 
 #include "stdafx.h"
 //
+ROOM_ERR dep;
 room * rooms[10];
+exitroom * exitr;
 player * Me;
 Weapon Sword;
 zombie fred;
@@ -11,12 +13,13 @@ zombie tes[5];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
-	mprintf("Welcome to Zoel; a wonderful little Zork clone based on Joel\nLoad a previous character? y or n for new game\n");
+	mprintf("Welcome to Zoel; a wonderful little Zork clone based on Joel\nLoad a previous character? y or any thing else for new game\n");
 //	fflush(stdout);
 	unsigned char te = 0;
 	scanf("%c", &te);
 	clearin();
-	if(te == 'y'){
+	if(te == 'q'){exit(0);}
+	    if(te == 'y'){
 	    Me = new player(true);
 	    mprintf("Enter a name then..\n");
 	    char name[9];
@@ -24,8 +27,9 @@ int main(int argc, char* argv[]){
 	    clearin();
 	    try{
 	    if(!(Me->load(name))){mprintf("Starting a new game then. you can try loading again once play starts\n");delete Me; Me = NULL; Me = new player();}
-	}catch(ROOM_ERR e){printf("derp\n");}
+	}catch(ROOM_ERR e){}
 	}else{
+	    try{
 	    Me = new player();
 	    printf("herp\n");
 	    mprintf("You awake from the after math of an interesting event to find\nyourself in a fiery remnant of the city you used to live in...\nYou grab your head as you stumble onto your feet, dizzy and\nconfused you walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power,\nseems like there's no hiding now...\n");
@@ -34,6 +38,7 @@ int main(int argc, char* argv[]){
 	    strncpy(Sword.name,"Knife",sizeof("Knife"));
 	    mprintf("You find your trusty knife still in your pack!\n");
 	    Me->giveWep(Sword);
+	    }catch(ROOM_ERR e){catcher(e);}
 	}
 	startup();
 	try{
@@ -58,6 +63,7 @@ void enter(void){
 	delete rooms[i];
     }
 	//delete [] tes;
+	delete exitr;
 	delete Me;
 	cout<<"\nPress enter to continue...\n";
 	//clearin();
@@ -67,6 +73,9 @@ void enter(void){
 }
 void catcher(ROOM_ERR e){
 	switch(e){
+		case SUBWAY:
+		printf("SUB\n");
+		break;
 		case ALL_CON_USED:
 			printf("ALL_CON\n");
                         exit(0xDEAD);
@@ -85,7 +94,7 @@ void catcher(ROOM_ERR e){
 				exit(0xDEAD);
 		break;
 		case ROOM_DONE:
-		mprintf("You win!\n Thanks for beta testing Zoel, I very much appreciate it :D\n You can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
+		mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
 				exit(0);
 		break;
 		case NO_ROOMS_ATTACHED:
@@ -103,10 +112,22 @@ void catcher(ROOM_ERR e){
 		}
 }
 void startup(){
+    FILE * pp = fopen("one","rb");
+    char * tempdesc;
+    if(pp){
+    unsigned int count = 0;
+    fread(&count,4,1,pp);
+    tempdesc = new char[count];
+    fread(tempdesc,count,1,pp);
+    fclose(pp);
+    }
+    dep = SUBWAY;
+    exitr = new exitroom(ROOM_DONE);
 rooms[0] = new room("You are in the room right outside of the locked train.\nAll around you can hear noises beyond imagination...");
 rooms[1] = new room("You Enter a room with a big hole in the ground.\nUpon closer inspection you see that the hole is \nactually a well with something in it.");
 rooms[2] = new room("a");
-rooms[3] = new room("b");
+if(pp){rooms[3] = new room(tempdesc);}else{
+    rooms[3] = new room("b");}
     for (char i = 4; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
     try{
 	    //room0
@@ -117,23 +138,21 @@ rooms[3] = new room("b");
 	    //rooms[1]->attach(rooms[2],WEST,true);
 	    rooms[1]->attach(rooms[4],EAST,true);
 	    //room2
-	    printf("%d",2);
 	    rooms[2]->attach(rooms[6],NORTH,true);
 	    //room3
-	    printf("%d",3);
 	    rooms[3]->attach(rooms[4],NORTH,true);
 	    //room4
-	    printf("%d",4);
 	    rooms[4]->attach(rooms[5],EAST,true);
+	    //room5
+	    rooms[5]->attach(rooms[8],NORTH);
 	    //room6
-	    printf("%d",6);
 	    rooms[6]->attach(rooms[7],WEST,true);
 	    //room7
-	    printf("%d",7);
 	    rooms[7]->attach(rooms[8],NORTH,true);
 	    //rooms[8]
-	    printf("%d",8);
 	    rooms[8]->attach(rooms[9],WEST,true);
+	    rooms[8]->attach(rooms[5],EAST);
+	    rooms[9]->attach(exitr,WEST);
 	    for(char i=0;i<sizeof(tes);i++){
 		    //rooms[i]->addper(&tes[i]);
 	    }
