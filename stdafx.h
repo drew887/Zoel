@@ -33,7 +33,7 @@ void mprintf(h(&de)[ns]){
 	printf("%c",de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	safesleep(2000);
+	safesleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(20);

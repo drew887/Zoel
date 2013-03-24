@@ -32,7 +32,7 @@ int main(int argc, char* argv[]){
 	}catch(ROOM_ERR e){}
 	}else{
 	    Me = new player();
-	    mprintf("You awake from the after math of an interesting event to find\nyourself in a fiery remnant of the city you used to live in...\nYou grab your head as you stumble onto your feet, dizzy and\nconfused you walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power,\nseems like there's no hiding now...\n");
+	    mprintf("You awake again in the train you were in when the cataclysm happened.\nYou check your pack and find that you have finally run out of food.\nYou've heard some very disturbing noises over the past couple days.\nThankfully you've been able to keep yourself hidden, rationing your food.\nYou grab your head as you stumble onto your feet, looks like its time to find\nsome food. You walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power\n....seems like there's no hiding now....\n");
 	    Sword.att = 4;
 	    Sword.spd = 2;
 	    strncpy(Sword.name,"Knife",sizeof("Knife"));
@@ -123,7 +123,7 @@ void startup(){
     unsigned int count = 0;
     dep = ROOM_DONE;
     exitr = new exitroom(ROOM_DONE);
-    for(int i = 0; i<6;i++){
+    for(int i = 0; i<10;i++){
 	fread(&count,4,1,pp);
 	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
 	tempdesc = new char[count+1];
@@ -136,7 +136,7 @@ void startup(){
 	//printf("%s\n",tempdesc);
     }
     fclose(pp);
-    for (char i = 6; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
+   // for (char i = 7; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
 	    //room0
 	    rooms[0]->attach(rooms[1],NORTH,true);
 	    rooms[0]->attach(rooms[2],WEST,true);
