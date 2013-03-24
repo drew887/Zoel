@@ -4,7 +4,7 @@
 #define ROOM_MAX 4
 #endif 
 
-enum room_dir{NORTH=1,EAST,SOUTH,WEST=4};
+enum room_dir{NONE=0,NORTH=1,EAST,SOUTH,WEST=4};
 //struct
 void movecheck(unsigned char te);
 void batcheck(unsigned char te);
@@ -20,12 +20,12 @@ public:
         bool attach(room * ar, room_dir direc,bool t);
 	virtual room* start(player * playera);
 	room * getdir(room_dir dir);
+	char desc[1024];
 protected:
 	void movecheck(unsigned char te);
 	void batcheck(unsigned char te);
-	char desc[1024];
 	entity * enimies[ROOM_MAX];
-	player * One;
+	//player * One;
 	struct attacher{
 	room * attached[4];
 	room_dir at_dir[4];

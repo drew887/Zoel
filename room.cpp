@@ -3,6 +3,10 @@
 room::room(const char * descr){
 	percount = 0;
 	attcount = 0;
+	for(unsigned int i = 0;i<4;i++){
+	attached.at_dir[i] = NONE;
+	attached.attached[i] = NULL;
+	}
 	strcpy(desc,descr);
 }
 room::room(void){
@@ -16,7 +20,7 @@ room* room::start(player * playera){
 	printf("\t*****************\n%s\n\t*****************\n",desc);
 	//mprintf(desc);
 	if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
-	One = playera;
+//	One = playera;
 	room * next = NULL;
 	bool vic = true;
 	bool infi = true;
@@ -168,7 +172,10 @@ bool room::attach(room * ar, room_dir direct,bool t){
         return true;
 }
 room::~room(void){
-	
+    for(char i = 0; i<4;i++){
+    attached.attached[i] = NULL;
+    attached.at_dir[i] = NONE;
+	}
 }
 
 room * room::getdir(room_dir dir){

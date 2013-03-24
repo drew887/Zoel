@@ -25,26 +25,25 @@ int main(int argc, char* argv[]){
 	    char name[9];
 	    scanf("%8s",name);
 	    clearin();
-	    try{
-	    if(!(Me->load(name))){mprintf("Starting a new game then. you can try loading again once play starts\n");delete Me; Me = NULL; Me = new player();}
+	   try{
+	    if(!(Me->load(name))){
+		mprintf("Starting a new game then. you can try loading again once play starts\n");delete Me; Me = NULL; Me = new player();
+	    }
 	}catch(ROOM_ERR e){}
 	}else{
-	    try{
 	    Me = new player();
-	    printf("herp\n");
 	    mprintf("You awake from the after math of an interesting event to find\nyourself in a fiery remnant of the city you used to live in...\nYou grab your head as you stumble onto your feet, dizzy and\nconfused you walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power,\nseems like there's no hiding now...\n");
 	    Sword.att = 4;
 	    Sword.spd = 2;
 	    strncpy(Sword.name,"Knife",sizeof("Knife"));
 	    mprintf("You find your trusty knife still in your pack!\n");
 	    Me->giveWep(Sword);
-	    }catch(ROOM_ERR e){catcher(e);}
 	}
 	startup();
 	try{
 	    rom = rooms[0]->start(Me);}catch(ROOM_ERR e){
 	    catcher(e);
-    }
+	    }
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
@@ -58,23 +57,30 @@ int main(int argc, char* argv[]){
 	}//end while
 	return 0;
 }
-void enter(void){
+void leave(){
     for(int i = 0; i<10;i++){
 	delete rooms[i];
+	rooms[i] = NULL;
     }
-	//delete [] tes;
-	delete exitr;
+    delete exitr;
+    exitr = NULL;
+}
+
+void enter(void){
+	leave();
 	delete Me;
 	cout<<"\nPress enter to continue...\n";
-	//clearin();
-	//usleep(10);
 	cin.ignore(1,'\n');
-	//system("pause");
 }
 void catcher(ROOM_ERR e){
 	switch(e){
 		case SUBWAY:
-		printf("SUB\n");
+		printf("You are now in the subway\n");
+		leave();
+		startup();
+		//try{
+		rom = rooms[9];
+	    //}catch(ROOM_ERR fe){}
 		break;
 		case ALL_CON_USED:
 			printf("ALL_CON\n");
@@ -102,34 +108,35 @@ void catcher(ROOM_ERR e){
 				exit(0xDEAD);
 		break;
 		case LOADED_RES:
+		leave();
 		startup();
-		try{
-		rom = rooms[0]->start(Me);
-		}catch(ROOM_ERR e){
-			catcher(e);
-		}
+		//try{
+		rom = rooms[0];
+	    //}catch(ROOM_ERR fe){}
 		break;
 		}
 }
 void startup(){
     FILE * pp = fopen("one","rb");
     char * tempdesc;
-    if(pp){
+    if(!pp){printf("Corrupt or improper story file for the subway.\nPlease ask Andrew about this or redownload the story files\n");exit(0xDEAD);}
     unsigned int count = 0;
-    fread(&count,4,1,pp);
-    tempdesc = new char[count];
-    fread(tempdesc,count,1,pp);
-    fclose(pp);
-    }
-    dep = SUBWAY;
+    dep = ROOM_DONE;
     exitr = new exitroom(ROOM_DONE);
-rooms[0] = new room("You are in the room right outside of the locked train.\nAll around you can hear noises beyond imagination...");
-rooms[1] = new room("You Enter a room with a big hole in the ground.\nUpon closer inspection you see that the hole is \nactually a well with something in it.");
-rooms[2] = new room("a");
-if(pp){rooms[3] = new room(tempdesc);}else{
-    rooms[3] = new room("b");}
-    for (char i = 4; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
-    try{
+    for(int i = 0; i<6;i++){
+	fread(&count,4,1,pp);
+	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
+	tempdesc = new char[count+1];
+	fread(tempdesc,count,1,pp);
+	tempdesc[count] = '\0';
+	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
+	rooms[i] = new room(tempdesc);
+	delete[] tempdesc;
+	tempdesc = NULL;
+	//printf("%s\n",tempdesc);
+    }
+    fclose(pp);
+    for (char i = 6; i<10;i++){rooms[i] = new room("RANDOM ROOM");}
 	    //room0
 	    rooms[0]->attach(rooms[1],NORTH,true);
 	    rooms[0]->attach(rooms[2],WEST,true);
@@ -153,10 +160,4 @@ if(pp){rooms[3] = new room(tempdesc);}else{
 	    rooms[8]->attach(rooms[9],WEST,true);
 	    rooms[8]->attach(rooms[5],EAST);
 	    rooms[9]->attach(exitr,WEST);
-	    for(char i=0;i<sizeof(tes);i++){
-		    //rooms[i]->addper(&tes[i]);
-	    }
-    }catch(ROOM_ERR e){
-            catcher(e);
-    }//end catch
 }

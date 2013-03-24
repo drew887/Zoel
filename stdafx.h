@@ -33,7 +33,7 @@ void mprintf(h(&de)[ns]){
 	printf("%c",de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	safesleep(20000);
+	safesleep(2000);
 #endif
 #ifdef _WIN32
 	safesleep(20);
@@ -47,10 +47,9 @@ int ar(f(&test)[N]){printf("an array of with size %d\n",N);return N;}
 
 using namespace std;
 void enter(void);
-//enum ROOM_ERR{ALL_CON_USED,CON_ALREADY_USED,ROOM_FULL,DEAD_PLAYER,ROOM_DONE,NO_ROOMS_ATTACHED,MAIN_STREET,SUBWAY};
 enum RESULT{WIN,LOSE};
 inline void clearin(){
-	char ch;
+	char ch = 0;
 	//fflush(stdin);
 	while((ch != '\n')&&(ch != EOF)){
 	ch = cin.get();
