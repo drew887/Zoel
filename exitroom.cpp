@@ -1,5 +1,5 @@
 #include "exitroom.h"
-
+#include "stdafx.h"
 exitroom::exitroom(ROOM_ERR loc){
     switch(loc){
     case SUBWAY:

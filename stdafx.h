@@ -36,7 +36,7 @@ void mprintf(h(&de)[ns]){
 	safesleep(20000);
 #endif
 #ifdef _WIN32
-	safesleep(20);
+	safesleep(17);
 #endif
     }
 //printf("\n");

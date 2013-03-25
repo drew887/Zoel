@@ -9,7 +9,7 @@ exitroom * exitr;
 player * Me;
 Weapon Sword;
 zombie fred;
-zombie tes[5];
+zombie tes[6];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
@@ -144,20 +144,27 @@ void startup(){
 	    //room1
 	    //rooms[1]->attach(rooms[2],WEST,true);
 	    rooms[1]->attach(rooms[4],EAST,true);
+		rooms[1]->addper(&tes[0]);
 	    //room2
 	    rooms[2]->attach(rooms[6],NORTH,true);
+		rooms[2]->addper(&tes[2]);
 	    //room3
 	    rooms[3]->attach(rooms[4],NORTH,true);
+		rooms[3]->addper(&tes[1]);
 	    //room4
 	    rooms[4]->attach(rooms[5],EAST,true);
 	    //room5
 	    rooms[5]->attach(rooms[8],NORTH);
+		rooms[5]->addper(&tes[3]);
 	    //room6
 	    rooms[6]->attach(rooms[7],WEST,true);
 	    //room7
 	    rooms[7]->attach(rooms[8],NORTH,true);
+		rooms[7]->addper(&tes[4]);
 	    //rooms[8]
 	    rooms[8]->attach(rooms[9],WEST,true);
 	    rooms[8]->attach(rooms[5],EAST);
+		rooms[8]->addper(&tes[5]);
+		//rooms[9]
 	    rooms[9]->attach(exitr,WEST);
 }

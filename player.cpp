@@ -14,7 +14,7 @@ player::player(void){
 	clearin();
 	printf("So your name is %s?\nthat certainly is an...interesting name...\n",classname);
 	srand( time(NULL) );
-	hp = maxhp = (rand() % 8 )+ 20;
+	hp = maxhp = (rand() % 8 )+ 30;
 	srand( time(NULL) );
 	def = (rand() % 3 )+ 1;
 	srand( time(NULL) );
@@ -38,8 +38,13 @@ bool player::defend(entity * attacker){
 	if(attacker == this){printf("I can't Attack myself!\n");return true;}
 	int temphp = hp;
 	printf("%s is attacking!\t",attacker->classname);
-	hp -= (attacker->getatt() - def ); //printf("%d\n",(attacker->getatt() - def));
-	printf("A Whopping %d damage!\t",(temphp-hp));
+	temphp -= (attacker->getatt() - def );
+	if(temphp>=hp){
+		printf("A MASSIVE 0 damage\t");
+	}else{
+	printf("A Whopping %d damage!\t",(hp-temphp));
+	hp = temphp;
+	}
 	if(hp <=0){printf("%s has been defeated!\n",classname); isalive=false; throw DEAD_PLAYER; return true;}
 	printf("%s has %dHP remaining!\n",classname,hp);
 	return false;
