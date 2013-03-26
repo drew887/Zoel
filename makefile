@@ -6,8 +6,8 @@
 ##--Wed Aug 08, 2012 12:41AM, Removed some pointless commands that weren't actually doing anything 
 ##--Wed Aug 08, 2012 00:49AM, Switched $(CC) -o $(Target) $(ofile) and now compiles on first call with no need to call make twice
 CC:= g++
-CXXFLAGS:= -Wall -g 
-.PHONY: clean main lib 
+CXXFLAGS:= -Wall -g
+.PHONY: clean main lib win
 obj:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.cpp)))
 dep:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.h)))
 Target:= $(notdir $(CURDIR))
@@ -17,7 +17,9 @@ all:	$(obj:.cpp=.o) $(dep)
 	$(CC) $(obj:.cpp=.o) -o $(Target) $(CXXFLAGS)
 ##	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
 	@echo "Build Complete"
-	
+win:
+	i586-mingw32msvc-g++ $(obj) -Wall -o $(Target).exe 
+	@echo "Win done"
 lib:	
 	@echo "Building project as a linkable library"
 	#$(CC) $(obj) $(CXXFLAGS) -fpic -shared -o $(Target).so
@@ -25,7 +27,7 @@ lib:
 ##	@ls
 ofile:=$(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.o)))
 clean: 
-	@rm -f $(Target) $(ofile) lib$(Target).a t.txt
+	@rm -f $(Target) $(Target).exe $(ofile) lib$(Target).a
 	@clear
 	@ls
 ## $(obj:.cpp=.o) will compile and NOT link all of the .cpp files, and make .o files, which is better for large projects that dont always have to be recompiled.

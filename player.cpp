@@ -104,12 +104,18 @@ bool player::load(const char *name){
     fread(&def,sizeof(int),1,pp);
     fread(&maxhp,sizeof(int),1,pp);
     fread(&hp,sizeof(int),1,pp);
+    if(hp > maxhp){mprintf("Modded save file, you can't have more hp then your max hp silly!\n");exit(0xDEAD);}
     fread(&this->wep,sizeof(Weapon),1,pp);
     fread(&classname,9,1,pp);
     fread(&dep,sizeof(ROOM_ERR),1,pp);
     printf("Loaded %s save!\n",this->classname);
-    printf("Stats:\nMaxhp: %d\thp: %d\natt: %d\tdef: %d\n",maxhp,hp,att,def);
+    stats();
     fclose(pp);
     throw LOADED_RES;
     return true;
+}
+void player::stats(){
+    char tempchar[38];
+ sprintf(tempchar,"Stats:\nMaxhp: %d\thp: %d\natt: %d\tdef: %d\n",maxhp,hp,att,def);
+ mprintf(tempchar);
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "room.h"
+#include <math.h>
 room::room(const char * descr){
 	percount = 0;
 	attcount = 0;
@@ -18,19 +19,19 @@ room::room(void){
 
 room* room::start(player * playera){
 	printf("\t*****************\n%s\n\t*****************\n",desc);
-	//mprintf(desc);
 	if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
 //	One = playera;
 	room * next = NULL;
 	bool vic = true;
 	bool infi = true;
 	bool chose = true;
+	char rancheck = 0;
 	unsigned int numcheck =0;
 	unsigned char te = 0;
    if(percount>0){
-       printf("Oh no, %d enemies!\n",percount);
+       printf("Oh no, %d enemie[s]!\n",percount);
 	while (vic){
-		if(enimies[numcheck]->isalive){
+	   if(enimies[numcheck]->isalive){
 		printf("******\nAn enemy %s is attacking!!\n******\n",enimies[numcheck]->classname);
 		while(infi){
 			printf("Enter a command!\n***a = attack r = run q = quit***\n");
@@ -43,10 +44,15 @@ room* room::start(player * playera){
 				}else{enimies[numcheck]->attack(playera);}
 			break;
 			case 'r':
-				printf("RUN\n");
+			rancheck = floor((rand() % 2) + 1);
+			if(rancheck == 2){
+			    mprintf("You managed to run away and make it back here safely\n");
                                 infi = false;
                                 vic = false;
-                                break;
+			    }else{
+				printf("You failed and the %s gets you off guard!\n",enimies[numcheck]->classname);
+				enimies[numcheck]->attack(playera);
+			    }
 			break;
 			case 'q':
 				exit(0);
@@ -55,14 +61,15 @@ room* room::start(player * playera){
 				printf("Unknown action?\n");
 			}
                 }//end while infi
-		}else{mprintf("This ones dead!\n");}
+	   }else{mprintf("This ones dead!\n");}
 		numcheck++;
 		infi = true;
 		if(numcheck == percount){vic=false;}
         }//end while vic
     }//end if percount
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	while(chose){
-		printf("Enter a command!\n***compass directions to move q to quit, h for help***\n");
+		mprintf("Enter a command!\n***compass directions to move q to quit, h for help***\n");
 		scanf("%c",&te);
 		clearin();
 		switch(te){
@@ -84,7 +91,7 @@ room* room::start(player * playera){
 		return this;
 		break;
                 case 'l':
-                printf("\t*****************\n%s\n\t*****************\n",desc);
+		printf("\t*****************\n%s\n\t*****************\n",desc);
                 break;
 		case 'e': 
 			next = getdir(EAST);

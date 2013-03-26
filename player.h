@@ -5,6 +5,7 @@ class player :public entity{
 public:
 	void save();
 	bool load(const char * name);
+	void stats();
 	Weapon wep;
 	player(void);
 	player(bool derp);

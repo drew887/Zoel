@@ -8,8 +8,7 @@ room * rooms[10];
 exitroom * exitr;
 player * Me;
 Weapon Sword;
-zombie fred;
-zombie tes[6];
+zombie * tes[6];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
@@ -40,10 +39,7 @@ int main(int argc, char* argv[]){
 	    Me->giveWep(Sword);
 	}
 	startup();
-	try{
-	    rom = rooms[0]->start(Me);}catch(ROOM_ERR e){
-	    catcher(e);
-	    }
+	    rom = rooms[0];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
@@ -51,9 +47,9 @@ int main(int argc, char* argv[]){
 			try{
 				rom = rom->start(Me);
 			}catch(ROOM_ERR e){
-				catcher(e);
+			    if(catcher(e)){go=false;}
 			}
-		}else{go=false;printf("SOME SORT OF POINTER ERROR\n");}
+		}else{go=false;printf("SOME SORT OF POINTER ERROR\nBitch at andrew to fix!\n");}
 	}//end while
 	return 0;
 }
@@ -64,15 +60,17 @@ void leave(){
     }
     delete exitr;
     exitr = NULL;
+    for(char i = 0; i<6; i++){delete tes[i];tes[i]=NULL;}
 }
 
 void enter(void){
 	leave();
 	delete Me;
+	mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
 	cout<<"\nPress enter to continue...\n";
 	cin.ignore(1,'\n');
 }
-void catcher(ROOM_ERR e){
+bool catcher(ROOM_ERR e){
 	switch(e){
 		case SUBWAY:
 		printf("You are now in the subway\n");
@@ -100,28 +98,30 @@ void catcher(ROOM_ERR e){
 				exit(0xDEAD);
 		break;
 		case ROOM_DONE:
-		mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
-				exit(0);
+		     //mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
+		     return true;
 		break;
 		case NO_ROOMS_ATTACHED:
 				printf("You made it into a nightmare room with no exits!\n......Game over.....\n");
 				exit(0xDEAD);
 		break;
 		case LOADED_RES:
-		leave();
-		startup();
-		//try{
-		rom = rooms[0];
-	    //}catch(ROOM_ERR fe){}
+		     leave();
+		     startup();
+		  //try{
+		     rom = rooms[0];
+		  //}catch(ROOM_ERR fe){}
 		break;
 		}
-}
+	return false;
+}//end catcher
 void startup(){
     FILE * pp = fopen("one","rb");
     char * tempdesc;
     if(!pp){printf("Corrupt or improper story file for the subway.\nPlease ask Andrew about this or redownload the story files\n");exit(0xDEAD);}
     unsigned int count = 0;
     dep = ROOM_DONE;
+    for(char i = 0; i<6; i++){tes[i] = new zombie();}
     exitr = new exitroom(ROOM_DONE);
     for(int i = 0; i<10;i++){
 	fread(&count,4,1,pp);
@@ -144,27 +144,27 @@ void startup(){
 	    //room1
 	    //rooms[1]->attach(rooms[2],WEST,true);
 	    rooms[1]->attach(rooms[4],EAST,true);
-		rooms[1]->addper(&tes[0]);
+		rooms[1]->addper(tes[0]);
 	    //room2
 	    rooms[2]->attach(rooms[6],NORTH,true);
-		rooms[2]->addper(&tes[2]);
+		rooms[2]->addper(tes[2]);
 	    //room3
 	    rooms[3]->attach(rooms[4],NORTH,true);
-		rooms[3]->addper(&tes[1]);
+		rooms[3]->addper(tes[1]);
 	    //room4
 	    rooms[4]->attach(rooms[5],EAST,true);
 	    //room5
 	    rooms[5]->attach(rooms[8],NORTH);
-		rooms[5]->addper(&tes[3]);
+		rooms[5]->addper(tes[3]);
 	    //room6
 	    rooms[6]->attach(rooms[7],WEST,true);
 	    //room7
 	    rooms[7]->attach(rooms[8],NORTH,true);
-		rooms[7]->addper(&tes[4]);
+		rooms[7]->addper(tes[4]);
 	    //rooms[8]
 	    rooms[8]->attach(rooms[9],WEST,true);
 	    rooms[8]->attach(rooms[5],EAST);
-		rooms[8]->addper(&tes[5]);
+		rooms[8]->addper(tes[5]);
 		//rooms[9]
 	    rooms[9]->attach(exitr,WEST);
 }

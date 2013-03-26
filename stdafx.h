@@ -55,4 +55,5 @@ inline void clearin(){
 	ch = cin.get();
 	}
 }
-void catcher(ROOM_ERR e);
+bool catcher(ROOM_ERR e);
+void mainstreet();
