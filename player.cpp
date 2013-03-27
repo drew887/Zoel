@@ -45,7 +45,8 @@ player::player(void){
 	def = (rand() % 3 )+ 1;
 	srand( time(NULL) );
 	att = (rand() % 3 )+ 1;
-	printf("Well you have %d HP, %d def, and %d att\nGood luck!\n",hp,def,att);
+///	printf("Well you have %d HP, %d def, and %d att\nGood luck!\n",hp,def,att);
+	stats();
 	inventory = new inven[3];
 	inventory[0] = SHIRT;
 	inventory[1] = CUFFS;

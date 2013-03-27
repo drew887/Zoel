@@ -30,6 +30,21 @@ extern exitroom * conecter;
 extern ROOM_ERR dep;
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file
+void mprintf(const char * de){
+unsigned int ns = strlen(de);
+    for(unsigned int i =0;i<ns;i++){
+	printf("%c",de[i]);
+	fflush(stdout);
+#ifndef _WIN32
+	safesleep(20000);
+#endif
+#ifdef _WIN32
+	safesleep(17);
+#endif
+    }
+//printf("\n");
+}
+
 void mainstreet(){
     FILE * pp = fopen("two","rb");
     char * tempdesc;

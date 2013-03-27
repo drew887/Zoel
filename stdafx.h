@@ -50,21 +50,9 @@ enum ROOM_ERR{ALL_CON_USED,CON_ALREADY_USED,ROOM_FULL,DEAD_PLAYER,ROOM_DONE,NO_R
 #include "exitroom.h"
 
 void startup();
-    template <typename h,size_t ns>
-void mprintf(h(&de)[ns]){
-    for(unsigned int i =0;i<ns-1;i++){
-	printf("%c",de[i]);
-	fflush(stdout);
-#ifndef _WIN32
-	safesleep(20000);
-#endif
-#ifdef _WIN32
-	safesleep(17);
-#endif
-    }
-//printf("\n");
-}
-
+    //template <typename h,size_t ns>
+//void mprintf(h(&de)[ns]){
+void mprintf(const char * de);
 template <typename f,size_t N>
 int ar(f(&test)[N]){printf("an array of with size %d\n",N);return N;}
 
