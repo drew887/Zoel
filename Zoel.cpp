@@ -40,7 +40,7 @@ int main(int argc, char* argv[]){
 	    Me->giveWep(Sword);
 	}
 	startup();
-	    rom = rooms[9];
+	    rom = rooms[0];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
