@@ -1,7 +1,33 @@
+/*
+ * player.cpp
+ * This file is part of Zoel
+ *
+ * Copyright (C) 2013 - Andrew Mcdonald
+ *
+ * Zoel is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Zoel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Zoel; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Boston, MA  02110-1301  USA
+ */ 
 #include "stdafx.h"
 #include "player.h"
 extern ROOM_ERR dep;
 player::player(bool derp){
+    hp = maxhp = (rand() % 8 )+ 30;
+    srand( time(NULL) );
+    def = (rand() % 3 )+ 1;
+    srand( time(NULL) );
+    att = (rand() % 3 )+ 1;
     inventory = new inven[3];
     inventory[0] = SHIRT;
     inventory[1] = CUFFS;
@@ -40,7 +66,7 @@ bool player::defend(entity * attacker){
 	printf("%s is attacking!\t",attacker->classname);
 	temphp -= (attacker->getatt() - def );
 	if(temphp>=hp){
-		printf("A MASSIVE 0 damage\t");
+		printf("A SUPER FUN 0 damage\t");
 	}else{
 	printf("A Whopping %d damage!\t",(hp-temphp));
 	hp = temphp;

@@ -1,8 +1,26 @@
-// Zoel.cpp : Defines the entry point for the console application.
-//
-
+/*
+ * Zoel.cpp
+ * This file is part of Zoel
+ *
+ * Copyright (C) 2013 - Andrew Mcdonald
+ *
+ * Zoel is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Zoel is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Zoel; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Boston, MA  02110-1301  USA
+ */ 
+// Zoel.cpp
 #include "stdafx.h"
-//
 ROOM_ERR dep;
 room * rooms[10];
 exitroom * exitr;
@@ -13,6 +31,9 @@ zombie * tes[6];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
+	Sword.att = 4;
+	Sword.spd = 2;
+	strncpy(Sword.name,"Knife",sizeof("Knife"));
 	mprintf("Welcome to Zoel; a wonderful little Zork clone based on Joel\nLoad a previous character? y or any thing else for new game\n");
 //	fflush(stdout);
 	unsigned char te = 0;
@@ -20,22 +41,23 @@ int main(int argc, char* argv[]){
 	clearin();
 	if(te == 'q'){exit(0);}
 	    if(te == 'y'){
-	    Me = new player(true);
 	    mprintf("Enter a name then..\n");
 	    char name[9];
 	    scanf("%8s",name);
 	    clearin();
+	    Me = new player(true);
 	   try{
 	    if(!(Me->load(name))){
-		mprintf("Starting a new game then. you can try loading again once play starts\n");delete Me; Me = NULL; Me = new player();
+		mprintf("Starting a new game then. you can try loading again once play starts\n");delete Me; Me = NULL;
+		Me = new player();
+		mprintf("You awake again in the train you were in when the cataclysm happened.\nYou check your pack and find that you have finally run out of food.\nYou've heard some very disturbing noises over the past couple days.\nThankfully you've been able to keep yourself hidden, rationing your food.\nYou grab your head as you stumble onto your feet, looks like its time to find\nsome food. You walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power\n....seems like there's no hiding now....\n");
+		mprintf("You find your trusty knife still in your pack!\n");
+		Me->giveWep(Sword);
 	    }
 	}catch(ROOM_ERR e){}
 	}else{
 	    Me = new player();
 	    mprintf("You awake again in the train you were in when the cataclysm happened.\nYou check your pack and find that you have finally run out of food.\nYou've heard some very disturbing noises over the past couple days.\nThankfully you've been able to keep yourself hidden, rationing your food.\nYou grab your head as you stumble onto your feet, looks like its time to find\nsome food. You walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power\n....seems like there's no hiding now....\n");
-	    Sword.att = 4;
-	    Sword.spd = 2;
-	    strncpy(Sword.name,"Knife",sizeof("Knife"));
 	    mprintf("You find your trusty knife still in your pack!\n");
 	    Me->giveWep(Sword);
 	}
@@ -61,6 +83,8 @@ void leave(){
     }
     delete exitr;
     exitr = NULL;
+    delete conecter;
+    conecter = NULL;
     for(char i = 0; i<6; i++){delete tes[i];tes[i]=NULL;}
 }
 

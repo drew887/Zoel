@@ -1,5 +1,5 @@
 /*
- * exitroom.h
+ * healroom.h
  * This file is part of Zoel
  *
  * Copyright (C) 2013 - Andrew Mcdonald
@@ -20,15 +20,14 @@
  * Boston, MA  02110-1301  USA
  */
 #include "stdafx.h"
-#pragma once
-#ifndef EXITROOM_H
-#define EXITROOM_H
+#ifndef HEALROOM_H
+#define HEALROOM_H
 
-class exitroom:public room{
+class healroom : public room
+{
 public:
-    exitroom(ROOM_ERR loc);
+    healroom(const char *descr);
     room * start(player *playera);
-    ROOM_ERR direc;
 };
 
-#endif // EXITROOM_H
+#endif // HEALROOM_H
