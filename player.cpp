@@ -119,3 +119,6 @@ void player::stats(){
  sprintf(tempchar,"Stats:\nMaxhp: %d\thp: %d\natt: %d\tdef: %d\n",maxhp,hp,att,def);
  mprintf(tempchar);
 }
+void player::heal(){
+    hp = maxhp;
+}

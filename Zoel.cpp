@@ -6,6 +6,7 @@
 ROOM_ERR dep;
 room * rooms[10];
 exitroom * exitr;
+exitroom * conecter;
 player * Me;
 Weapon Sword;
 zombie * tes[6];
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]){
 	    Me->giveWep(Sword);
 	}
 	startup();
-	    rom = rooms[0];
+	    rom = rooms[9];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
@@ -66,13 +67,12 @@ void leave(){
 void enter(void){
 	leave();
 	delete Me;
-	mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
 	cout<<"\nPress enter to continue...\n";
 	cin.ignore(1,'\n');
 }
 bool catcher(ROOM_ERR e){
-	switch(e){
-		case SUBWAY:
+    switch(e){
+	case SUBWAY:
 		printf("You are now in the subway\n");
 		leave();
 		startup();
@@ -80,32 +80,38 @@ bool catcher(ROOM_ERR e){
 		rom = rooms[9];
 	    //}catch(ROOM_ERR fe){}
 		break;
-		case ALL_CON_USED:
+	case MAIN_STREET:
+		printf("You are now on mainstreet\n");
+		leave();
+		mainstreet();
+		rom = rooms[0];
+		break;
+	case ALL_CON_USED:
 			printf("ALL_CON\n");
                         exit(0xDEAD);
 			break;
-		case ROOM_FULL:
+	case ROOM_FULL:
 			printf("ROOM_FULL\n");
                         exit(0xDEAD);
 			break;
-		case CON_ALREADY_USED:
+	case CON_ALREADY_USED:
 			printf("THAT CON USED\n");
                         exit(0xDEAD);
 			break;
-		case DEAD_PLAYER:
-				mprintf("you died :(\n");
-				mprintf("Game over\n");
-				exit(0xDEAD);
-		break;
-		case ROOM_DONE:
-		     //mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
+	case DEAD_PLAYER:
+			mprintf("you died :(\n");
+			mprintf("Game over\n");
+			exit(0xDEAD);
+			break;
+	case ROOM_DONE:
+		     mprintf("You win!\nThanks for beta testing Zoel, I very much appreciate it :D\nYou can send errors to drew887 or post them on github.\nRemember to get the newest release ;D\n");
 		     return true;
-		break;
-		case NO_ROOMS_ATTACHED:
+		     break;
+	case NO_ROOMS_ATTACHED:
 				printf("You made it into a nightmare room with no exits!\n......Game over.....\n");
 				exit(0xDEAD);
 		break;
-		case LOADED_RES:
+	case LOADED_RES:
 		     leave();
 		     startup();
 		  //try{
@@ -122,7 +128,7 @@ void startup(){
     unsigned int count = 0;
     dep = ROOM_DONE;
     for(char i = 0; i<6; i++){tes[i] = new zombie();}
-    exitr = new exitroom(ROOM_DONE);
+    exitr = new exitroom(MAIN_STREET);
     for(int i = 0; i<10;i++){
 	fread(&count,4,1,pp);
 	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
@@ -130,7 +136,11 @@ void startup(){
 	fread(tempdesc,count,1,pp);
 	tempdesc[count] = '\0';
 	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
+	if(i==5){
+	 rooms[i] = new healroom(tempdesc);
+	}else{
 	rooms[i] = new room(tempdesc);
+	}
 	delete[] tempdesc;
 	tempdesc = NULL;
 	//printf("%s\n",tempdesc);

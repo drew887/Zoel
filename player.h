@@ -6,6 +6,7 @@ public:
 	void save();
 	bool load(const char * name);
 	void stats();
+	void heal();
 	Weapon wep;
 	player(void);
 	player(bool derp);
