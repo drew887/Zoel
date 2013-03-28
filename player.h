@@ -22,6 +22,7 @@
 #pragma once
 #include "entity.h"
 #include "stdafx.h"
+
 class player :public entity{
 public:
 	void save();

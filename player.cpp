@@ -80,7 +80,8 @@ void player::giveWep(Weapon wepa){
 	wep = wepa;
 }
 void player::tellwep(){
-mprintf(wep.name);
+printf("%s\n",wep.name);
+
 }
 
 unsigned int player::getatt(){

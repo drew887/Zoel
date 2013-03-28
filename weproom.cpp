@@ -54,8 +54,8 @@ if(percount>0){
 			    }else{enimies[numcheck]->attack(playera);}
 		    break;
 		    case 'r':
-		    rancheck = floor((rand() % 2) + 1);
-		    if(rancheck == 2){
+		    rancheck = floor((rand() % 20) + 1);
+		    if((rancheck % 2)==0){
 			mprintf("You managed to run away and make it back here safely\n");
 			    infi = false;
 			    vic = false;

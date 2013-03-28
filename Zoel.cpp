@@ -23,8 +23,8 @@
 #include "stdafx.h"
 ROOM_ERR dep;
 room * rooms[10];
-exitroom * exitr;
-exitroom * conecter;
+room * exitr;
+room * conecter;
 player * Me;
 Weapon Sword;
 entity * tes[6];

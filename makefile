@@ -18,7 +18,7 @@ all:	$(obj:.cpp=.o) $(dep)
 ##	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
 	@echo "Build Complete"
 win:
-	i586-mingw32msvc-g++ $(obj) -Wall -o $(Target).exe 
+	i586-mingw32msvc-g++ $(obj) -Wall -Os -o $(Target).exe 
 	@echo "Win done"
 lib:	
 	@echo "Building project as a linkable library"

@@ -66,7 +66,7 @@ void mainstreet(){
 	}else if(i==2){
 	Weapon Jorels;
 	strcpy(Jorels.name,"JoelSlay");
-	Jorels.att = 8;
+	Jorels.att = 6;
 	Jorels.spd = 4;
 	rooms[i] = new weproom(tempdesc);
 	rooms[i]->addwep(Jorels);
