@@ -44,8 +44,10 @@
 #include "entity.h"
 #include "room.h"
 #include "zombie.h"
+#include "joel.h"
 //#include "saver.h"
 #include "healroom.h"
+#include "weproom.h"
 enum ROOM_ERR{ALL_CON_USED,CON_ALREADY_USED,ROOM_FULL,DEAD_PLAYER,ROOM_DONE,NO_ROOMS_ATTACHED,MAIN_STREET,SUBWAY,LOADED_RES};
 #include "exitroom.h"
 

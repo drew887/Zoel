@@ -40,6 +40,7 @@ public:
 	bool attach(room * ar, room_dir direc);
         bool attach(room * ar, room_dir direc,bool t);
 	virtual room* start(player * playera);
+	virtual void addwep(Weapon weps){}
 	room * getdir(room_dir dir);
 	char desc[1024];
 protected:

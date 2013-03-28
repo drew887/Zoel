@@ -25,6 +25,15 @@
 #define INVEN
 enum inven{SHIRT,BOOTS,CUFFS,FLESH};
 #pragma pack(1)
+#pragma pack(1)
+class item{
+public:
+    item(){}
+    virtual ~item(){}
+    char name[9];
+};
+
+#pragma pack()
 struct Weapon{
 public:
 	unsigned int att;

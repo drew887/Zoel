@@ -24,7 +24,7 @@
 class entity
 {
 protected:
-	unsigned int maxhp;
+	int maxhp;
 	int hp;
 	unsigned int def;
 	unsigned int att;
@@ -37,7 +37,6 @@ public:
 	}
 
 	virtual ~entity(void){
-
 	}
 	virtual bool attack(entity * defender);
 	virtual bool defend(entity * attacker);

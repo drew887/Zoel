@@ -27,7 +27,7 @@ exitroom * exitr;
 exitroom * conecter;
 player * Me;
 Weapon Sword;
-zombie * tes[6];
+entity * tes[6];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 	atexit(enter);
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]){
 	    Me->giveWep(Sword);
 	}
 	startup();
-	    rom = rooms[0];
+	    rom = rooms[9];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){

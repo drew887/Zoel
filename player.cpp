@@ -79,6 +79,10 @@ bool player::defend(entity * attacker){
 void player::giveWep(Weapon wepa){
 	wep = wepa;
 }
+void player::tellwep(){
+mprintf(wep.name);
+}
+
 unsigned int player::getatt(){
 	return this->reatt();// + (rand() % wep.spd);
 }
@@ -86,7 +90,7 @@ unsigned int player::reatt(){
     srand( time(NULL) );
    //printf("THIS %s %d ,%d\t",this->wep.name,(this->att + this->wep.att),this->wep.att);
     if(this->wep.spd == 0){return this->att + this->wep.att - 1;}
-    return this->att + this->wep.att;// + (rand() % wep.spd);
+    return this->att + this->wep.att + (rand() % wep.spd);
 }
 //////////////////////////////////\\\\\\\\\\\\\\\\\>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void player::save(){

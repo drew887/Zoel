@@ -23,8 +23,7 @@
 #ifndef HEALROOM_H
 #define HEALROOM_H
 
-class healroom : public room
-{
+class healroom : public room{
 public:
     healroom(const char *descr);
     room * start(player *playera);

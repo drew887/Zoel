@@ -32,6 +32,7 @@ public:
 	player(void);
 	player(bool derp);
 	~player(void);
+	void tellwep();
 	void giveWep(Weapon wepa);
 	bool attack(entity * defender);
 	bool defend(entity * attacker);
