@@ -36,7 +36,7 @@ unsigned int ns = strlen(de);
 	printf("%c",de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	//safesleep(20000);
+	safesleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(17);
@@ -44,7 +44,7 @@ unsigned int ns = strlen(de);
     }
 //printf("\n");
 }
-
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void mainstreet(){
     FILE * pp = fopen("two","rb");
     char * tempdesc;
