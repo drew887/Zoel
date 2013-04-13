@@ -43,7 +43,10 @@ public:
 	virtual void addwep(Weapon weps){}
 	room * getdir(room_dir dir);
 	char desc[1024];
+	virtual void setpic(bool set){}
 protected:
+	void parse(player * playera);
+	room * next;
 	void movecheck(unsigned char te);
 	void batcheck(unsigned char te);
 	entity * enimies[ROOM_MAX];

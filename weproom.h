@@ -24,13 +24,15 @@
 #define WEPROOM_H
 
 class weproom : public room{
-private:
+protected:
 Weapon wepa;
 public:
+    bool picked;
     weproom(const char * descr);
     virtual void addwep(Weapon weps);
     virtual room * start(player *playera);
     virtual ~weproom(){}
+    virtual void setpic(bool set);
 };
 
 #endif // WEPROOM_H

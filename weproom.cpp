@@ -22,8 +22,11 @@
 
 #include "stdafx.h"
 #include <math.h>
+void weproom::setpic(bool set){
+picked = set;
+}
 weproom::weproom(const char * descr):room(descr){
-
+picked = false;
 }
 void weproom::addwep(Weapon weps){
 wepa = weps;
@@ -77,62 +80,12 @@ if(percount>0){
 	    if(numcheck == percount){vic=false;}
     }//end while vic
 }//end if percount
+if(!picked){
 mprintf("You found a weapon!\nIt's a ");
 playera->giveWep(wepa);
 playera->tellwep();
+}
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    while(chose){
-	    mprintf("Enter a command!\n***compass directions to move q to quit, h for help***\n");
-	    scanf("%c",&te);
-	    clearin();
-	    switch(te){
-	    case 'n':
-		    next = getdir(NORTH);
-		    if(next ==NULL){printf("You can't go that way\n");}else{
-			    chose =false;
-		    }
-	    break;
-	    case 'S':
-	    playera->save();
-	    break;
-	    case 'L':
-	    char loaded[9];
-	    mprintf("Enter the name of a previous character\n");
-	    scanf("%8s",loaded);
-	    clearin();
-	    playera->load(loaded);
-	    return this;
-	    break;
-	    case 'l':
-	    printf("\t*****************\n%s\n\t*****************\n",desc);
-	    break;
-	    case 'e':
-		    next = getdir(EAST);
-		    if(next ==NULL){printf("You can't go that way\n");}else{
-			    chose =false;
-		    }
-	    break;
-	    case 's':
-		    next = getdir(SOUTH);
-		    if(next ==NULL){printf("You can't go that way\n");}else{
-			    chose =false;
-		    }
-	    break;
-	    case 'w':
-		    next = getdir(WEST);
-		    if(next ==NULL){printf("You can't go that way\n");}else{
-			    chose =false;
-		    }
-	    break;
-	    case 'q':
-		    exit(0);
-	    break;
-	    case 'h':
-	    mprintf("n\tgo north\ne\tgo east\ns\tgo south\nw\tgo west\nq\tquit\nl\tlook around\nS\tsave\nL\tload\n");
-	    break;
-	    default:
-		    mprintf("I dont know that command\n");
-	    }
-    }
+    parse(playera);
     return next;
 }//end weproom::start

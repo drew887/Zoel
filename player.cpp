@@ -147,8 +147,8 @@ bool player::load(const char *name){
     return true;
 }
 void player::stats(){
-    char tempchar[38];
- sprintf(tempchar,"Stats:\nMaxhp: %d\thp: %d\natt: %d\tdef: %d\n",maxhp,hp,att,def);
+    char tempchar[80];
+ sprintf(tempchar,"Stats:\nMaxhp: %d\thp: %d\natt: %d\t def: %d\nweapon: %s \t att: %d\n",maxhp,hp,att,def,wep.name,wep.att);
  mprintf(tempchar);
 }
 void player::heal(){

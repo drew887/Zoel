@@ -25,7 +25,6 @@
 #define INVEN
 enum inven{SHIRT,BOOTS,CUFFS,FLESH};
 #pragma pack(1)
-#pragma pack(1)
 class item{
 public:
     item(){}
@@ -34,6 +33,7 @@ public:
 };
 
 #pragma pack()
+#pragma pack(1)
 struct Weapon{
 public:
 	unsigned int att;

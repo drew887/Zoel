@@ -6,7 +6,7 @@
 ##--Wed Aug 08, 2012 12:41AM, Removed some pointless commands that weren't actually doing anything 
 ##--Wed Aug 08, 2012 00:49AM, Switched $(CC) -o $(Target) $(ofile) and now compiles on first call with no need to call make twice
 CC:= g++
-CXXFLAGS:= -Wall -g -lopenal
+CXXFLAGS:= -Wall -g -lopenal -Os
 .PHONY: clean main lib win
 obj:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.cpp)))
 dep:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.h)))

@@ -39,18 +39,18 @@ room::room(void){
 }
 
 room* room::start(player * playera){
-	printf("\t*****************\n%s\n\t*****************\n",desc);
+	const char roomstar[] = "\t*****************\n%s\n\t*****************\n";
+	printf(roomstar,desc);
 	if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
 //	One = playera;
-	room * next = NULL;
+	next = NULL;
 	bool vic = true;
 	bool infi = true;
 	bool chose = true;
 	char rancheck = 0;
 	unsigned int numcheck =0;
-	unsigned char te = 0;
+	char te[200];
    if(percount>0){
-       printf("Oh no, %d enemie[s]!\n",percount);
 	while (vic){
 	   if(enimies[numcheck]->isalive){
 		printf("******\nAn enemy %s is attacking!!\n******\n",enimies[numcheck]->classname);
@@ -58,7 +58,7 @@ room* room::start(player * playera){
 			printf("Enter a command!\n***a = attack r = run q = quit***\n");
 			scanf("%c",&te);
 			clearin();
-			switch(te){
+			switch(te[0]){
 			case 'a':
 				if(enimies[numcheck]->defend(playera)){
 					infi = false;
@@ -82,66 +82,14 @@ room* room::start(player * playera){
 				printf("Unknown action?\n");
 			}
                 }//end while infi
-	   }else{mprintf("This ones dead!\n");}
+	   }else{}
 		numcheck++;
 		infi = true;
 		if(numcheck == percount){vic=false;}
         }//end while vic
     }//end if percount
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	while(chose){
-		mprintf("Enter a command!\n***compass directions to move q to quit, h for help***\n");
-		scanf("%c",&te);
-		clearin();
-		switch(te){
-		case 'n': 
-			next = getdir(NORTH);
-			if(next ==NULL){printf("You can't go that way\n");}else{
-				chose =false;
-			}
-		break;
-		case 'S':
-		playera->save();
-		break;
-		case 'L':
-		char loaded[9];
-		mprintf("Enter the name of a previous character\n");
-		scanf("%8s",loaded);
-		clearin();
-		playera->load(loaded);
-		return this;
-		break;
-                case 'l':
-		printf("\t*****************\n%s\n\t*****************\n",desc);
-                break;
-		case 'e': 
-			next = getdir(EAST);
-			if(next ==NULL){printf("You can't go that way\n");}else{
-				chose =false;
-			}
-		break;
-		case 's': 
-			next = getdir(SOUTH);
-			if(next ==NULL){printf("You can't go that way\n");}else{
-				chose =false;
-			}
-		break;
-		case 'w': 
-			next = getdir(WEST);
-			if(next ==NULL){printf("You can't go that way\n");}else{
-				chose =false;
-			}
-		break;
-		case 'q':
-			exit(0);
-		break;
-		case 'h':
-		mprintf("n\tgo north\ne\tgo east\ns\tgo south\nw\tgo west\nq\tquit\nl\tlook around\nS\tsave\nL\tload\n");
-		break;
-		default:
-			mprintf("I dont know that command\n");
-		}
-	}
+	parse(playera);
 	return next;
 }
 bool room::addper(entity * person){
@@ -215,4 +163,78 @@ room * room::getdir(room_dir dir){
 		}
 	}
 	return temp;
+}
+void room::parse(player * playera){
+	char te[200];
+	bool chose =true;
+char cantgo[] = "You can't go that way\n";
+char dontknow[] = "I don't know \"%s\"\n";
+	while(chose){
+		mprintf("Enter a command!\n***compass directions to move q to quit, help for help***\n");
+		scanf("%100[^\n]",te);
+		clearin();
+		switch(te[0]){
+		case 'n': 
+		if((strlen(te) ==1) || (!strncmp("north",te,5)) ){
+			next = getdir(NORTH);
+			if(next == NULL){printf(cantgo);}else{
+				chose =false;
+			}
+		}else{printf(dontknow,te);}
+		break;
+        case 'l':
+        if(!strcmp("look",te)){
+		printf("\t*****************\n%s\n\t*****************\n",desc);
+                break;
+		}else if(!strcmp("load",te)){
+			char loaded[9];
+		mprintf("Enter the name of a previous character\n");
+		scanf("%8s",loaded);
+		clearin();
+		playera->load(loaded);
+		//return this;
+		break;
+		}
+		else{printf(dontknow,te);}
+			break;
+		case 'e': 
+		if( (strlen(te)==1) || (!strcmp("east",te)) ){
+			next = getdir(EAST);
+			if(next ==NULL){printf(cantgo);}else{
+				chose =false;
+			}
+		}else{printf(dontknow,te);}
+		break;
+		case 's': 
+			if( (strlen(te)==1) || (!strcmp("south",te)) ){
+			next = getdir(SOUTH);
+			if(next ==NULL){printf(cantgo);}else{
+				chose =false;
+			}
+		}else if(!strcmp("save",te)){
+			playera->save();
+			break;
+		}else{printf(dontknow,te);}
+		break;
+		case 'w': 
+			if( (strlen(te)==1) || (!strcmp("west",te)) ){
+			next = getdir(WEST);
+			if(next ==NULL){printf(cantgo);}else{
+				chose =false;
+			}
+			break;
+		}else{printf(dontknow,te);}
+		break;
+		case 'q':
+			exit(0);
+		break;
+		case 'h':
+		if(!strcmp("help",te)){
+		mprintf("n/north\tgo north\ne/east\tgo east\ns/south\tgo south\nw/west\tgo west\nq\tquit\nlook\tlook around\nsave\tsave the game\nload\tload a game\n");
+		}else{printf(dontknow,te);}
+		break;
+		default:
+			printf(dontknow,te);
+		}
+	}	
 }

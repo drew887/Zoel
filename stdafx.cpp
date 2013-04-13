@@ -23,11 +23,13 @@
 // Zoel.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information
 #include "stdafx.h"
+#include <string.h>
 extern entity * tes[6];
 extern room * rooms[10];
 extern exitroom * exitr;
 extern exitroom * conecter;
 extern ROOM_ERR dep;
+extern player * Me;
 // TODO: reference any additional headers you need in STDAFX.H
 // and not in this file
 void mprintf(const char * de){
@@ -36,7 +38,7 @@ unsigned int ns = strlen(de);
 	printf("%c",de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	safesleep(20000);
+	//safesleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(17);
@@ -69,6 +71,9 @@ void mainstreet(){
 	Jorels.att = 6;
 	Jorels.spd = 4;
 	rooms[i] = new weproom(tempdesc);
+	if(strncmp("JoelSlay",Me->wep.name,8)==0){
+	rooms[i]->setpic(true);
+	}
 	rooms[i]->addwep(Jorels);
 	}else{
 	rooms[i] = new room(tempdesc);
@@ -79,31 +84,31 @@ void mainstreet(){
     }
     fclose(pp);
     //rooms0
-	 rooms[0]->attach(rooms[1],EAST,true);
-	 rooms[0]->attach(rooms[2],WEST,true);
-	 rooms[0]->attach(conecter,SOUTH);
+	 rooms[0]->attach(rooms[1],NORTH,true);
+	 rooms[0]->attach(rooms[2],SOUTH,true);
+	 rooms[0]->attach(conecter,EAST);
 	 //rooms1
-	 rooms[1]->attach(rooms[3],NORTH,true);
+	 rooms[1]->attach(rooms[3],WEST,true);
 	 rooms[1]->addper(tes[3]);
 	 //roms2
 	 rooms[2]->addper(tes[0]);
 	 //rooms3
-	 rooms[3]->attach(rooms[4],WEST,true);
-	 rooms[3]->attach(rooms[5],EAST,true);
+	 rooms[3]->attach(rooms[4],SOUTH,true);
+	 rooms[3]->attach(rooms[5],NORTH,true);
 	 //rooms4
-	 rooms[4]->attach(rooms[6],NORTH,true);
+	 rooms[4]->attach(rooms[6],WEST,true);
 	 //roms5
-	 rooms[5]->attach(rooms[7],NORTH,true);
+	 rooms[5]->attach(rooms[7],WEST,true);
 	 rooms[5]->addper(tes[1]);
 	 //roms6
-	 rooms[6]->attach(exitr,NORTH);
-	 rooms[6]->attach(rooms[7],EAST,true);
+	 rooms[6]->attach(exitr,WEST);
+	 rooms[6]->attach(rooms[7],NORTH,true);
 	 rooms[6]->addper(tes[2]);
 	 //rooms7
-	 rooms[7]->attach(rooms[8],EAST,true);
+	 rooms[7]->attach(rooms[8],NORTH,true);
 	 rooms[7]->addper(tes[4]);
 	 //roms8
-	 rooms[8]->attach(rooms[9],NORTH,true);
+	 rooms[8]->attach(rooms[9],WEST,true);
 	 //rooms9
 	 rooms[9]->addper(tes[5]);
 }

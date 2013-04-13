@@ -21,6 +21,8 @@
  */ 
 // Zoel.cpp
 #include "stdafx.h"
+#include <signal.h>
+void terman(int d);
 ROOM_ERR dep;
 char opening[] ="You awake again in the train you were in when the cataclysm happened.\nYou check your pack and find that you have finally run out of food.\nYou've heard some very disturbing noises over the past couple days.\nThankfully you've been able to keep yourself hidden, rationing your food.\nYou grab your head as you stumble onto your feet, looks like its time to find\nsome food. You walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power\n....seems like there's no hiding now....\nYou find your trusty knife still in your pack!\n";
 room * rooms[10];
@@ -34,6 +36,7 @@ entity * tes[6];
 room * rom = NULL;
 int main(int argc, char* argv[]){
 //int * dummy = new int(4);
+signal(SIGINT,terman);
 	atexit(enter);
 	Sword.att = 4;
 	Sword.spd = 2;
@@ -66,7 +69,7 @@ int main(int argc, char* argv[]){
 	    Me->giveWep(Sword);
 	}
 	startup();
-	    rom = rooms[0];
+	    rom = rooms[9];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
@@ -207,4 +210,7 @@ void startup(){
 		rooms[8]->addper(tes[5]);
 		//rooms[9]
 	    rooms[9]->attach(exitr,WEST);
+}
+void terman(int d){
+exit(d);
 }

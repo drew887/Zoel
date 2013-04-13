@@ -25,6 +25,6 @@
 class zombie : public entity{
 public:
 	zombie(void);
-	~zombie(void);
+	virtual ~zombie(void);
 };
 
