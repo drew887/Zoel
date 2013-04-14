@@ -40,6 +40,7 @@ room::room(void){
 
 room* room::start(player * playera){
 	const char roomstar[] = "\t*****************\n%s\n\t*****************\n";
+	char dontknow[] = "I don't know \"%s\"\n";
 	printf(roomstar,desc);
 	if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
 //	One = playera;
@@ -60,11 +61,15 @@ room* room::start(player * playera){
 			clearin();
 			switch(te[0]){
 			case 'a':
+				if( (strlen(te) ==0) || (!strcmp("attack",te)) ){
 				if(enimies[numcheck]->defend(playera)){
 					infi = false;
 				}else{enimies[numcheck]->attack(playera);}
+			}else{printf(dontknow,te);}
 			break;
 			case 'r':
+			
+		if( (strlen(te) ==0) || (!strcmp("run",te)) ){
 			rancheck = floor((rand() % 2) + 1);
 			if(rancheck == 2){
 			    mprintf("You managed to run away and make it back here safely\n");
@@ -74,12 +79,13 @@ room* room::start(player * playera){
 				printf("You failed and the %s gets you off guard!\n",enimies[numcheck]->classname);
 				enimies[numcheck]->attack(playera);
 			    }
+		}else{printf(dontknow,te);}
 			break;
 			case 'q':
 				exit(0);
 			break;
 			default:
-				printf("Unknown action?\n");
+				printf(dontknow,te);
 			}
                 }//end while infi
 	   }else{}
@@ -214,7 +220,11 @@ char dontknow[] = "I don't know \"%s\"\n";
 		}else if(!strcmp("save",te)){
 			playera->save();
 			break;
-		}else{printf(dontknow,te);}
+		}else if(!strcmp("stats",te)){
+			playera->stats();
+			break;
+		}
+		else{printf(dontknow,te);}
 		break;
 		case 'w': 
 			if( (strlen(te)==1) || (!strcmp("west",te)) ){
@@ -230,7 +240,7 @@ char dontknow[] = "I don't know \"%s\"\n";
 		break;
 		case 'h':
 		if(!strcmp("help",te)){
-		mprintf("n/north\tgo north\ne/east\tgo east\ns/south\tgo south\nw/west\tgo west\nq\tquit\nlook\tlook around\nsave\tsave the game\nload\tload a game\n");
+		mprintf("n/north\tgo north\ne/east\tgo east\ns/south\tgo south\nw/west\tgo west\nq\tquit\nlook\tlook around\nsave\tsave the game\nload\tload a game\nstats\t show yer stats\n");
 		}else{printf(dontknow,te);}
 		break;
 		default:

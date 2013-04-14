@@ -45,6 +45,9 @@ player::player(void){
 	def = (rand() % 3 )+ 1;
 	srand( time(NULL) );
 	att = (rand() % 3 )+ 1;
+	strcpy(wep.name,"None");
+	wep.att=0;
+	wep.spd=0;
 ///	printf("Well you have %d HP, %d def, and %d att\nGood luck!\n",hp,def,att);
 	stats();
 	inventory = new inven[3];
@@ -77,7 +80,9 @@ bool player::defend(entity * attacker){
 	return false;
 }
 void player::giveWep(Weapon wepa){
-	wep = wepa;
+	strcpy(wep.name,wepa.name);
+	wep.att = wepa.att;
+	wep.spd = wepa.spd;
 }
 void player::tellwep(){
 printf("%s\n",wep.name);
