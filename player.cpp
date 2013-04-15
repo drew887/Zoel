@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */ 
+#define mapst for(int i =0;i<20;i++){maps[i] = 0;}
 #include "stdafx.h"
 #include "player.h"
 extern ROOM_ERR dep;
@@ -32,6 +33,7 @@ player::player(bool derp){
     inventory[0] = SHIRT;
     inventory[1] = CUFFS;
     inventory[2] = BOOTS;
+    mapst
 }
 
 player::player(void){
@@ -54,6 +56,7 @@ player::player(void){
 	inventory[0] = SHIRT;
 	inventory[1] = CUFFS;
 	inventory[2] = BOOTS;
+	mapst
 }
 
 player::~player(void){
@@ -158,4 +161,8 @@ void player::stats(){
 }
 void player::heal(){
     hp = maxhp;
+}
+void player::showmap(const char * maps){
+
+printf(maps,'a','a','a','a','a','a','a','a','a','a');
 }

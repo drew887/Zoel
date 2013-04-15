@@ -46,8 +46,10 @@ unsigned int ns = strlen(de);
     }
 //printf("\n");
 }
+extern char bigmap[200];
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void mainstreet(){
+strcpy(bigmap,"No map yet\n");
     FILE * pp = fopen("two","rb");
     char * tempdesc;
     if(!pp){printf("Corrupt or improper story file for the subway.\nPlease ask Andrew about this or redownload the story files\n");exit(0xDEAD);}

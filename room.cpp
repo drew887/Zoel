@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "room.h"
 #include <math.h>
+extern char bigmap[200];
 room::room(const char * descr){
 	percount = 0;
 	attcount = 0;
@@ -237,6 +238,12 @@ char dontknow[] = "I don't know \"%s\"\n";
 		break;
 		case 'q':
 			exit(0);
+		break;
+		case 'm':
+		if(!strcmp("map",te)){
+		playera->showmap(bigmap);
+
+		}else{printf(dontknow,te);}
 		break;
 		case 'h':
 		if(!strcmp("help",te)){

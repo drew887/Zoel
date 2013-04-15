@@ -22,8 +22,10 @@
 #pragma once
 #include "entity.h"
 #include "stdafx.h"
-
+#pragma pack(1)
 class player :public entity{
+private:
+    bool maps[20];
 public:
 	void save();
 	bool load(const char * name);
@@ -39,5 +41,6 @@ public:
 	bool defend(entity * attacker);
 	unsigned int getatt();
 	unsigned int reatt();
+	void showmap(const char * maps);
 };
-
+#pragma pack()
