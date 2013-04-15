@@ -19,10 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */ 
-#define mapst for(int i =0;i<20;i++){maps[i] = 0;}
+#define mapst for(int i =0;i<20;i++){havemaps[i] = 0;}
 #include "stdafx.h"
 #include "player.h"
 extern ROOM_ERR dep;
+extern char mapnum[10];
 player::player(bool derp){
     hp = maxhp = (rand() % 8 )+ 30;
     srand( time(NULL) );
@@ -162,7 +163,8 @@ void player::stats(){
 void player::heal(){
     hp = maxhp;
 }
-void player::showmap(const char * maps){
+void player::showmap(const char * maps,unsigned int curnom){
 
-printf(maps,'a','a','a','a','a','a','a','a','a','a');
+printf(maps,mapnum[0],mapnum[1],mapnum[2],mapnum[3],mapnum[4],mapnum[5],mapnum[6],mapnum[7],mapnum[8],mapnum[9]);
+printf("\nYou are in room %d\n",curnom);
 }

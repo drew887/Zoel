@@ -32,7 +32,7 @@ void batcheck(unsigned char te);
 #pragma pack(1)
 class room{
 public:
-	room(const char * descr);
+	room(const char * descr,unsigned int romnum);
 	room(void);
 	void rexit(room * rexit);
 	virtual ~room(void);
@@ -45,6 +45,7 @@ public:
 	char desc[1024];
 	virtual void setpic(bool set){}
 protected:
+	unsigned int mynum;
 	void parse(player * playera);
 	room * next;
 	void movecheck(unsigned char te);

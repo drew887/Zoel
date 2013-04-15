@@ -25,7 +25,7 @@
 
 class healroom : public room{
 public:
-    healroom(const char *descr);
+    healroom(const char *descr,unsigned int romnum);
     room * start(player *playera);
 };
 

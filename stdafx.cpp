@@ -38,7 +38,7 @@ unsigned int ns = strlen(de);
 	printf("%c",de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	safesleep(20000);
+	//safesleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(17);
@@ -47,9 +47,15 @@ unsigned int ns = strlen(de);
 //printf("\n");
 }
 extern char bigmap[200];
+extern char mapnum[10];
+extern unsigned char curmapnum;
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void mainstreet(){
-strcpy(bigmap,"No map yet\n");
+curmapnum = 1;
+char mainmap[] = "   \t   \t   \t   \t %c\n   \t | \t   \t   \t |\n   \t %c-\t---\t-%c-\t-%c\n   \t | \t   \t | \t\n   \t %c-\t-%c-\t-%c\n   \t   \t | \n %c-\t-%c-\t-%c\n";
+char mainnum[] = {'9','6','7','8','4','3','5','2','0','1'};
+strcpy(mapnum,mainnum);
+strcpy(bigmap,mainmap);
     FILE * pp = fopen("two","rb");
     char * tempdesc;
     if(!pp){printf("Corrupt or improper story file for the subway.\nPlease ask Andrew about this or redownload the story files\n");exit(0xDEAD);}
@@ -66,19 +72,19 @@ strcpy(bigmap,"No map yet\n");
 	tempdesc[count] = '\0';
 	if(feof(pp)){printf("Corrupt or improper story file for the mainstreet. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
 	if(i==4){
-	rooms[i] = new healroom(tempdesc);
+	rooms[i] = new healroom(tempdesc,i);
 	}else if(i==2){
 	Weapon Jorels;
 	strcpy(Jorels.name,"JoelSlay");
 	Jorels.att = 6;
 	Jorels.spd = 4;
-	rooms[i] = new weproom(tempdesc);
+	rooms[i] = new weproom(tempdesc,i);
 	if(strncmp("JoelSlay",Me->wep.name,8)==0){
 	rooms[i]->setpic(true);
 	}
 	rooms[i]->addwep(Jorels);
 	}else{
-	rooms[i] = new room(tempdesc);
+	rooms[i] = new room(tempdesc,i);
 	}
 	delete[] tempdesc;
 	tempdesc = NULL;

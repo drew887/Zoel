@@ -21,7 +21,7 @@
  */ 
 #include "stdafx.h"
 #include <math.h>
-healroom::healroom(const char * descr):room(descr){
+healroom::healroom(const char * descr,unsigned int romnum):room(descr,romnum){
 
 }
 room * healroom::start(player *playera){

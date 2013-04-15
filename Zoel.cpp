@@ -25,6 +25,8 @@
 ROOM_ERR dep;
 char opening[] ="You awake again in the train you were in when the cataclysm happened.\nYou check your pack and find that you have finally run out of food.\nYou've heard some very disturbing noises over the past couple days.\nThankfully you've been able to keep yourself hidden, rationing your food.\nYou grab your head as you stumble onto your feet, looks like its time to find\nsome food. You walk off the subway car and into the tunnel.\nThe door of the train closes behind you before finally losing power\n....seems like there's no hiding now....\nYou find your trusty knife still in your pack!\n";
 char bigmap[200];
+unsigned char curmapnum;
+char mapnum[10];
 room * rooms[10];
 room * exitr;
 room * conecter;
@@ -69,7 +71,7 @@ signal(SIGINT,exit);
 	    Me->giveWep(Sword);
 	}
 	startup();
-	    rom = rooms[0];
+	    rom = rooms[9];
 	bool go = true;
  //////////////////////////////////////////////////////////////main game loop
 	while(go){
@@ -156,6 +158,9 @@ bool catcher(ROOM_ERR e){
 }//end catcher
 void startup(){
     char starmaps[] = "-%c-\t-%c-\t- -\t- -\t- -\t-|\n\t | \t   \t   \t   \t |\n\t %c-\t-%c \t %c- \t-%c-\t-%c\n\t   \t   \t | \t | \t  \n\t   \t %c-\t-%c-\t-%c\n";
+    char starnum[] ={'9','8','7','6','1','4','5','2','0','3'};
+    curmapnum = 0;
+    strcpy(mapnum,starnum);
     strcpy(bigmap,starmaps);
     FILE * pp = fopen("one","rb");
     char * tempdesc;
@@ -172,9 +177,9 @@ void startup(){
 	tempdesc[count] = '\0';
 	if(feof(pp)){printf("Corrupt or improper story file for the subway. %d\nPlease ask Andrew about this or redownload the story files\n",i);exit(0xDEAD);}
 	if(i==5){
-	 rooms[i] = new healroom(tempdesc);
+	 rooms[i] = new healroom(tempdesc,i);
 	}else{
-	rooms[i] = new room(tempdesc);
+	rooms[i] = new room(tempdesc,i);
 	}
 	delete[] tempdesc;
 	tempdesc = NULL;

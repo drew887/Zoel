@@ -25,7 +25,7 @@
 #pragma pack(1)
 class player :public entity{
 private:
-    bool maps[20];
+    bool havemaps[5];
 public:
 	void save();
 	bool load(const char * name);
@@ -41,6 +41,6 @@ public:
 	bool defend(entity * attacker);
 	unsigned int getatt();
 	unsigned int reatt();
-	void showmap(const char * maps);
+	void showmap(const char * maps,unsigned int curom);
 };
 #pragma pack()

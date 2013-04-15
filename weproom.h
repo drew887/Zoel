@@ -28,7 +28,7 @@ protected:
 Weapon wepa;
 public:
     bool picked;
-    weproom(const char * descr);
+    weproom(const char * descr,unsigned int romnum);
     virtual void addwep(Weapon weps);
     virtual room * start(player *playera);
     virtual ~weproom(){}

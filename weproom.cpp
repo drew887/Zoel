@@ -25,7 +25,7 @@
 void weproom::setpic(bool set){
 picked = set;
 }
-weproom::weproom(const char * descr):room(descr){
+weproom::weproom(const char * descr,unsigned int romnum):room(descr,romnum){
 picked = false;
 }
 void weproom::addwep(Weapon weps){

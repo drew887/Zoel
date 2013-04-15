@@ -23,7 +23,8 @@
 #include "room.h"
 #include <math.h>
 extern char bigmap[200];
-room::room(const char * descr){
+room::room(const char * descr,unsigned int romnum){
+	mynum = romnum;
 	percount = 0;
 	attcount = 0;
 	for(unsigned int i = 0;i<4;i++){
@@ -48,7 +49,6 @@ room* room::start(player * playera){
 	next = NULL;
 	bool vic = true;
 	bool infi = true;
-	bool chose = true;
 	char rancheck = 0;
 	unsigned int numcheck =0;
 	char te[200];
@@ -58,11 +58,11 @@ room* room::start(player * playera){
 		printf("******\nAn enemy %s is attacking!!\n******\n",enimies[numcheck]->classname);
 		while(infi){
 			printf("Enter a command!\n***a = attack r = run q = quit***\n");
-			scanf("%c",&te);
+			scanf("%100[^\n]",te);
 			clearin();
 			switch(te[0]){
 			case 'a':
-				if( (strlen(te) ==0) || (!strcmp("attack",te)) ){
+				if( (strlen(te) ==1) || (!strcmp("attack",te)) ){
 				if(enimies[numcheck]->defend(playera)){
 					infi = false;
 				}else{enimies[numcheck]->attack(playera);}
@@ -70,7 +70,7 @@ room* room::start(player * playera){
 			break;
 			case 'r':
 			
-		if( (strlen(te) ==0) || (!strcmp("run",te)) ){
+		if( (strlen(te) ==1) || (!strcmp("run",te)) ){
 			rancheck = floor((rand() % 2) + 1);
 			if(rancheck == 2){
 			    mprintf("You managed to run away and make it back here safely\n");
@@ -174,8 +174,8 @@ room * room::getdir(room_dir dir){
 void room::parse(player * playera){
 	char te[200];
 	bool chose =true;
-char cantgo[] = "You can't go that way\n";
-char dontknow[] = "I don't know \"%s\"\n";
+const char cantgo[] = "You can't go that way\n";
+const char dontknow[] = "I don't know \"%s\"\n";
 	while(chose){
 		mprintf("Enter a command!\n***compass directions to move q to quit, help for help***\n");
 		scanf("%100[^\n]",te);
@@ -241,7 +241,7 @@ char dontknow[] = "I don't know \"%s\"\n";
 		break;
 		case 'm':
 		if(!strcmp("map",te)){
-		playera->showmap(bigmap);
+		playera->showmap(bigmap,mynum);
 
 		}else{printf(dontknow,te);}
 		break;
