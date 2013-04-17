@@ -13,11 +13,15 @@ dep:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.h)))
 Target:= $(notdir $(CURDIR))
 
 
-all:    $(obj:.cpp=.o)
-	@echo "Build Begins...."
+all: $(Target)
+$(Target): $(obj:.cpp=.o)
 	$(CC) $**.o -o $(Target) $(CXXFLAGS)
+
+##all:    $(obj:.cpp=.o)
+##	@echo "Build Begins...."
+##	$(CC) $**.o -o $(Target) $(CXXFLAGS)
 ##	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
-	@echo "Build Complete"
+##	@echo "Build Complete"
 win:	
 	i586-mingw32msvc-g++ $(obj) -Wall -Os -o $(Target).exe 
 	@echo "Win done"
