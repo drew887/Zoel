@@ -46,7 +46,7 @@ public:
 	virtual void setpic(bool set){}
 protected:
 	unsigned int mynum;
-	void parse(player * playera);
+	virtual void parse(player * playera);
 	room * next;
 	void movecheck(unsigned char te);
 	void batcheck(unsigned char te);

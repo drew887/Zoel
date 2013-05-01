@@ -23,9 +23,10 @@
 #include "entity.h"
 #include "stdafx.h"
 #pragma pack(1)
+//Yay the player class! 
 class player :public entity{
 private:
-    bool havemaps[5];
+    bool havemaps[5];//this will be used maybe later, maybe
 public:
 	void save();
 	bool load(const char * name);

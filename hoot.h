@@ -27,7 +27,8 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
-
+//this is actually from openENG, but i own ENG so i can relisence it ;D
+//basically this is just some classes and structs for reading in .wav files and playing them with openAL. Joel if you want, this would be useable in your zork clone and you wouldnt have to change anything :D
 #pragma pack(1)
 struct buffI{
 	short format;

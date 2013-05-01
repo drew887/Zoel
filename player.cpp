@@ -38,9 +38,10 @@ player::player(bool derp){
 }
 
 player::player(void){
+//
 	printf("Hello there!\nWhat is your name?\n");
 	scanf("%8s",classname);
-	clearin();
+	clearin();//we use this to make sure we clean up the input buffer incase they just insterted spam or something trying to cause a buffer overflow D:
 	printf("So your name is %s?\nthat certainly is an...interesting name...\n",classname);
 	srand( time(NULL) );
 	hp = maxhp = (rand() % 8 )+ 30;

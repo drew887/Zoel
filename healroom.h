@@ -22,11 +22,11 @@
 #include "stdafx.h"
 #ifndef HEALROOM_H
 #define HEALROOM_H
-
 class healroom : public room{
 public:
-    healroom(const char *descr,unsigned int romnum);
+    healroom(const char *descr,unsigned int romnum);//probably could have just added a new typedef to make all these different rooms and just change movecheck to match, but im lazy
     room * start(player *playera);
+//    void parse(player * playera);
 };
 
 #endif // HEALROOM_H

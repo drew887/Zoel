@@ -23,7 +23,7 @@
 #include "stdafx.h"
 
 Joel::Joel(){
-    strcpy(classname,"Joelium");
+    strcpy(classname,"Joelium");//here we set the name to Joelium and make him powerful as fuck
     maxhp = 10;
     hp = 10;
     att = 10;

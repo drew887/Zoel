@@ -19,7 +19,7 @@ $(Target): $(obj:.cpp=.o)
 
 ##all:    $(obj:.cpp=.o)
 ##	@echo "Build Begins...."
-##	$(CC) $**.o -o $(Target) $(CXXFLAGS)
+##	$(CC) obj/$**.o -o $(Target) $(CXXFLAGS)
 ##	@xterm -T $(Target) -e $(CURDIR)/./$(Target)
 ##	@echo "Build Complete"
 win:	

@@ -23,12 +23,12 @@
 #pragma once
 #ifndef JOEL_H
 #define JOEL_H
-
+//here we have the class definition for the JOELIUM >:D
 class Joel : public entity
 {
 public:
     Joel();
-    virtual ~Joel();
+    virtual ~Joel();//notice this is still vitual incase we want to make a super joel or something else later on.
 };
 
 #endif // JOEL_H

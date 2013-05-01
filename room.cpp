@@ -46,7 +46,7 @@ room* room::start(player * playera){
 	printf(roomstar,desc);
 	if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
 //	One = playera;
-	next = NULL;
+	this->next = NULL;
 	bool vic = true;
 	bool infi = true;
 	char rancheck = 0;
@@ -97,7 +97,7 @@ room* room::start(player * playera){
     }//end if percount
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	parse(playera);
-	return next;
+	return this->next;
 }
 bool room::addper(entity * person){
 	if(percount < ROOM_MAX){
@@ -183,8 +183,8 @@ const char dontknow[] = "I don't know \"%s\"\n";
 		switch(te[0]){
 		case 'n': 
 		if((strlen(te) ==1) || (!strncmp("north",te,5)) ){
-			next = getdir(NORTH);
-			if(next == NULL){printf(cantgo);}else{
+			this->next = getdir(NORTH);
+			if(this->next == NULL){printf(cantgo);}else{
 				chose =false;
 			}
 		}else{printf(dontknow,te);}
@@ -206,16 +206,16 @@ const char dontknow[] = "I don't know \"%s\"\n";
 			break;
 		case 'e': 
 		if( (strlen(te)==1) || (!strcmp("east",te)) ){
-			next = getdir(EAST);
-			if(next ==NULL){printf(cantgo);}else{
+			this->next = getdir(EAST);
+			if(this->next ==NULL){printf(cantgo);}else{
 				chose =false;
 			}
 		}else{printf(dontknow,te);}
 		break;
 		case 's': 
 			if( (strlen(te)==1) || (!strcmp("south",te)) ){
-			next = getdir(SOUTH);
-			if(next ==NULL){printf(cantgo);}else{
+			this->next = getdir(SOUTH);
+			if(this->next ==NULL){printf(cantgo);}else{
 				chose =false;
 			}
 		}else if(!strcmp("save",te)){
@@ -229,8 +229,8 @@ const char dontknow[] = "I don't know \"%s\"\n";
 		break;
 		case 'w': 
 			if( (strlen(te)==1) || (!strcmp("west",te)) ){
-			next = getdir(WEST);
-			if(next ==NULL){printf(cantgo);}else{
+			this->next = getdir(WEST);
+			if(this->next ==NULL){printf(cantgo);}else{
 				chose =false;
 			}
 			break;

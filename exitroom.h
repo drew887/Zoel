@@ -26,7 +26,7 @@
 
 class exitroom:public room{
 public:
-    exitroom(ROOM_ERR loc);
+    exitroom(ROOM_ERR loc);//simple change to the room to make it an exit instead. probably didnt have to make a whole new class, but i did it anyway, im taking inspiration from cave jonson D:<
     room * start(player *playera);
     ROOM_ERR direc;
 };

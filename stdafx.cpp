@@ -35,10 +35,11 @@ extern player * Me;
 void mprintf(const char * de){
 unsigned int ns = strlen(de);
     for(unsigned int i =0;i<ns;i++){
-	printf("%c",de[i]);
+	//printf("%c",de[i]);
+	putchar(de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	//safesleep(20000);
+	//usleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(17);

@@ -24,7 +24,7 @@
 class entity
 {
 protected:
-	int maxhp;
+	int maxhp;//i think this is all self explanitory
 	int hp;
 	unsigned int def;
 	unsigned int att;
@@ -32,15 +32,14 @@ protected:
 public:
 	char classname[8];
 	bool isalive;
-	entity(void){
+	entity(void){//this is just in case i ever felt like making a plain entity
 		isalive =true;
 	}
 
-	virtual ~entity(void){
-	}
-	virtual bool attack(entity * defender);
+	virtual ~entity(void){}//virtual for polymorphism ;D
+	virtual bool attack(entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
 	virtual bool defend(entity * attacker);
-	virtual unsigned int getatt(){return att;}
+	virtual unsigned int getatt(){return att;}//misc getter functions
 	virtual unsigned int getdef(){return def;}
 	virtual unsigned int gethp(){return hp;}
 
