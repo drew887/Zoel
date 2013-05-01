@@ -39,7 +39,7 @@ unsigned int ns = strlen(de);
 	putchar(de[i]);
 	fflush(stdout);
 #ifndef _WIN32
-	//usleep(20000);
+	usleep(20000);
 #endif
 #ifdef _WIN32
 	safesleep(17);
