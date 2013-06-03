@@ -30,8 +30,6 @@ extern exitroom * exitr;
 extern exitroom * conecter;
 extern ROOM_ERR dep;
 extern player * Me;
-// TODO: reference any additional headers you need in STDAFX.H
-// and not in this file
 void mprintf(const char * de){
 unsigned int ns = strlen(de);
     for(unsigned int i =0;i<ns;i++){
