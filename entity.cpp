@@ -19,7 +19,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
-#include "stdafx.h"
+#include "entity.h"
+#include <stdio.h>
 
 bool entity::attack(entity * defender){
 	return defender->defend(this);

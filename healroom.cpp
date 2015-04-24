@@ -19,8 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */ 
-#include "stdafx.h"
+#include "healroom.h"
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 extern char bigmap[200];
 healroom::healroom(const char * descr,unsigned int romnum):room(descr,romnum){
 
@@ -43,7 +45,7 @@ if(percount>0){
 	    while(infi){
 		    printf("Enter a command!\n***a = attack r = run q = quit***\n");
 		    scanf("%c",&te);
-		    clearin();
+		    //clearin();
 		    switch(te){
 		    case 'a':
 			    if(enimies[numcheck]->defend(playera)){
@@ -51,9 +53,9 @@ if(percount>0){
 			    }else{enimies[numcheck]->attack(playera);}
 		    break;
 		    case 'r':
-		    rancheck = floor((rand() % 2) + 1);
+		    rancheck = floor((rand() % 2) + 1.0);
 		    if(rancheck == 2){
-			mprintf("You managed to run away and make it back here safely\n");
+			printf("You managed to run away and make it back here safely\n");
 			    infi = false;
 			    vic = false;
 			}else{
@@ -68,13 +70,13 @@ if(percount>0){
 			    printf("Unknown action?\n");
 		    }
 	    }//end while infi
-       }else{mprintf("This ones dead!\n");}
+       }else{printf("This ones dead!\n");}
 	    numcheck++;
 	    infi = true;
 	    if(numcheck == percount){vic=false;}
     }//end while vic
 }//end if percount
-mprintf("\t**********\nYou've entered a healing light within the room and you\nsuddenly feel healed and restored! :D\n\t***********\n");
+printf("\t**********\nYou've entered a healing light within the room and you\nsuddenly feel healed and restored! :D\n\t***********\n");
 playera->heal();
 playera->stats();
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

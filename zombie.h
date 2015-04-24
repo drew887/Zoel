@@ -16,15 +16,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#pragma once
+
+#ifndef ZOMBIE_H
+#define ZOMBIE_H
 #include "entity.h"
-#include "stdafx.h"
+
 class zombie : public entity{
 public:
 	zombie(void);
 	virtual ~zombie(void);
 };
 
+#endif

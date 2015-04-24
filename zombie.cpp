@@ -16,16 +16,17 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#include "stdafx.h"
+#include <string.h>
+#include <stdlib.h>
 #include "zombie.h"
 zombie::zombie(void){
-	strcpy(classname,"Zombie");
-	hp = maxhp = (rand() % 20 )+ 8;
-	def = (rand() % 2 )+ 1;
-	att = (rand() % 2 )+ 2;
+	strcpy(classname, "Zombie");
+	hp = maxhp = (rand() % 20) + 8;
+	def = (rand() % 2) + 1;
+	att = (rand() % 2) + 2;
 	inventory = new inven[3];
 	inventory[0] = FLESH;
 	inventory[1] = CUFFS;
@@ -34,5 +35,5 @@ zombie::zombie(void){
 
 
 zombie::~zombie(void){
-	delete [] inventory;
+	delete[] inventory;
 }

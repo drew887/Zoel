@@ -19,10 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
-#include "stdafx.h"
-#pragma once
+
 #ifndef EXITROOM_H
 #define EXITROOM_H
+#include "room.h"
+#include "player.h"
 
 class exitroom:public room{
 public:

@@ -19,9 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
- //pretty self explanitory, nothing really inportant here. I never use the item class anyway
-#include "stdafx.h"
-#pragma once
 #ifndef INVEN
 #define INVEN
 enum inven{SHIRT,BOOTS,CUFFS,FLESH};

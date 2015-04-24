@@ -19,11 +19,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
-#include "stdafx.h"
-#pragma once
+
 #ifndef JOEL_H
 #define JOEL_H
-//here we have the class definition for the JOELIUM >:D
+#include "entity.h"
 class Joel : public entity
 {
 public:

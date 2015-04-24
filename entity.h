@@ -19,8 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
-#pragma once
-#include "stdafx.h"
+
+#ifndef ENTITY_H
+#define ENTITY_H
+#include "inventory.h"
+
 class entity
 {
 protected:
@@ -44,5 +47,4 @@ public:
 	virtual unsigned int gethp(){return hp;}
 
 };
-
-
+#endif

@@ -16,17 +16,18 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#pragma once
+
+#ifndef PLAYER_H
+#define PLAYER_H
 #include "entity.h"
-#include "stdafx.h"
 #pragma pack(1)
 //Yay the player class! 
 class player :public entity{
 private:
-    bool havemaps[5];//this will be used maybe later, maybe
+	bool havemaps[5];//this will be used maybe later, maybe
 public:
 	void save();
 	bool load(const char * name);
@@ -42,6 +43,7 @@ public:
 	bool defend(entity * attacker);
 	unsigned int getatt();
 	unsigned int reatt();
-	void showmap(const char * maps,unsigned int curom);
+	void showmap(const char * maps, unsigned int curom);
 };
 #pragma pack()
+#endif

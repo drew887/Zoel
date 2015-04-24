@@ -20,7 +20,8 @@
  * Boston, MA  02110-1301  USA
  */
 
-#include "stdafx.h"
+#include "joel.h"
+#include <string.h>
 
 Joel::Joel(){
     strcpy(classname,"Joelium");//here we set the name to Joelium and make him powerful as fuck

@@ -16,28 +16,28 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
 #include "exitroom.h"
-#include "stdafx.h"
+#include <stdlib.h>
 exitroom::exitroom(ROOM_ERR loc){
-    switch(loc){
-    case SUBWAY:
-	direc = loc;
-    break;
-    case MAIN_STREET:
-	direc = loc;
-    break;
-    case ROOM_DONE:
-    direc = loc;
-    break;
-    default:
-    break;
-    }
+	switch (loc){
+	case SUBWAY:
+		direc = loc;
+		break;
+	case MAIN_STREET:
+		direc = loc;
+		break;
+	case ROOM_DONE:
+		direc = loc;
+		break;
+	default:
+		break;
+	}
 }
 
 room * exitroom::start(player *playera){
-throw direc;
-return NULL;
+	throw direc;
+	return NULL;
 }

@@ -19,9 +19,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, 
  * Boston, MA  02110-1301  USA
  */
-#include "stdafx.h"
+
 #ifndef HEALROOM_H
 #define HEALROOM_H
+#include "room.h"
+#include "player.h"
 class healroom : public room{
 public:
     healroom(const char *descr,unsigned int romnum);//probably could have just added a new typedef to make all these different rooms and just change movecheck to match, but im lazy
