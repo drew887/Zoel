@@ -19,26 +19,21 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#define mapst for(int i =0;i<20;i++){havemaps[i] = 0;}
 #include "room.h"
 #include "player.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
-extern ROOM_ERR dep;
-extern char mapnum[10];
+
 player::player(bool derp){
 	hp = maxhp = (rand() % 8) + 30;
-	srand(time(NULL));
 	def = (rand() % 3) + 1;
-	srand(time(NULL));
 	att = (rand() % 3) + 1;
 	inventory = new inven[3];
 	inventory[0] = SHIRT;
 	inventory[1] = CUFFS;
 	inventory[2] = BOOTS;
-	mapst
 }
 
 player::player(void){
@@ -47,11 +42,8 @@ player::player(void){
 	scanf("%8s", classname);
 	//clearin();//we use this to make sure we clean up the input buffer incase they just insterted spam or something trying to cause a buffer overflow D:
 	printf("So your name is %s?\nthat certainly is an...interesting name...\n", classname);
-	srand(time(NULL));
 	hp = maxhp = (rand() % 8) + 30;
-	srand(time(NULL));
 	def = (rand() % 3) + 1;
-	srand(time(NULL));
 	att = (rand() % 3) + 1;
 	strcpy(wep.name, "None");
 	wep.att = 0;
@@ -62,7 +54,6 @@ player::player(void){
 	inventory[0] = SHIRT;
 	inventory[1] = CUFFS;
 	inventory[2] = BOOTS;
-	mapst
 }
 
 player::~player(void){
@@ -103,7 +94,6 @@ unsigned int player::getatt(){
 	return this->reatt();// + (rand() % wep.spd);
 }
 unsigned int player::reatt(){
-	srand(time(NULL));
 	//printf("THIS %s %d ,%d\t",this->wep.name,(this->att + this->wep.att),this->wep.att);
 	if (this->wep.spd == 0){ return this->att + this->wep.att - 1; }
 	return this->att + this->wep.att + (rand() % wep.spd);
@@ -125,7 +115,7 @@ void player::save(){
 			break;
 		}
 		fclose(pp);
-	}//end if pp
+	}
 	pp = fopen(this->classname, "wb");
 	if (!pp){ printf("SOME SORT OF FILE IO ERROR, BITCH AT ANDREW TO FIX IT!\n"); return; }
 	char check[] = "zoel";
@@ -136,7 +126,7 @@ void player::save(){
 	fwrite(&hp, sizeof(hp), 1, pp);
 	fwrite(&wep, sizeof(Weapon), 1, pp);
 	fwrite(classname, sizeof(classname), 1, pp);
-	fwrite(&dep, sizeof(ROOM_ERR), 1, pp);
+	//fwrite(&dep, sizeof(ROOM_ERR), 1, pp);
 	fclose(pp);
 	printf("Save complete!\n");
 }//end player::save/////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\>>>>>>>>>>>>>>>>>>>>>
@@ -154,11 +144,10 @@ bool player::load(const char *name){
 	if (hp > maxhp){ printf("Modded save file, you can't have more hp then your max hp silly!\n"); exit(0xDEAD); }
 	fread(&this->wep, sizeof(Weapon), 1, pp);
 	fread(&classname, 9, 1, pp);
-	fread(&dep, sizeof(ROOM_ERR), 1, pp);
+	//fread(&dep, sizeof(ROOM_ERR), 1, pp);
 	printf("Loaded %s save!\n", this->classname);
 	stats();
 	fclose(pp);
-	throw LOADED_RES;
 	return true;
 }
 void player::stats(){
@@ -168,9 +157,4 @@ void player::stats(){
 }
 void player::heal(){
 	hp = maxhp;
-}
-void player::showmap(const char * maps, unsigned int curnom){
-
-	printf(maps, mapnum[0], mapnum[1], mapnum[2], mapnum[3], mapnum[4], mapnum[5], mapnum[6], mapnum[7], mapnum[8], mapnum[9]);
-	printf("\nYou are in room %d\n", curnom);
 }

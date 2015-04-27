@@ -27,7 +27,7 @@
 void weproom::setpic(bool set){
 	picked = set;
 }
-weproom::weproom(const char * descr, unsigned int romnum) :room(descr, romnum){
+weproom::weproom(const char * descr):room(descr){
 	picked = false;
 }
 void weproom::addwep(Weapon weps){
@@ -37,60 +37,5 @@ room * weproom::start(player *playera){
 	printf("\t*****************\n%s\n\t*****************\n", desc);
 	if (attcount == 0){ throw NO_ROOMS_ATTACHED; return NULL; }
 	room * next = NULL;
-	bool vic = true;
-	bool infi = true;
-	bool chose = true;
-	char rancheck = 0;
-	unsigned int numcheck = 0;
-	unsigned char te = 0;
-	if (percount > 0){
-		printf("Oh no, %d enemie[s]!\n", percount);
-		while (vic){
-			if (enimies[numcheck]->isalive){
-				printf("******\nAn enemy %s is attacking!!\n******\n", enimies[numcheck]->classname);
-				while (infi){
-					printf("Enter a command!\n***a = attack r = run q = quit***\n");
-					scanf("%c", &te);
-					//clearin();
-					switch (te){
-					case 'a':
-						if (enimies[numcheck]->defend(playera)){
-							infi = false;
-						}
-						else{ enimies[numcheck]->attack(playera); }
-						break;
-					case 'r':
-						rancheck = floor((rand() % 20) + 1.0);
-						if ((rancheck % 2) == 0){
-							printf("You managed to run away and make it back here safely\n");
-							infi = false;
-							vic = false;
-						}
-						else{
-							printf("You failed and the %s gets you off guard!\n", enimies[numcheck]->classname);
-							enimies[numcheck]->attack(playera);
-						}
-						break;
-					case 'q':
-						exit(0);
-						break;
-					default:
-						printf("Unknown action?\n");
-					}
-				}//end while infi
-			}
-			else{ printf("This ones dead!\n"); }
-			numcheck++;
-			infi = true;
-			if (numcheck == percount){ vic = false; }
-		}//end while vic
-	}//end if percount
-	if (!picked){
-		printf("You found a weapon!\nIt's a ");
-		playera->giveWep(wepa);
-		playera->tellwep();
-	}
-	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	parse(playera);
 	return this->next;
 }//end weproom::start
