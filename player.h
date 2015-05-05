@@ -32,8 +32,7 @@ public:
 	void stats();
 	void heal();
 	Weapon wep;
-	player(void);
-	player(bool derp);
+    player(void);
 	~player(void);
 	void tellwep();
 	void giveWep(Weapon wepa);

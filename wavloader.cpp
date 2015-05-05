@@ -23,40 +23,34 @@
 #include "hoot.h"
 
 Wav::~Wav(){
-	//printf("THIS IS A WAV DECONSTRUCTOR\n");
-	delete[] data.data;
+    //printf("THIS IS A WAV DECONSTRUCTOR\n");
+    delete[] data.data;
 }
 
 Wav::Wav(const char * loc){
-char t;
-	FILE * pp;
+    FILE * pp;
 	pp = fopen(loc, "rb");
 	if(pp==NULL){throw 4;return;}
 	fseek(pp,20,SEEK_SET);
-	t = fread(&Bufdat,sizeof(Bufdat),1,pp);
-	//printf("%d %d %d %d %d %d\n",Bufdat.format,Bufdat.channelnum,Bufdat.freq,Bufdat.byterate,Bufdat.BlockAlign,Bufdat.bytesper);
-	fseek(pp,40,SEEK_SET);
-	t = fread(&data.size,4,1,pp);
-	//printf("%d\n",data.size);
-	data.data = new int[data.size];
-	t = fread(data.data,data.size,1,pp);
+    fread(&Bufdat,sizeof(Bufdat),1,pp);
+    fseek(pp,40,SEEK_SET);
+    fread(&data.size,4,1,pp);
+    data.data = new int[data.size];
+    fread(data.data,data.size,1,pp);
 	fclose(pp);
 	detfmt();
 }
 
-//begin Wav::detfmt
 void Wav::detfmt(){
 	switch(Bufdat.channelnum){
 		case 1: 	//mono
 			switch(Bufdat.bytesper){
 				case 8:
 					format = AL_FORMAT_MONO8;
-					//printf("MON8\n");
-				break;
+                break;
 				case 16:
 					format = AL_FORMAT_MONO16;
-					///printf("MON16\n");
-				break;
+                break;
 			}
 		break;
 
@@ -64,15 +58,11 @@ void Wav::detfmt(){
 			switch(Bufdat.bytesper){
 				case 8:
 					format = AL_FORMAT_STEREO8;
-					//printf("STER8\n");
-				break;
+                break;
 				case 16:
 					format = AL_FORMAT_STEREO16;
-					//printf("STER16\n");
-				break;
+                break;
 			}
 		break;
-	}//end main switch
+    }
 }
-//end Wav::detfmt()
-

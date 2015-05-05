@@ -29,17 +29,49 @@
 room::room(const char * descr){
 	percount = 0;
 	attcount = 0;
+	next = NULL;
 	for (unsigned int i = 0; i < 4; i++){
-		attached.at_dir[i] = NONE;
-		attached.attached[i] = NULL;
+		at_dir[i] = NONE;
+		attached[i] = NULL;
 	}
 	strcpy(desc, descr);
 }
 
-room* room::start(player * playera){
+inline room_dir swit(room_dir tw){
+    switch (tw){
+    case NORTH:
+        tw = SOUTH;
+        break;
+    case SOUTH:
+        tw = NORTH;
+        break;
+    case WEST:
+        tw = EAST;
+        break;
+    case EAST:
+        tw = WEST;
+        break;
+    default:
+        tw = NONE;
+    }
+    return tw;
+}
+void cleanStdin(int count = 80){
+    char in = getc(stdin);
+    int ctr = 0;
+    while(in != EOF && in != '\n' && ctr < count){
+        in = getc(stdin);
+        ctr++;
+    }
+}
+
+room * room::start(player * playera){
 	static const char roomstar[] = "\t*****************\n%s\n\t*****************\n";
 	printf(roomstar, desc);
-	if (attcount == 0){ throw NO_ROOMS_ATTACHED; }
+	if (attcount == 0){
+		throw NO_ROOMS_ATTACHED;
+	}
+    parse();
 	return this->next;
 }
 bool room::addper(entity * person){
@@ -48,39 +80,24 @@ bool room::addper(entity * person){
 		enimies[percount] = person;
 		percount++;
 	}
-	else{ success = false; }
-	return success;
-}
-inline room_dir swit(room_dir tw){
-	switch (tw){
-	case NORTH:
-		return SOUTH;
-		break;
-	case SOUTH:
-		return NORTH;
-		break;
-	case WEST:
-		return EAST;
-		break;
-	case EAST:
-		return WEST;
-		break;
+	else{
+		success = false;
 	}
-	return NONE;
+	return success;
 }
 
 bool room::attach(room * ar, room_dir direct, bool connectBack){
 	if (attcount >= 4){
-		throw ALL_CON_USED;
 		return false;
 	}
 	for (unsigned char i = 0; i < 4; i++){
-		if (attached.at_dir[i] == direct){
-			printf("CON %i\n", i); throw CON_ALREADY_USED; return false;
+		if (at_dir[i] == direct){
+			printf("CON %i\n", i); 
+			return false;
 		}
 	}
-	attached.attached[attcount] = ar;
-	attached.at_dir[attcount] = direct;
+	attached[attcount] = ar;
+	at_dir[attcount] = direct;
 	attcount++;
 	if (connectBack)
 	{
@@ -89,19 +106,77 @@ bool room::attach(room * ar, room_dir direct, bool connectBack){
 	return true;
 }
 room::~room(void){
-	for (char i = 0; i < 4; i++){
-		attached.attached[i] = NULL;
-		attached.at_dir[i] = NONE;
+    for (int i = 0; i < 4; i++){
+		attached[i] = NULL;
+		at_dir[i] = NONE;
 	}
 }
 
 room * room::getRoomAtDir(room_dir dir){
 	room * temp = NULL;
 	for (unsigned char i = 0; i < attcount; i++){
-		if (attached.at_dir[i] == dir){
-			temp = attached.attached[i];
+		if (at_dir[i] == dir){
+			temp = attached[i];
 			break;
 		}
 	}
 	return temp;
+}
+
+void room::parse(){
+    bool loop = true;
+    while(loop){
+        printf("Enter a Command: ");
+        cleanStdin();
+        char msg[80] = {};
+        scanf("%79[^\n]",msg);
+        switch(msg[0]){
+        case 'n':
+            if(!strncmp("north",msg,5)){
+                this->next = this->getRoomAtDir(NORTH);
+                if(this->next == NULL){
+                    printf("Can't go that way\n");
+                }else{
+                    loop = false;
+                }
+            }
+            break;
+        case 'e':
+            if(!strncmp("east",msg,4)){
+                this->next = this->getRoomAtDir(EAST);
+                if(this->next == NULL){
+                    printf("Can't go that way\n");
+                }else{
+                    loop = false;
+                }
+            }
+            break;
+        case 's':
+            if(!strncmp("south",msg,5)){
+                this->next = this->getRoomAtDir(SOUTH);
+                if(this->next == NULL){
+                    printf("Can't go that way\n");
+                }else{
+                    loop = false;
+                }
+            }
+            break;
+        case 'w':
+            if(!strncmp("west",msg,4)){
+                this->next = this->getRoomAtDir(WEST);
+                if(this->next == NULL){
+                    printf("Can't go that way\n");
+                }else{
+                    loop = false;
+                }
+            }
+            break;
+        case 'q':
+            this->next = NULL;
+            loop = false;
+            break;
+        default:
+            printf("I don't know %s \n",msg);
+        }
+    }
 }

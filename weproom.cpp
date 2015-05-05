@@ -24,18 +24,17 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-void weproom::setpic(bool set){
-	picked = set;
+
+weproom::weproom(const char * descr) :room(descr){
+
 }
-weproom::weproom(const char * descr):room(descr){
-	picked = false;
-}
-void weproom::addwep(Weapon weps){
-	wepa = weps;
+void weproom::addwep(Weapon * weps){
+	weaponList.push_back(weps);
 }
 room * weproom::start(player *playera){
 	printf("\t*****************\n%s\n\t*****************\n", desc);
-	if (attcount == 0){ throw NO_ROOMS_ATTACHED; return NULL; }
-	room * next = NULL;
+	if (attcount == 0){ 
+		throw NO_ROOMS_ATTACHED; 
+	}
 	return this->next;
 }//end weproom::start

@@ -42,14 +42,11 @@ public:
 	room * getRoomAtDir(room_dir dir);
 	char desc[1024];
 protected:
-	unsigned int mynum;
+    void parse();
 	room * next;
 	entity * enimies[ROOM_MAX];
-	struct attacher{
-		room * attached[4];
-		room_dir at_dir[4];
-	};
-	attacher attached;
+	room * attached[4];
+	room_dir at_dir[4];
 	unsigned int attcount;
 	unsigned int percount;
 };

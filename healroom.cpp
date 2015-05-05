@@ -28,8 +28,10 @@ healroom::healroom(const char * descr):room(descr){
 }
 room * healroom::start(player *playera){
     printf("\t*****************\n%s\n\t*****************\n",desc);
-    if(attcount == 0){throw NO_ROOMS_ATTACHED; return NULL;}
-    room * next = NULL;
+    if(attcount == 0){
+		throw NO_ROOMS_ATTACHED;
+	}
+    this->next = NULL;
     return this->next;
 }//end healroom::start
 

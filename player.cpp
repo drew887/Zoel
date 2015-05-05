@@ -26,15 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 
-player::player(bool derp){
-	hp = maxhp = (rand() % 8) + 30;
-	def = (rand() % 3) + 1;
-	att = (rand() % 3) + 1;
-	inventory = new inven[3];
-	inventory[0] = SHIRT;
-	inventory[1] = CUFFS;
-	inventory[2] = BOOTS;
-}
 
 player::player(void){
 	//
@@ -151,9 +142,7 @@ bool player::load(const char *name){
 	return true;
 }
 void player::stats(){
-	char tempchar[80];
-	sprintf(tempchar, "Stats:\nMaxhp: %d\thp: %d\natt: %d\t def: %d\nweapon: %s \t att: %d\n", maxhp, hp, att, def, wep.name, wep.att);
-	printf(tempchar);
+    printf("Stats:\nMaxhp: %d\thp: %d\natt: %d\t def: %d\nweapon: %s \t att: %d\n", maxhp, hp, att, def, wep.name, wep.att);
 }
 void player::heal(){
 	hp = maxhp;

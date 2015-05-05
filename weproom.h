@@ -25,16 +25,15 @@
 #include "room.h"
 #include "inventory.h"
 #include "player.h"
+#include <vector>
 class weproom : public room{
 protected:
-Weapon wepa;
+std::vector<Weapon*> weaponList;
 public:
-    bool picked;
     weproom(const char * descr);
-    virtual void addwep(Weapon weps);
+    virtual void addwep(Weapon * weps);
     virtual room * start(player *playera);
     virtual ~weproom(){}
-    virtual void setpic(bool set);
 };
 
 #endif // WEPROOM_H

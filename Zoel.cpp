@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-// Zoel.cpp
 #include "player.h"
 #include "room.h"
 #include "hoot.h"
@@ -36,6 +35,11 @@ int main(int argc, char* argv[]){
 	demo.rooms.push_back(room("Init room"));
 	demo.rooms.push_back(room("demo"));
 	demo.connectRoom(0, 1, WEST);
+    player derp;
+    room * currentRoom = demo.rooms[0].start(&derp);
+    while(currentRoom != NULL){
+        currentRoom = currentRoom->start(&derp);
+    }
 	printf("TO DO\n");
 
 	return 0;
