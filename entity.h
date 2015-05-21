@@ -23,6 +23,8 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 #include "inventory.h"
+#include <string>
+using std::string;
 
 class entity
 {
@@ -33,7 +35,7 @@ protected:
 	unsigned int att;
 	inven * inventory;
 public:
-	char classname[8];
+    string classname;
 	bool isalive;
 	entity(void){//this is just in case i ever felt like making a plain entity
 		isalive =true;

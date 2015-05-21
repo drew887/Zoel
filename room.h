@@ -25,30 +25,35 @@
 #define ROOM_H
 #include "entity.h"
 #include "player.h"
+#include <vector>
+#include <string>
 #ifndef ROOM_MAX
 #define ROOM_MAX 4
 #endif 
 enum ROOM_ERR{ ALL_CON_USED, CON_ALREADY_USED, ROOM_FULL, DEAD_PLAYER, ROOM_DONE, NO_ROOMS_ATTACHED, MAIN_STREET, SUBWAY, LOADED_RES };
-enum room_dir{ NONE = 0, NORTH = 1, EAST, SOUTH, WEST = 4 };
+enum room_dir{ NORTH = 0, EAST, SOUTH, WEST, NONE = 4 };
+using std::string;
+using std::vector;
 #pragma pack(1)
 class room{
 public:
 	room(const char * descr);
-	void rexit(room * rexit);
-	virtual ~room(void);
+    virtual ~room(void);
 	bool addper(entity * person);
 	bool attach(room * ar, room_dir direc, bool connectBack = false);
-	virtual room* start(player * playera);
+    virtual room * start(player * play);
 	room * getRoomAtDir(room_dir dir);
-	char desc[1024];
+    std::string description;
 protected:
-    void parse();
+    void idleLoop(player * play);
 	room * next;
 	entity * enimies[ROOM_MAX];
 	room * attached[4];
 	room_dir at_dir[4];
 	unsigned int attcount;
 	unsigned int percount;
+    static string tokens[];
+    static unsigned int numTokens;
 };
 #pragma pack()
 #endif

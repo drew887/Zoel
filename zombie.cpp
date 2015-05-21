@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include "zombie.h"
 zombie::zombie(void){
-	strcpy(classname, "Zombie");
+    classname = "Zombie";
 	hp = maxhp = (rand() % 20) + 8;
 	def = (rand() % 2) + 1;
 	att = (rand() % 2) + 2;

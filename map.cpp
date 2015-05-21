@@ -20,20 +20,38 @@
 * Boston, MA  02110-1301  USA
 */
 #include "map.h"
+#include <stdio.h>
+#include <string.h>
 
 using std::string;
-map::map(string description) :desc(description)
-{
+map::map(string desc) :description(desc){
 
 }
 
 
-map::~map()
-{
+map::~map(){
+	for (unsigned int ctr = 0; ctr < rooms.size(); ctr++){
+		delete rooms[ctr];
+	}
 }
 
 void map::connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay){
-	if ((one < rooms.size()) && (two < rooms.size())){
-		rooms[one].attach(&rooms[two], dir, twoWay);
+    if ((one != two) && (one < rooms.size()) && (two < rooms.size())){
+		rooms[one]->attach(rooms[two], dir, twoWay);
 	}
 }
+
+bool map::load(std::string path){
+	bool loaded = false;
+	FILE * storyFile = fopen(path.c_str(), "rb");
+	if (storyFile){
+		char magic[4] = {};
+		fread(magic, sizeof(char), 3, storyFile);
+		if (strcmp(magic, "map") == 0){
+
+		}
+        fclose(storyFile);
+	}
+	return loaded;
+}
+

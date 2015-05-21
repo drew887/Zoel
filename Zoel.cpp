@@ -23,30 +23,38 @@
 #include "room.h"
 #include "hoot.h"
 #include "map.h"
+#include "exitroom.h"
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
 void enter();
-void startup();
-bool catcher(ROOM_ERR e);
-int main(int argc, char* argv[]){
+int main(){
 	atexit(enter);
-	map demo("Subway system");
-	demo.rooms.push_back(room("Init room"));
-	demo.rooms.push_back(room("demo"));
-	demo.connectRoom(0, 1, WEST);
-    player derp;
-    room * currentRoom = demo.rooms[0].start(&derp);
+    map subway("Subway system");
+    subway.rooms.push_back(new room("Init room"));
+    subway.rooms.push_back(new room("demo"));
+    subway.rooms.push_back(new room("TRHEE"));
+    subway.connectRoom(1,2,NORTH);
+    subway.connectRoom(2,0,WEST,false);
+	subway.connectRoom(0, 1, WEST);
+    map city("City");
+    city.rooms.push_back(new room("Downtown"));
+    city.rooms.push_back(new room("Mall"));
+    city.connectRoom(0,1,NORTH);
+    subway.rooms.push_back(new exitroom("SX",&city,0));
+	city.rooms.push_back(new exitroom("CX", &subway, 2));
+    subway.connectRoom(2,3,EAST);
+	city.connectRoom(0,2,WEST);
+    player one;
+    room * currentRoom = subway.rooms[0];
     while(currentRoom != NULL){
-        currentRoom = currentRoom->start(&derp);
+        currentRoom = currentRoom->start(&one);
     }
-	printf("TO DO\n");
-
 	return 0;
 }
 
 #include <iostream>
 void enter(void){
 	std::cout << "\nPress enter to continue...\n";
-	std::cin.ignore(1, '\n');
+    std::cin.ignore(80, '\n');
 }

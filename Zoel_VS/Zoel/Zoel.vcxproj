@@ -90,9 +90,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\entity.cpp" />
+    <ClCompile Include="..\..\exitroom.cpp" />
     <ClCompile Include="..\..\healroom.cpp" />
     <ClCompile Include="..\..\hoot.cpp" />
-    <ClCompile Include="..\..\joel.cpp" />
     <ClCompile Include="..\..\map.cpp" />
     <ClCompile Include="..\..\player.cpp" />
     <ClCompile Include="..\..\room.cpp" />
@@ -103,10 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\entity.h" />
+    <ClInclude Include="..\..\exitroom.h" />
     <ClInclude Include="..\..\healroom.h" />
     <ClInclude Include="..\..\hoot.h" />
     <ClInclude Include="..\..\inventory.h" />
-    <ClInclude Include="..\..\joel.h" />
     <ClInclude Include="..\..\map.h" />
     <ClInclude Include="..\..\player.h" />
     <ClInclude Include="..\..\room.h" />

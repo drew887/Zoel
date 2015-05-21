@@ -20,23 +20,28 @@
  * Boston, MA  02110-1301  USA
  */
 #include "entity.h"
-#include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 bool entity::attack(entity * defender){
 	return defender->defend(this);
 }
 bool entity::defend(entity * attacker){
-	//char classname[8];
-	int temphp = hp;
-	printf("%s is attacking!\t",attacker->classname);
+    int temphp = hp;
+    cout << attacker->classname << " is attacking!\t";
 	temphp -= (attacker->getatt() - def );
 	if(temphp>=hp){
-		printf("A MASSIVE 0 damage\t");
+        cout << "A MASSIVE 0 damage\t";
 	}else{
-	printf("A Whopping %d damage!\t",(hp-temphp));
-	hp = temphp;
+        cout << "A Whopping " << (hp-temphp) <<" damage!\t";
+        hp = temphp;
 	}
-	if(hp <=0){printf("%s has been defeated!\n",this->classname); isalive=false; return true;}
-	printf("%s has %dHP remaining!\n",this->classname,hp);
+    if(hp <=0){
+        cout << this->classname <<" has been defeated!" << endl;
+        isalive=false;
+        return true;
+    }
+    cout << this->classname <<" has " << hp << " remaining!" << endl;
 	return false;
 }

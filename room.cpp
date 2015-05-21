@@ -20,24 +20,27 @@
  * Boston, MA  02110-1301  USA
  */
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <iostream>
 #include <math.h>
 #include "room.h"
 #include "player.h"
 
-room::room(const char * descr){
+using namespace std;
+
+string room::tokens[] = {"north","east","south","west","quit","help","stats"};
+unsigned int room::numTokens = 7;
+
+room::room(const char * descr):description(descr){
 	percount = 0;
 	attcount = 0;
 	next = NULL;
 	for (unsigned int i = 0; i < 4; i++){
 		at_dir[i] = NONE;
 		attached[i] = NULL;
-	}
-	strcpy(desc, descr);
+    }
 }
 
-inline room_dir swit(room_dir tw){
+inline room_dir directionSwap(room_dir tw){
     switch (tw){
     case NORTH:
         tw = SOUTH;
@@ -56,22 +59,13 @@ inline room_dir swit(room_dir tw){
     }
     return tw;
 }
-void cleanStdin(int count = 80){
-    char in = getc(stdin);
-    int ctr = 0;
-    while(in != EOF && in != '\n' && ctr < count){
-        in = getc(stdin);
-        ctr++;
-    }
-}
 
 room * room::start(player * playera){
-	static const char roomstar[] = "\t*****************\n%s\n\t*****************\n";
-	printf(roomstar, desc);
-	if (attcount == 0){
+    cout << "*****\n" << description << "\n*****" <<endl;
+    if (attcount == 0){
 		throw NO_ROOMS_ATTACHED;
 	}
-    parse();
+    idleLoop(playera);
 	return this->next;
 }
 bool room::addper(entity * person){
@@ -90,18 +84,12 @@ bool room::attach(room * ar, room_dir direct, bool connectBack){
 	if (attcount >= 4){
 		return false;
 	}
-	for (unsigned char i = 0; i < 4; i++){
-		if (at_dir[i] == direct){
-			printf("CON %i\n", i); 
-			return false;
-		}
-	}
 	attached[attcount] = ar;
 	at_dir[attcount] = direct;
 	attcount++;
 	if (connectBack)
 	{
-		ar->attach(this, swit(direct));
+        ar->attach(this, directionSwap(direct));
 	}
 	return true;
 }
@@ -123,60 +111,44 @@ room * room::getRoomAtDir(room_dir dir){
 	return temp;
 }
 
-void room::parse(){
+void room::idleLoop(player *play){
     bool loop = true;
     while(loop){
-        printf("Enter a Command: ");
-        cleanStdin();
-        char msg[80] = {};
-        scanf("%79[^\n]",msg);
-        switch(msg[0]){
-        case 'n':
-            if(!strncmp("north",msg,5)){
-                this->next = this->getRoomAtDir(NORTH);
-                if(this->next == NULL){
-                    printf("Can't go that way\n");
-                }else{
-                    loop = false;
-                }
+        cout << "Enter a Command: " << endl;
+        string msg;
+        getline(cin,msg);
+        unsigned int token;
+        for(token = 0; token < numTokens; token++){
+            if(msg == tokens[token]){
+                break;
             }
-            break;
-        case 'e':
-            if(!strncmp("east",msg,4)){
-                this->next = this->getRoomAtDir(EAST);
-                if(this->next == NULL){
-                    printf("Can't go that way\n");
-                }else{
-                    loop = false;
-                }
-            }
-            break;
-        case 's':
-            if(!strncmp("south",msg,5)){
-                this->next = this->getRoomAtDir(SOUTH);
-                if(this->next == NULL){
-                    printf("Can't go that way\n");
-                }else{
-                    loop = false;
-                }
-            }
-            break;
-        case 'w':
-            if(!strncmp("west",msg,4)){
-                this->next = this->getRoomAtDir(WEST);
-                if(this->next == NULL){
-                    printf("Can't go that way\n");
-                }else{
-                    loop = false;
-                }
-            }
-            break;
-        case 'q':
-            this->next = NULL;
-            loop = false;
-            break;
-        default:
-            printf("I don't know %s \n",msg);
         }
+        if(token < numTokens){
+            if(token < 4){//the directions
+                next = getRoomAtDir((room_dir)token);
+                if(next != NULL){
+                    loop = false;
+                }else{
+                    cout << "you can't go that way" << endl;
+                }
+            }
+            if(token == 4){ //quit
+                loop = false;
+                next = NULL;
+            }
+            if(token == 5){ //help
+                cout << "The commands are:" << endl;
+                for(unsigned int ctr = 0; ctr < numTokens; ctr++){
+                    cout << "  " << tokens[ctr] << endl;
+                }
+            }
+            if(token == 6){ //stats
+                play->stats();
+
+            }
+        }else{
+            cout << "I don't know " << msg << endl;
+        }
+
     }
 }

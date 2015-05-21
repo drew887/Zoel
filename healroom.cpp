@@ -20,14 +20,15 @@
  * Boston, MA  02110-1301  USA
  */ 
 #include "healroom.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+
+using namespace std;
+
 healroom::healroom(const char * descr):room(descr){
 
 }
 room * healroom::start(player *playera){
-    printf("\t*****************\n%s\n\t*****************\n",desc);
+    cout << "*****\n" << description << "\n*****" <<endl;
     if(attcount == 0){
 		throw NO_ROOMS_ATTACHED;
 	}

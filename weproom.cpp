@@ -21,9 +21,9 @@
  */
 
 #include "weproom.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+
+using namespace std;
 
 weproom::weproom(const char * descr) :room(descr){
 
@@ -32,9 +32,9 @@ void weproom::addwep(Weapon * weps){
 	weaponList.push_back(weps);
 }
 room * weproom::start(player *playera){
-	printf("\t*****************\n%s\n\t*****************\n", desc);
-	if (attcount == 0){ 
+    cout << "*****\n" << description << "\n*****" <<endl;
+    if (attcount == 0){
 		throw NO_ROOMS_ATTACHED; 
 	}
 	return this->next;
-}//end weproom::start
+}
