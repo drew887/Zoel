@@ -24,10 +24,10 @@
 #define HEALROOM_H
 #include "room.h"
 #include "player.h"
-class healroom : public room{
+class HealRoom : public Room{
 public:
-    healroom(const char *descr);//probably could have just added a new typedef to make all these different rooms and just change movecheck to match, but im lazy
-    room * start(player *playera);
+    HealRoom(const char *descr);//probably could have just added a new typedef to make all these different rooms and just change movecheck to match, but im lazy
+    Room * start(Player *playera);
 };
 
 #endif // HEALROOM_H

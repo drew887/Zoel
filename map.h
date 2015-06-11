@@ -25,14 +25,13 @@
 #include <vector>
 #include <string>
 #include "room.h"
-class map
-{
+class Map {
 public:
-	map(std::string description);
-	~map();
-	std::vector<room*> rooms;
+    Map(std::string description);
+    ~Map();
+	std::vector<Room*> rooms;
 	std::string description;
 	void connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay = true);
-	bool load(std::string path);
+    bool load(std::string filename);
 };
 #endif

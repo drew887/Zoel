@@ -24,20 +24,20 @@
 #define PLAYER_H
 #include "entity.h"
 #pragma pack(1)
-//Yay the player class! 
-class player :public entity{
+
+class Player :public Entity{
 public:
 	void save();
 	bool load(const char * name);
 	void stats();
 	void heal();
 	Weapon wep;
-    player(void);
-	~player(void);
+    Player(void);
+    ~Player(void);
 	void tellwep();
 	void giveWep(Weapon wepa);
-	bool attack(entity * defender);
-	bool defend(entity * attacker);
+    bool attack(Entity * defender);
+    bool defend(Entity * attacker);
 	unsigned int getatt();
 	unsigned int reatt();
 };

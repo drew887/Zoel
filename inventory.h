@@ -21,18 +21,26 @@
  */
 #ifndef INVEN
 #define INVEN
-enum inven{SHIRT,BOOTS,CUFFS,FLESH};
+#include <string>
+
 #pragma pack(1)
-class item{
+
+class Item {
 public:
-    item(){}
-    virtual ~item(){}
-    char name[9];
+    Item(){}
+    Item(std::string pname){
+        name = pname;
+    }
+
+    virtual ~Item(){}
+    std::string name;
 };
 
 #pragma pack()
+
 #pragma pack(1)
-struct Weapon{
+
+struct Weapon {
 public:
 	unsigned int att;
 	unsigned int spd;

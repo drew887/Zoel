@@ -29,28 +29,30 @@
 #include <signal.h>
 void enter();
 int main(){
-	atexit(enter);
-    map subway("Subway system");
-    subway.rooms.push_back(new room("Init room"));
-    subway.rooms.push_back(new room("demo"));
-    subway.rooms.push_back(new room("TRHEE"));
-    subway.connectRoom(1,2,NORTH);
-    subway.connectRoom(2,0,WEST,false);
-	subway.connectRoom(0, 1, WEST);
-    map city("City");
-    city.rooms.push_back(new room("Downtown"));
-    city.rooms.push_back(new room("Mall"));
-    city.connectRoom(0,1,NORTH);
-    subway.rooms.push_back(new exitroom("SX",&city,0));
-	city.rooms.push_back(new exitroom("CX", &subway, 2));
-    subway.connectRoom(2,3,EAST);
-	city.connectRoom(0,2,WEST);
-    player one;
-    room * currentRoom = subway.rooms[0];
-    while(currentRoom != NULL){
-        currentRoom = currentRoom->start(&one);
-    }
-	return 0;
+  atexit(enter);
+  Map subway("Subway system");
+  subway.rooms.push_back(new Room("Init room"));
+  subway.rooms.push_back(new Room("demo"));
+  subway.rooms.push_back(new Room("TRHEE"));
+  subway.connectRoom(1,2,NORTH);
+  subway.connectRoom(2,0,WEST,false);
+  subway.connectRoom(0, 1, WEST);
+  Map city("City");
+  city.rooms.push_back(new Room("Downtown"));
+  city.rooms.push_back(new Room("Mall"));
+  city.connectRoom(0,1,NORTH);
+  subway.rooms.push_back(new Exitroom("SX",&city,0));
+  city.rooms.push_back(new Exitroom("CX", &subway, 2));
+  subway.connectRoom(2,3,EAST);
+  city.connectRoom(0,2,WEST);
+  Map test("FAC");
+  test.load("mega.zmap");
+  Player one;
+  Room * currentRoom = test.rooms[0];
+  while(currentRoom != NULL){
+    currentRoom = currentRoom->start(&one);
+  }
+  return 0;
 }
 
 #include <iostream>

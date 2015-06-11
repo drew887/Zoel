@@ -24,10 +24,10 @@
 #define ZOMBIE_H
 #include "entity.h"
 
-class zombie : public entity{
+class Zombie : public Entity{
 public:
-	zombie(void);
-	virtual ~zombie(void);
+    Zombie();
+    virtual ~Zombie();
 };
 
 #endif

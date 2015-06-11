@@ -24,26 +24,26 @@
 #define ENTITY_H
 #include "inventory.h"
 #include <string>
-using std::string;
+#include <vector>
 
-class entity
-{
+
+class Entity {
 protected:
 	int maxhp;//i think this is all self explanitory
 	int hp;
 	unsigned int def;
 	unsigned int att;
-	inven * inventory;
 public:
-    string classname;
+    std::vector<Item *> inventory;
+    std::string classname;
 	bool isalive;
-	entity(void){//this is just in case i ever felt like making a plain entity
+    Entity(void){//this is just in case i ever felt like making a plain entity
 		isalive =true;
 	}
 
-	virtual ~entity(void){}//virtual for polymorphism ;D
-	virtual bool attack(entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
-	virtual bool defend(entity * attacker);
+    virtual ~Entity();
+    virtual bool attack(Entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
+    virtual bool defend(Entity * attacker);
 	virtual unsigned int getatt(){return att;}//misc getter functions
 	virtual unsigned int getdef(){return def;}
 	virtual unsigned int gethp(){return hp;}

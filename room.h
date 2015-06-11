@@ -34,21 +34,23 @@ enum ROOM_ERR{ ALL_CON_USED, CON_ALREADY_USED, ROOM_FULL, DEAD_PLAYER, ROOM_DONE
 enum room_dir{ NORTH = 0, EAST, SOUTH, WEST, NONE = 4 };
 using std::string;
 using std::vector;
+
 #pragma pack(1)
-class room{
+
+class Room {
 public:
-	room(const char * descr);
-    virtual ~room(void);
-	bool addper(entity * person);
-	bool attach(room * ar, room_dir direc, bool connectBack = false);
-    virtual room * start(player * play);
-	room * getRoomAtDir(room_dir dir);
+    Room(const char * descr);
+    virtual ~Room(void);
+	bool addper(Entity * person);
+    bool attach(Room * ar, room_dir direc, bool connectBack = false);
+    virtual Room * start(Player * play);
+    Room * getRoomAtDir(room_dir dir);
     std::string description;
 protected:
-    void idleLoop(player * play);
-	room * next;
-	entity * enimies[ROOM_MAX];
-	room * attached[4];
+    void idleLoop(Player * play);
+    Room * next;
+	Entity * enimies[ROOM_MAX];
+    Room * attached[4];
 	room_dir at_dir[4];
 	unsigned int attcount;
 	unsigned int percount;

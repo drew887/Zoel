@@ -29,92 +29,87 @@
 
 using namespace std;
 
-player::player(void){
+Player::Player(void){
 	//
-    cout << "Hello there!\nWhat is your name?" << endl;
-    getline(cin, classname);
-    hp = maxhp = (rand() % 8) + 30;
+	cout << "Hello there!\nWhat is your name?" << endl;
+	getline(cin, classname);
+	hp = maxhp = (rand() % 8) + 30;
 	def = (rand() % 3) + 1;
 	att = (rand() % 3) + 1;
 	strcpy(wep.name, "None");
 	wep.att = 0;
 	wep.spd = 0;
-    stats();
-	inventory = new inven[3];
-	inventory[0] = SHIRT;
-	inventory[1] = CUFFS;
-	inventory[2] = BOOTS;
+	stats();
 }
 
-player::~player(void){
-	delete[] inventory;
+Player::~Player(void){
+
 }
 
-bool player::attack(entity * defender){
-    return defender->defend(this);
+bool Player::attack(Entity * defender){
+	return defender->defend(this);
 }
-bool player::defend(entity * attacker){
-    int temphp = hp;
-    cout << attacker->classname <<"is attacking!\t" << endl;
+bool Player::defend(Entity * attacker){
+	int temphp = hp;
+	cout << attacker->classname << "is attacking!\t" << endl;
 	temphp -= (attacker->getatt() - def);
 	if (temphp >= hp){
-        cout << "A SUPER FUN 0 damage\t";
+		cout << "A SUPER FUN 0 damage\t";
 	}
 	else{
-        cout << "A Whopping " << (hp - temphp) << " damage!\t";
+		cout << "A Whopping " << (hp - temphp) << " damage!\t";
 		hp = temphp;
 	}
-    if (hp <= 0){
-        cout << classname <<" has been defeated!" << endl;
-        isalive = false;
-        throw DEAD_PLAYER;
-        return true;
-    }
-    cout << classname << " has " << hp << " remaining!" << endl;
+	if (hp <= 0){
+		cout << classname << " has been defeated!" << endl;
+		isalive = false;
+		throw DEAD_PLAYER;
+		return true;
+	}
+	cout << classname << " has " << hp << " remaining!" << endl;
 	return false;
 }
-void player::giveWep(Weapon wepa){
+void Player::giveWep(Weapon wepa){
 	strcpy(wep.name, wepa.name);
 	wep.att = wepa.att;
 	wep.spd = wepa.spd;
 }
-void player::tellwep(){
-    cout << wep.name<< endl;
+void Player::tellwep(){
+	cout << wep.name << endl;
 }
 
-unsigned int player::getatt(){
-	return this->reatt();// + (rand() % wep.spd);
+unsigned int Player::getatt(){
+	return this->reatt();
 }
-unsigned int player::reatt(){
-	//printf("THIS %s %d ,%d\t",this->wep.name,(this->att + this->wep.att),this->wep.att);
-    if (wep.spd == 0){
-        return att + wep.att - 1;
-    }
-    return att + wep.att + (rand() % wep.spd);
+unsigned int Player::reatt(){
+	if (wep.spd == 0){
+		return att + wep.att - 1;
+	}
+	return att + wep.att + (rand() % wep.spd);
 }
-//////////////////////////////////\\\\\\\\\\\\\\\\\>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-void player::save(){
-    FILE * pp = fopen(classname.c_str(), "r");
-	unsigned char te = 0;
+
+void Player::save(){
+	FILE * pp = fopen(classname.c_str(), "r");
+    char input;
 	if (pp){
-        cout << "File already exsists. Overwrite? y/n" << endl;
-        cin >> te;
-        cin.ignore(80,'\n');
-		switch (te){
-        case 'Y':
-		case 'y':
-            cout << "Overwriteing...." << endl;
-			break;
-		default:
-			return;
-			break;
-		}
+		cout << "File already exsists. Overwrite? y/n" << endl;
+        cin >> input;
+		cin.ignore(80, '\n');
+        while(input != 'y' && input != 'n'){
+            cout << "please enter y or n : ";
+            cin >> input;
+            cin.ignore(80,'\n');
+        }
+        if(input == 'n'){
+            cout << "okay, did not overwrite" << endl;
+            return;
+        }
 		fclose(pp);
 	}
-    pp = fopen(classname.c_str(), "wb");
-    if (!pp){
-        throw 4;
-    }
+	pp = fopen(classname.c_str(), "wb");
+	if (!pp){
+		throw 4;
+	}
 	char check[] = "zoel";
 	fwrite(check, sizeof(check), 1, pp);
 	fwrite(&att, sizeof(att), 1, pp);
@@ -122,43 +117,49 @@ void player::save(){
 	fwrite(&maxhp, sizeof(maxhp), 1, pp);
 	fwrite(&hp, sizeof(hp), 1, pp);
 	fwrite(&wep, sizeof(Weapon), 1, pp);
-    fwrite(classname.c_str(), classname.length(), 1, pp);
-    fclose(pp);
-    cout << "Save complete!" << endl;
-}//end player::save/////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\>>>>>>>>>>>>>>>>>>>>>
+    int nameLength = classname.length();
+	fwrite(&nameLength, sizeof(int), 1, pp);
+	fwrite(classname.c_str(), classname.length(), 1, pp);
+	fclose(pp);
+	cout << "Save complete!" << endl;
+}
 
-bool player::load(const char *name){
+bool Player::load(const char *name){
 	FILE * pp = fopen(name, "rb");
-    if (!pp){
-        cout << "File not found, aborting load!" << endl;
-        return false;
-    }
+	if (!pp){
+		cout << "File not found, aborting load!" << endl;
+		return false;
+	}
 	char check[5];
 	fread(check, 5, 1, pp);
-    if (strncmp(check, "zoel", 4)){
-        cout << "CORRUPT OR IMPROPERLY MODDED SAVE" << endl;
-        return false;
-    }
+	if (strncmp(check, "zoel", 4)){
+		cout << "CORRUPT OR IMPROPERLY MODDED SAVE" << endl;
+		return false;
+	}
 	fread(&att, sizeof(int), 1, pp);
 	fread(&def, sizeof(int), 1, pp);
 	fread(&maxhp, sizeof(int), 1, pp);
 	fread(&hp, sizeof(int), 1, pp);
-    if (hp > maxhp){
-        cout << "Modded save file, you can't have more hp then your max hp silly!" << endl;
-        exit(0xDEAD);
-    }
+	if (hp > maxhp){
+		cout << "Modded save file, you can't have more hp then your max hp silly!" << endl;
+		exit(0xDEAD);
+	}
 	fread(&this->wep, sizeof(Weapon), 1, pp);
-	fread(&classname, 9, 1, pp);
-	//fread(&dep, sizeof(ROOM_ERR), 1, pp);
-    cout << "Loaded" << classname <<" save!" << endl;
+	unsigned int nameLength = 0;
+	fread(&nameLength, sizeof(int), 1, pp);
+    char * tempName = new char[nameLength+1];
+	tempName[nameLength] = 0;
+    fread(tempName, nameLength, 1, pp);
+    classname = tempName;
+    delete tempName;
+    cout << "Loaded " << classname << " save!" << endl;
 	stats();
 	fclose(pp);
 	return true;
 }
-void player::stats(){
-    cout << "Stats:\nName: " << classname << endl <<"Maxhp: "<< maxhp << "\thp: " << hp << "\natt: " << att <<" \t def: " << def << \
-            "\nweapon: " << wep.name << "\t att: " << wep.att << endl;//att, def, wep.name, wep.att);
+void Player::stats(){
+	cout << "Stats:\nName: " << classname << endl << "Maxhp: " << maxhp << "\thp: " << hp << "\natt: " << att << " \t def: " << def << "\nweapon: " << wep.name << "\t att: " << wep.att << endl << endl;//att, def, wep.name, wep.att);
 }
-void player::heal(){
+void Player::heal(){
 	hp = maxhp;
 }

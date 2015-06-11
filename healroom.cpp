@@ -24,10 +24,10 @@
 
 using namespace std;
 
-healroom::healroom(const char * descr):room(descr){
+HealRoom::HealRoom(const char * descr):Room(descr){
 
 }
-room * healroom::start(player *playera){
+Room * HealRoom::start(Player *playera){
     cout << "*****\n" << description << "\n*****" <<endl;
     if(attcount == 0){
 		throw NO_ROOMS_ATTACHED;

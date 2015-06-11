@@ -23,7 +23,6 @@
 #include "hoot.h"
 
 Wav::~Wav(){
-    //printf("THIS IS A WAV DECONSTRUCTOR\n");
     delete[] data.data;
 }
 

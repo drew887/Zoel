@@ -26,14 +26,14 @@
 #include "inventory.h"
 #include "player.h"
 #include <vector>
-class weproom : public room{
+class WeaponRoom : public Room{
 protected:
 std::vector<Weapon*> weaponList;
 public:
-    weproom(const char * descr);
+    WeaponRoom(const char * descr);
     virtual void addwep(Weapon * weps);
-    virtual room * start(player *playera);
-    virtual ~weproom(){}
+    virtual Room * start(Player *playera);
+    virtual ~WeaponRoom(){}
 };
 
 #endif // WEPROOM_H

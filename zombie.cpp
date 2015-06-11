@@ -22,18 +22,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include "zombie.h"
-zombie::zombie(void){
-    classname = "Zombie";
+
+Zombie::Zombie(){
+	classname = "Zombie";
 	hp = maxhp = (rand() % 20) + 8;
 	def = (rand() % 2) + 1;
 	att = (rand() % 2) + 2;
-	inventory = new inven[3];
-	inventory[0] = FLESH;
-	inventory[1] = CUFFS;
-	inventory[2] = BOOTS;
+    inventory.push_back(new Item());
 }
 
 
-zombie::~zombie(void){
-	delete[] inventory;
+Zombie::~Zombie(){
+
 }

@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
 #include "entity.h"
@@ -24,24 +24,31 @@
 
 using namespace std;
 
-bool entity::attack(entity * defender){
+Entity::~Entity(){
+    for(unsigned int ctr =0; ctr < inventory.size();ctr++){
+        delete inventory[ctr];
+    }
+}
+
+bool Entity::attack(Entity * defender){
 	return defender->defend(this);
 }
-bool entity::defend(entity * attacker){
+bool Entity::defend(Entity * attacker){
     int temphp = hp;
-    cout << attacker->classname << " is attacking!\t";
-	temphp -= (attacker->getatt() - def );
-	if(temphp>=hp){
-        cout << "A MASSIVE 0 damage\t";
-	}else{
-        cout << "A Whopping " << (hp-temphp) <<" damage!\t";
-        hp = temphp;
+	cout << attacker->classname << " is attacking!\t";
+	temphp -= (attacker->getatt() - def);
+	if (temphp >= hp){
+		cout << "A MASSIVE 0 damage\t";
 	}
-    if(hp <=0){
-        cout << this->classname <<" has been defeated!" << endl;
-        isalive=false;
-        return true;
-    }
-    cout << this->classname <<" has " << hp << " remaining!" << endl;
+	else{
+		cout << "A Whopping " << (hp - temphp) << " damage!\t";
+		hp = temphp;
+	}
+	if (hp <= 0){
+		cout << this->classname << " has been defeated!" << endl;
+		isalive = false;
+		return true;
+	}
+	cout << this->classname << " has " << hp << " remaining!" << endl;
 	return false;
 }

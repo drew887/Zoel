@@ -1,0 +1,10 @@
+## Ignore visual studio nonsense
+*.suo
+*.user
+*.opensdf
+*.o
+Zoel_VS/Zoel
+Zoel_VS/Debug
+Zoel_VS/Release
+Zoel_VS/Zoel_Writer
+utils/Zoel_Writer/map1.*

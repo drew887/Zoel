@@ -25,16 +25,16 @@
 
 using namespace std;
 
-weproom::weproom(const char * descr) :room(descr){
+WeaponRoom::WeaponRoom(const char * descr) :Room(descr){
 
 }
-void weproom::addwep(Weapon * weps){
+void WeaponRoom::addwep(Weapon * weps){
 	weaponList.push_back(weps);
 }
-room * weproom::start(player *playera){
-    cout << "*****\n" << description << "\n*****" <<endl;
-    if (attcount == 0){
-		throw NO_ROOMS_ATTACHED; 
+Room * WeaponRoom::start(Player *playera){
+	cout << "*****\n" << description << "\n*****" << endl;
+	if (attcount == 0){
+		throw NO_ROOMS_ATTACHED;
 	}
 	return this->next;
 }
