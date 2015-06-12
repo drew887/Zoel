@@ -26,7 +26,7 @@
 #include "player.h"
 class HealRoom : public Room{
 public:
-    HealRoom(const char *descr);//probably could have just added a new typedef to make all these different rooms and just change movecheck to match, but im lazy
+    HealRoom(const char *descr);
     Room * start(Player *playera);
 };
 

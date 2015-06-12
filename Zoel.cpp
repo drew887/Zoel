@@ -2,7 +2,7 @@
  * Zoel.cpp
  * This file is part of Zoel
  *
- * Copyright (C) 2013 - Andrew Mcdonald
+ * Copyright (C) 2013 - 2015 - Andrew Mcdonald
  *
  * Zoel is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,36 +27,29 @@
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
+
 void enter();
-int main(){
-  atexit(enter);
-  Map subway("Subway system");
-  subway.rooms.push_back(new Room("Init room"));
-  subway.rooms.push_back(new Room("demo"));
-  subway.rooms.push_back(new Room("TRHEE"));
-  subway.connectRoom(1,2,NORTH);
-  subway.connectRoom(2,0,WEST,false);
-  subway.connectRoom(0, 1, WEST);
-  Map city("City");
-  city.rooms.push_back(new Room("Downtown"));
-  city.rooms.push_back(new Room("Mall"));
-  city.connectRoom(0,1,NORTH);
-  subway.rooms.push_back(new Exitroom("SX",&city,0));
-  city.rooms.push_back(new Exitroom("CX", &subway, 2));
-  subway.connectRoom(2,3,EAST);
-  city.connectRoom(0,2,WEST);
-  Map test("FAC");
-  test.load("mega.zmap");
-  Player one;
-  Room * currentRoom = test.rooms[0];
-  while(currentRoom != NULL){
-    currentRoom = currentRoom->start(&one);
-  }
-  return 0;
+
+int main() {
+	atexit(enter);
+	Map test("TEST");
+	test.load("test.zmap");
+	Map town("TOWN");
+	town.load("town.zmap");
+	town.rooms.push_back(new Exitroom("TX", &test, 1));
+	test.rooms.push_back(new Exitroom("TX", &town, 3));
+	town.connectRoom(3, 5, SOUTH, false);
+	test.connectRoom(1, 3, NORTH, false);
+	Player one;
+	Room * currentRoom = test.rooms[0];
+	while (currentRoom != NULL){
+		currentRoom = currentRoom->start(&one);
+	}
+	return 0;
 }
 
 #include <iostream>
-void enter(void){
+void enter(void) {
 	std::cout << "\nPress enter to continue...\n";
-    std::cin.ignore(80, '\n');
+	std::cin.ignore(80, '\n');
 }

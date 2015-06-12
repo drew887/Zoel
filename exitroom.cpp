@@ -34,7 +34,7 @@ Exitroom::Exitroom(const char * desc, Map * next, unsigned int start):Room(desc)
   }
 }
 
-Room * Exitroom::start(Player * play){
+Room * Exitroom::start(Player *){
 	std::cout << "Now entering the " << nextMap->description << "\n\n";
     return nextMap->rooms[startingRoom];
 }

@@ -31,7 +31,7 @@ WeaponRoom::WeaponRoom(const char * descr) :Room(descr){
 void WeaponRoom::addwep(Weapon * weps){
 	weaponList.push_back(weps);
 }
-Room * WeaponRoom::start(Player *playera){
+Room * WeaponRoom::start(Player *){
 	cout << "*****\n" << description << "\n*****" << endl;
 	if (attcount == 0){
 		throw NO_ROOMS_ATTACHED;

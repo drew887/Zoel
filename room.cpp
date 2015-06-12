@@ -27,8 +27,8 @@
 
 using namespace std;
 
-string Room::tokens[] = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load" };
-unsigned int Room::numTokens = 9;
+string Room::tokens[] = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look" };
+unsigned int Room::numTokens = 10;
 
 Room::Room(const char * descr) :description(descr){
 	percount = 0;
@@ -116,7 +116,7 @@ Room * Room::getRoomAtDir(room_dir dir){
 void Room::idleLoop(Player *play){
 	bool loop = true;
 	while (loop){
-		cout << "Enter a Command: " << endl;
+        cout << "Enter a Command: " << endl;
 		string msg;
 		getline(cin, msg);
 		unsigned int token;
@@ -125,45 +125,49 @@ void Room::idleLoop(Player *play){
 				break;
 			}
 		}
-		if (token < numTokens){
-			if (token < 4){//the directions
-				next = getRoomAtDir((room_dir)token);
-				if (next != NULL){
-					loop = false;
-				}
-				else{
-					cout << "you can't go that way" << endl;
-				}
-			}
-			if (token == 4){ //quit
-				loop = false;
-				next = NULL;
-			}
-			if (token == 5){ //help
-				cout << "The commands are:" << endl;
-				for (unsigned int ctr = 0; ctr < numTokens; ctr++){
-					cout << "  " << tokens[ctr] << endl;
-				}
-			}
-			if (token == 6){ //stats
-				play->stats();
-			}
-			if (token == 7){ //save
-				play->save();
-			}
-            if(token == 8){ //load
-                cout << "please enter a name to load: ";
+        switch(token){
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            next = getRoomAtDir((room_dir)token);
+            if (next != NULL){
+                loop = false;
+            }
+            else{
+                cout << "you can't go that way" << endl;
+            }
+            break;
+        case 4:
+            loop = false;
+            next = NULL;
+            break;
+        case 5:
+            cout << "The commands are:" << endl;
+            for (unsigned int ctr = 0; ctr < numTokens; ctr++){
+                cout << "  " << tokens[ctr] << endl;
+            }
+            break;
+        case 6:
+            play->stats();
+            break;
+        case 7:
+            play->save();
+            break;
+        case 8:
+            cout << "please enter a name to load: ";{ //cordon off this block to stop cross label initialization errors
                 std::string name;
                 getline(cin,name);
                 if(play->load(name.c_str())){
-                    //loop = false;
-                    //next = NULL;
+                    //figure out a good way to handle loading
                 }
             }
-		}
-		else{
-			cout << "I don't know " << msg << endl;
-		}
-
-	}
+            break;
+        case 9:
+            cout << "*****\n" << description << "\n*****" << endl;
+            break;
+        default:
+            cout << "I don't know " << msg << endl;
+        }
+    }
 }
