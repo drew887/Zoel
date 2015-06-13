@@ -23,8 +23,9 @@
 #include "exitroom.h"
 #include <iostream>
 
-Exitroom::Exitroom(const char * desc, Map * next, unsigned int start):Room(desc){
+Exitroom::Exitroom(const char * desc, Map * next, unsigned int start, unsigned int nextSong):Room(desc){
   nextMap = next;
+  songNo = nextSong;
   if (start < next->rooms.size()){
 	  startingRoom = start;
   }
@@ -34,7 +35,10 @@ Exitroom::Exitroom(const char * desc, Map * next, unsigned int start):Room(desc)
   }
 }
 
+#include "soundEng.h"
+
 Room * Exitroom::start(Player *){
 	std::cout << "Now entering the " << nextMap->description << "\n\n";
+	soundEng::getInstance().play(songNo);
     return nextMap->rooms[startingRoom];
 }

@@ -33,13 +33,14 @@ Player::Player(void) {
 	srand(time(NULL));
 	cout << "Hello there!\nWhat is your name?" << endl;
 	getline(cin, classname);
+	cout << endl;
 	hp = maxhp = (rand() % 8) + 30;
 	def = (rand() % 3) + 1;
 	att = (rand() % 3) + 1;
 	strcpy(wep.name, "None");
 	wep.att = 0;
 	wep.spd = 0;
-	stats();
+	cout << "Welcome " << classname << ", to the world of ZOEL." << endl << endl;
 }
 
 Player::~Player(void) {

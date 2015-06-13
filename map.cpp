@@ -71,31 +71,31 @@ room_dir determineDir(char dir){
 bool Map::load(std::string filename){
 	bool loaded = false;
 	vector<room_t> room_types;
-	FILE * pp = fopen(filename.c_str(), "rb");
-	if (pp){
+	FILE * filePointer = fopen(filename.c_str(), "rb");
+	if (filePointer){
 		char check[5] = {};
-		fread(check, 4, 1, pp);
+		fread(check, 4, 1, filePointer);
 		if (!strncmp(check, "ZMAP", 4)){
 			unsigned int numRooms = 0;
-			fread(&numRooms, sizeof(int), 1, pp);
+			fread(&numRooms, sizeof(int), 1, filePointer);
 			for (unsigned int loop = 0; loop < numRooms; loop++){
-				fread(check, 4, 1, pp);
+				fread(check, 4, 1, filePointer);
 				if (!strncmp(check, "ROOM", 4)){
 					room_t room;
 					unsigned int descLength = 1;
-					fread(&descLength, sizeof(int), 1, pp);
+					fread(&descLength, sizeof(int), 1, filePointer);
 					char * tDesc = new char[descLength + 1];
 					tDesc[descLength] = 0;
-					fread(tDesc, descLength, 1, pp);
+					fread(tDesc, descLength, 1, filePointer);
 					room.desc = tDesc;
 					delete[] tDesc;
 					unsigned int roomCount = 0;
-					fread(&roomCount, sizeof(int), 1, pp);
+					fread(&roomCount, sizeof(int), 1, filePointer);
 					for (unsigned int ctr = 0; ctr < roomCount; ctr++){
 						unsigned int num = 0;
 						char dir = 'N';
-						fread(&num, sizeof(int), 1, pp);
-						fread(&dir, sizeof(char), 1, pp);
+						fread(&num, sizeof(int), 1, filePointer);
+						fread(&dir, sizeof(char), 1, filePointer);
 						room.connections.push_back(num);
 						room.directions.push_back(dir);
 					}
@@ -115,7 +115,7 @@ bool Map::load(std::string filename){
 		else{
 			cout << "File is not a valid ZMAP" << endl;
 		}
-		fclose(pp);
+		fclose(filePointer);
 	}
 	else{
 		cout << "File not found!" << endl;

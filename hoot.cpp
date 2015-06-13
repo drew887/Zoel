@@ -60,7 +60,7 @@ Source::Source(const char * loc){
 	alSourcef(source, AL_GAIN, 1);
 	alSource3f(source, AL_POSITION, 0, 0, 0);			//It is located at 0,0,0; note how well this will work with OPENGL ;D
 	alSource3f(source, AL_VELOCITY, 0, 0, 0);			//It isn't going to move yet, so it's velocity is 0 ;D
-	alSourcei(source, AL_LOOPING, AL_TRUE);			//We tell it to not loop the file.
+	alSourcei(source, AL_LOOPING, AL_TRUE);			//We tell it to loop the file.
 	//So now we have a source, all we need is a buffer to hold the sound info itself.
 	alGenBuffers(1, &buffer);				//We have again generated 1 buffer, now it is time to read data from a file and yay.
 	alBufferData(buffer, wave->format, wave->data.data, wave->data.size, wave->Bufdat.freq);

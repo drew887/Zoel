@@ -61,7 +61,7 @@ inline room_dir directionSwap(room_dir tw){
 }
 
 Room * Room::start(Player * playera){
-	cout << "*****\n" << description << "\n*****" << endl;
+	cout << description << endl;
 	if (attcount == 0){
 		throw NO_ROOMS_ATTACHED;
 	}
@@ -116,9 +116,10 @@ Room * Room::getRoomAtDir(room_dir dir){
 void Room::idleLoop(Player *play){
 	bool loop = true;
 	while (loop){
-        cout << "Enter a Command: " << endl;
+		cout << endl << "> ";
 		string msg;
 		getline(cin, msg);
+		cout << endl;
 		unsigned int token;
 		for (token = 0; token < numTokens; token++){
 			if (msg == tokens[token]){
@@ -164,7 +165,7 @@ void Room::idleLoop(Player *play){
             }
             break;
         case 9:
-            cout << "*****\n" << description << "\n*****" << endl;
+            cout << description << endl;
             break;
         default:
             cout << "I don't know " << msg << endl;

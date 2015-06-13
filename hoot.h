@@ -26,8 +26,6 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
-//this is actually from openENG, but i own ENG so i can relisence it ;D
-//basically this is just some classes and structs for reading in .wav files and playing them with openAL. Joel if you want, this would be useable in your zork clone and you wouldnt have to change anything :D
 #pragma pack(1)
 struct buffI{
 	short format;
@@ -51,7 +49,7 @@ class Wav {
 		Wav(const char * loc);
 		~Wav();
 		buffI Bufdat;
-		buffD data; 		//obvious
+		buffD data;
 		ALenum format;
 	protected:
 		void detfmt();		//detect format
@@ -59,12 +57,10 @@ class Wav {
 
 class Hoot2d {
 	public:
-		Hoot2d (); //con
-		~Hoot2d (); //decon
+		Hoot2d (); 
+		~Hoot2d ();
 		ALCdevice * device; 
 		ALCcontext * context;
-	private:
-		//nothing yet, not really worried about security yet
 };
 
 class Source {
@@ -73,23 +69,19 @@ class Source {
 		~Source ();
 		Wav * wave;
 		ALuint buffer, source;
-		void play();		//these next three are pretty obvious
+		void play();	
 		void pause();
 		void stop();
 	private:
 };
 
-//begin Mod
 class Mod {
 	public:
 		Mod (const char * loc);
 		~Mod ();
 		void play();
 		void stop();
-	private:
-		/* data */
 };
-//end Mod
 #endif
 
 

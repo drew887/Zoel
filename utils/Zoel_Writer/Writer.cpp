@@ -48,25 +48,25 @@ int main(int argc, char * argv[]){
 	string filename;
 	cout << "Enter a filename: ";
 	cin >> filename;
-	FILE * pp = fopen(filename.c_str(), "wb");
-	if (pp){
-		fwrite("ZMAP", 4, 1, pp);
+	FILE * filePointer = fopen(filename.c_str(), "wb");
+	if (filePointer){
+		fwrite("ZMAP", 4, 1, filePointer);
 		unsigned int numRooms = rooms.size();
-		fwrite(&numRooms, sizeof(int), 1, pp);
+		fwrite(&numRooms, sizeof(int), 1, filePointer);
 		for (auto a : rooms){
-			fwrite("ROOM", 4, 1, pp);
+			fwrite("ROOM", 4, 1, filePointer);
 			int length = a.desc.length();
-			fwrite(&length, sizeof(int), 1, pp);
-			fwrite(a.desc.c_str(), a.desc.length(), 1, pp);
+			fwrite(&length, sizeof(int), 1, filePointer);
+			fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
 			unsigned int conSize = a.connections.size();
-			fwrite(&conSize, sizeof(int), 1, pp);
+			fwrite(&conSize, sizeof(int), 1, filePointer);
 			for (unsigned int ctr = 0; ctr < conSize; ctr++){
-				fwrite(&a.connections[ctr], sizeof(int), 1, pp);
-				fwrite(&a.directions[ctr], sizeof(char), 1, pp);
+				fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
+				fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
 			}
 		}
-		fwrite("END", 3, 1, pp);
-		fclose(pp);
+		fwrite("END", 3, 1, filePointer);
+		fclose(filePointer);
 	}
 	return 0;
 }
@@ -84,31 +84,31 @@ void readRoom(){
 	string filename;
 	cout << "Enter a filename: ";
 	cin >> filename;
-	FILE * pp = fopen(filename.c_str(), "rb");
-	if (pp){
+	FILE * filePointer = fopen(filename.c_str(), "rb");
+	if (filePointer){
 		char check[5] = {};
-		fread(check, 4, 1, pp);
+		fread(check, 4, 1, filePointer);
 		if (!strncmp(check, "ZMAP", 4)){
 			unsigned int numRooms = 0;
-			fread(&numRooms, sizeof(int), 1, pp);
+			fread(&numRooms, sizeof(int), 1, filePointer);
 			for (unsigned int loop = 0; loop < numRooms; loop++){
-				fread(check, 4, 1, pp);
+				fread(check, 4, 1, filePointer);
 				if (!strncmp(check, "ROOM", 4)){
 					Room room;
 					unsigned int descLength = 0;
-					fread(&descLength, sizeof(int), 1, pp);
+					fread(&descLength, sizeof(int), 1, filePointer);
 					char * tDesc = new char[descLength + 1];
 					tDesc[descLength] = 0;
-					fread(tDesc, descLength, 1, pp);
+					fread(tDesc, descLength, 1, filePointer);
 					room.desc = tDesc;
 					delete [] tDesc;
 					unsigned int roomCount = 0;
-					fread(&roomCount, sizeof(int), 1, pp);
+					fread(&roomCount, sizeof(int), 1, filePointer);
 					for (unsigned int ctr = 0; ctr < roomCount; ctr++){
 						unsigned int num = 0;
 						char dir = 'N';
-						fread(&num, sizeof(int), 1, pp);
-						fread(&dir, sizeof(char), 1, pp);
+						fread(&num, sizeof(int), 1, filePointer);
+						fread(&dir, sizeof(char), 1, filePointer);
 						room.connections.push_back(num);
 						room.directions.push_back(dir);
 					}
@@ -122,7 +122,7 @@ void readRoom(){
 		else{
 			cout << "File is not a valid ZMAP" << endl;
 		}
-		fclose(pp);
+		fclose(filePointer);
 	}
 	else{
 		cout << "File not found!" << endl;
