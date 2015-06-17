@@ -19,16 +19,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#include <stdlib.h>
+#include <cstdlib>
 #include <iostream>
-#include <math.h>
+#include <cmath>
+#include <cstring>
+
 #include "room.h"
 #include "player.h"
 
 using namespace std;
 
-string Room::tokens[] = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look" };
-unsigned int Room::numTokens = 10;
+vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack"};
+
 
 Room::Room(const char * descr) :description(descr){
 	percount = 0;
@@ -63,9 +65,10 @@ inline room_dir directionSwap(room_dir tw){
 Room * Room::start(Player * playera){
 	cout << description << endl;
 	if (attcount == 0){
-		throw NO_ROOMS_ATTACHED;
+        //throw NO_ROOMS_ATTACHED;
+        return NULL;
 	}
-	idleLoop(playera);
+    idleLoop(playera);
 	return this->next;
 }
 
@@ -117,15 +120,30 @@ void Room::idleLoop(Player *play){
 	bool loop = true;
 	while (loop){
 		cout << endl << "> ";
-		string msg;
+        string msg;
 		getline(cin, msg);
-		cout << endl;
-		unsigned int token;
-		for (token = 0; token < numTokens; token++){
-			if (msg == tokens[token]){
-				break;
-			}
-		}
+        cout << endl;
+        vector<string> words;
+        char * mesg = new char[msg.size()+1];
+        strcpy(mesg,msg.c_str());
+        for(unsigned int character = 0; character < msg.size();character++){
+            mesg[character] = tolower(mesg[character]);
+        }
+        char * tok = strtok(mesg," ");
+        while(tok != NULL){
+            if(strcmp(tok,"the")){
+                words.push_back(tok);
+            }
+            tok = strtok(NULL," ");
+        }
+        delete mesg;
+
+        unsigned int token;
+        for (token = 0; token < tokens.size(); token++){
+            if (words[0] == tokens[token]){
+                break;
+            }
+        }
         switch(token){
         case 0:
         case 1:
@@ -145,7 +163,7 @@ void Room::idleLoop(Player *play){
             break;
         case 5:
             cout << "The commands are:" << endl;
-            for (unsigned int ctr = 0; ctr < numTokens; ctr++){
+            for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
                 cout << "  " << tokens[ctr] << endl;
             }
             break;
@@ -164,11 +182,18 @@ void Room::idleLoop(Player *play){
                 }
             }
             break;
-        case 9:
+        case 9: //look
             cout << description << endl;
             break;
+        case 10: //attack
+            if(words.size() < 2){
+                cout << "Attack what?: ";
+            }else{
+                cout << "Attacking the " << words[1];
+            }
+            break;
         default:
-            cout << "I don't know " << msg << endl;
+            cout << "I don't know " << words[0] << endl;
         }
     }
 }

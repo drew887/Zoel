@@ -118,7 +118,7 @@ bool Map::load(std::string filename){
 		fclose(filePointer);
 	}
 	else{
-		cout << "File not found!" << endl;
+        cout << "File " << filename << " not found!" << endl;
 	}
 	return loaded;
 }

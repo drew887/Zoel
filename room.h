@@ -54,8 +54,7 @@ protected:
 	room_dir at_dir[4];
 	unsigned int attcount;
 	unsigned int percount;
-    static string tokens[];
-    static unsigned int numTokens;
+    static vector<string> tokens;
 };
 #pragma pack()
 #endif
