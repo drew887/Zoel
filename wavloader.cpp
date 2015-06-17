@@ -2,7 +2,7 @@
  * wavloader.cpp
  * This file is part of Zoel
  *
- * Copyright (C) 2012 - Andrew Mcdonald
+ * Copyright (C) 2012 - 2015 - Andrew Mcdonald
  *
  * Zoel is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

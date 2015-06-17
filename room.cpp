@@ -2,7 +2,7 @@
  * room.cpp
  * This file is part of Zoel
  *
- * Copyright (C) 2013 - Andrew Mcdonald
+ * Copyright (C) 2013 - 2015 - Andrew Mcdonald
  *
  * Zoel is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 using namespace std;
 
-vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack"};
+vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack" };
 
 
 Room::Room(const char * descr) :description(descr){
@@ -65,10 +65,10 @@ inline room_dir directionSwap(room_dir tw){
 Room * Room::start(Player * playera){
 	cout << description << endl;
 	if (attcount == 0){
-        //throw NO_ROOMS_ATTACHED;
-        return NULL;
+		//throw NO_ROOMS_ATTACHED;
+		return NULL;
 	}
-    idleLoop(playera);
+	idleLoop(playera);
 	return this->next;
 }
 
@@ -120,80 +120,81 @@ void Room::idleLoop(Player *play){
 	bool loop = true;
 	while (loop){
 		cout << endl << "> ";
-        string msg;
+		string msg;
 		getline(cin, msg);
-        cout << endl;
-        vector<string> words;
-        char * mesg = new char[msg.size()+1];
-        strcpy(mesg,msg.c_str());
-        for(unsigned int character = 0; character < msg.size();character++){
-            mesg[character] = tolower(mesg[character]);
-        }
-        char * tok = strtok(mesg," ");
-        while(tok != NULL){
-            if(strcmp(tok,"the")){
-                words.push_back(tok);
-            }
-            tok = strtok(NULL," ");
-        }
-        delete mesg;
+		cout << endl;
+		vector<string> words;
+		char * mesg = new char[msg.size() + 1];
+		strcpy(mesg, msg.c_str());
+		for (unsigned int character = 0; character < msg.size(); character++){
+			mesg[character] = tolower(mesg[character]);
+		}
+		char * tok = strtok(mesg, " ");
+		while (tok != NULL){
+			if (strcmp(tok, "the")){
+				words.push_back(tok);
+			}
+			tok = strtok(NULL, " ");
+		}
+		delete mesg;
 
-        unsigned int token;
-        for (token = 0; token < tokens.size(); token++){
-            if (words[0] == tokens[token]){
-                break;
-            }
-        }
-        switch(token){
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            next = getRoomAtDir((room_dir)token);
-            if (next != NULL){
-                loop = false;
-            }
-            else{
-                cout << "you can't go that way" << endl;
-            }
-            break;
-        case 4:
-            loop = false;
-            next = NULL;
-            break;
-        case 5:
-            cout << "The commands are:" << endl;
-            for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
-                cout << "  " << tokens[ctr] << endl;
-            }
-            break;
-        case 6:
-            play->stats();
-            break;
-        case 7:
-            play->save();
-            break;
-        case 8:
-            cout << "please enter a name to load: ";{ //cordon off this block to stop cross label initialization errors
-                std::string name;
-                getline(cin,name);
-                if(play->load(name.c_str())){
-                    //figure out a good way to handle loading
-                }
-            }
-            break;
-        case 9: //look
-            cout << description << endl;
-            break;
-        case 10: //attack
-            if(words.size() < 2){
-                cout << "Attack what?: ";
-            }else{
-                cout << "Attacking the " << words[1];
-            }
-            break;
-        default:
-            cout << "I don't know " << words[0] << endl;
-        }
-    }
+		unsigned int token;
+		for (token = 0; token < tokens.size(); token++){
+			if (words[0] == tokens[token]){
+				break;
+			}
+		}
+		switch (token){
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+			next = getRoomAtDir((room_dir)token);
+			if (next != NULL){
+				loop = false;
+			}
+			else{
+				cout << "you can't go that way" << endl;
+			}
+			break;
+		case 4:
+			loop = false;
+			next = NULL;
+			break;
+		case 5:
+			cout << "The commands are:" << endl;
+			for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
+				cout << "  " << tokens[ctr] << endl;
+			}
+			break;
+		case 6:
+			play->stats();
+			break;
+		case 7:
+			play->save();
+			break;
+		case 8:
+			cout << "please enter a name to load: "; { //cordon off this block to stop cross label initialization errors
+				std::string name;
+				getline(cin, name);
+				if (play->load(name.c_str())){
+					//figure out a good way to handle loading
+				}
+			}
+			break;
+		case 9: //look
+			cout << description << endl;
+			break;
+		case 10: //attack
+			if (words.size() < 2){
+				cout << "Attack what?: ";
+			}
+			else{
+				cout << "Attacking the " << words[1] << endl;
+			}
+			break;
+		default:
+			cout << "I don't know " << words[0] << endl;
+		}
+	}
 }
