@@ -187,7 +187,7 @@ void Room::idleLoop(Player *play){
 			break;
 		case 10: //attack
 			if (words.size() < 2){
-				cout << "Attack what?: ";
+				cout << "Attack what?: " << endl;
 			}
 			else{
 				cout << "Attacking the " << words[1] << endl;
