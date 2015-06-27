@@ -45,7 +45,7 @@ public:
     bool attach(Room * ar, room_dir direc, bool connectBack = false);
     virtual Room * start(Player * play);
     Room * getRoomAtDir(room_dir dir);
-    std::string description;
+    string description;
 protected:
     void idleLoop(Player * play);
     Room * next;

@@ -1,5 +1,6 @@
 ## Ignore visual studio nonsense
 *.suo
+*.sdf
 *.user
 *.opensdf
 *.o

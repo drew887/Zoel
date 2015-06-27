@@ -116,6 +116,24 @@ Room * Room::getRoomAtDir(room_dir dir){
 	return temp;
 }
 
+vector<string> tokenize(string msg){
+    vector<string> words;
+    char * mesg = new char[msg.size() + 1];
+    strcpy(mesg, msg.c_str());
+    for (unsigned int character = 0; character < msg.size(); character++){
+        mesg[character] = tolower(mesg[character]);
+    }
+    char * tok = strtok(mesg, " ");
+    while (tok != NULL){
+        if (strcmp(tok, "the")){
+            words.push_back(tok);
+        }
+        tok = strtok(NULL, " ");
+    }
+    delete mesg;
+    return words;
+}
+
 void Room::idleLoop(Player *play){
 	bool loop = true;
 	while (loop){
@@ -123,78 +141,93 @@ void Room::idleLoop(Player *play){
 		string msg;
 		getline(cin, msg);
 		cout << endl;
-		vector<string> words;
-		char * mesg = new char[msg.size() + 1];
-		strcpy(mesg, msg.c_str());
-		for (unsigned int character = 0; character < msg.size(); character++){
-			mesg[character] = tolower(mesg[character]);
-		}
-		char * tok = strtok(mesg, " ");
-		while (tok != NULL){
-			if (strcmp(tok, "the")){
-				words.push_back(tok);
+		if (msg.size() > 0){
+			vector<string> words;
+			char * mesg = new char[msg.size() + 1];
+			strcpy(mesg, msg.c_str());
+			for (unsigned int character = 0; character < msg.size(); character++){
+				mesg[character] = tolower(mesg[character]);
 			}
-			tok = strtok(NULL, " ");
-		}
-		delete mesg;
+			char * tok = strtok(mesg, " ");
+			while (tok != NULL){
+				if (strcmp(tok, "the")){
+					words.push_back(tok);
+				}
+				tok = strtok(NULL, " ");
+			}
+			delete mesg;
 
-		unsigned int token;
-		for (token = 0; token < tokens.size(); token++){
-			if (words[0] == tokens[token]){
-				break;
-			}
-		}
-		switch (token){
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-			next = getRoomAtDir((room_dir)token);
-			if (next != NULL){
-				loop = false;
-			}
-			else{
-				cout << "you can't go that way" << endl;
-			}
-			break;
-		case 4:
-			loop = false;
-			next = NULL;
-			break;
-		case 5:
-			cout << "The commands are:" << endl;
-			for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
-				cout << "  " << tokens[ctr] << endl;
-			}
-			break;
-		case 6:
-			play->stats();
-			break;
-		case 7:
-			play->save();
-			break;
-		case 8:
-			cout << "please enter a name to load: "; { //cordon off this block to stop cross label initialization errors
-				std::string name;
-				getline(cin, name);
-				if (play->load(name.c_str())){
-					//figure out a good way to handle loading
+			unsigned int token;
+			for (token = 0; token < tokens.size(); token++){
+				if (words[0] == tokens[token]){
+					break;
 				}
 			}
-			break;
-		case 9: //look
-			cout << description << endl;
-			break;
-		case 10: //attack
-			if (words.size() < 2){
-				cout << "Attack what?: " << endl;
+			switch (token){
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				next = getRoomAtDir((room_dir)token);
+				if (next != NULL){
+					loop = false;
+				}
+				else{
+					cout << "you can't go that way" << endl;
+				}
+				break;
+			case 4:
+				loop = false;
+				next = NULL;
+				break;
+			case 5:
+				cout << "The commands are:" << endl;
+				for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
+					cout << "  " << tokens[ctr] << endl;
+				}
+				break;
+			case 6:
+				play->stats();
+				break;
+			case 7:
+				play->save();
+				break;
+			case 8:
+				cout << "please enter a name to load: "; { //cordon off this block to stop cross label initialization errors
+					std::string name;
+					getline(cin, name);
+					if (play->load(name.c_str())){
+						//figure out a good way to handle loading
+					}
+				}
+				break;
+			case 9: //look
+				cout << description << endl;
+				break;
+			case 10: //attack
+            { //encapsulate the initialization of target
+                string targetMesg = "";
+                string target = "";
+                vector<string> targets;
+				if (words.size() < 2){
+					cout << "Attack what?: " << endl;
+                    getline(cin,targetMesg);
+                    targets = tokenize(targetMesg);
+                    target = targets[0];
+				}
+				else{
+                    target = words[1];
+				}
+                if(percount > 0){
+                    cout << "Attacking the " << target << endl;
+                }else{
+                    cout << "The " << target << " isn't something to attack!" << endl;
+                }
+            }
+				break;
+			default:
+				cout << "I don't know " << words[0] << endl;
 			}
-			else{
-				cout << "Attacking the " << words[1] << endl;
-			}
-			break;
-		default:
-			cout << "I don't know " << words[0] << endl;
 		}
 	}
 }
