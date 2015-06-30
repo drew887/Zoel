@@ -49,11 +49,10 @@ public:
 protected:
     void idleLoop(Player * play);
     Room * next;
-	Entity * enimies[ROOM_MAX];
+    vector<Entity *> enemies;
     Room * attached[4];
 	room_dir at_dir[4];
-	unsigned int attcount;
-	unsigned int percount;
+    unsigned int attcount;
     static vector<string> tokens;
 };
 #pragma pack()

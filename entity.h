@@ -37,10 +37,7 @@ public:
     std::vector<Item *> inventory;
     std::string classname;
 	bool isalive;
-    Entity(void){//this is just in case i ever felt like making a plain entity
-		isalive =true;
-	}
-
+    Entity();
     virtual ~Entity();
     virtual bool attack(Entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
     virtual bool defend(Entity * attacker);

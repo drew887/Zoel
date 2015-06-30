@@ -25,10 +25,8 @@
 #include "map.h"
 #include "exitroom.h"
 #include "soundEng.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <signal.h>
+#include "zombie.h"
+#include <iostream>
 
 void enter();
 
@@ -40,6 +38,7 @@ int main() {
 	test.load("test.zmap");
 	Map town("TOWN");
 	town.load("town.zmap");
+	test.rooms[1]->addper(new Zombie());
 	town.rooms.push_back(new Exitroom("TX", &test, 1));
 	test.rooms.push_back(new Exitroom("TX", &town, 3, 1));
 	town.connectRoom(3, 5, SOUTH, false);
@@ -53,7 +52,6 @@ int main() {
 	return 0;
 }
 
-#include <iostream>
 void enter(void) {
 	std::cout << "\nPress enter to continue...\n";
 	std::cin.ignore(80, '\n');

@@ -36,7 +36,7 @@ Player::Player(void) {
 	cout << endl;
 	hp = maxhp = (rand() % 8) + 30;
 	def = (rand() % 3) + 1;
-	att = (rand() % 3) + 1;
+	att = (rand() % 5) + 3;
 	strcpy(wep.name, "None");
 	wep.att = 0;
 	wep.spd = 0;
@@ -47,34 +47,33 @@ Player::~Player(void) {
 
 }
 
-bool Player::attack(Entity * defender) {
-	return defender->defend(this);
-}
 bool Player::defend(Entity * attacker) {
 	int temphp = hp;
-	cout << attacker->classname << "is attacking!\t" << endl;
+	cout << attacker->classname << " is attacking! ";
 	temphp -= (attacker->getatt() - def);
 	if (temphp >= hp) {
-		cout << "A SUPER FUN 0 damage\t";
+		cout << "A SUPER FUN 0 damage ";
 	}
 	else {
-		cout << "A Whopping " << (hp - temphp) << " damage!\t";
+		cout << "A Whopping " << (hp - temphp) << " damage! ";
 		hp = temphp;
 	}
 	if (hp <= 0) {
 		cout << classname << " has been defeated!" << endl;
 		isalive = false;
-		throw DEAD_PLAYER;
+		//throw DEAD_PLAYER;
 		return true;
 	}
 	cout << classname << " has " << hp << " remaining!" << endl;
 	return false;
 }
+
 void Player::giveWep(Weapon wepa) {
 	strcpy(wep.name, wepa.name);
 	wep.att = wepa.att;
 	wep.spd = wepa.spd;
 }
+
 void Player::tellwep() {
 	cout << wep.name << endl;
 }
@@ -152,7 +151,7 @@ bool Player::load(const char *name){
 	tempName[nameLength] = 0;
 	fread(tempName, nameLength, 1, filePointer);
 	classname = tempName;
-	delete [] tempName;
+	delete[] tempName;
 	cout << "Loaded " << classname << " save!" << endl;
 	stats();
 	fclose(filePointer);

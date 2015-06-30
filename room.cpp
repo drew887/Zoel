@@ -33,7 +33,6 @@ vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help"
 
 
 Room::Room(const char * descr) :description(descr){
-	percount = 0;
 	attcount = 0;
 	next = NULL;
 	for (unsigned int i = 0; i < 4; i++){
@@ -64,6 +63,11 @@ inline room_dir directionSwap(room_dir tw){
 
 Room * Room::start(Player * playera){
 	cout << description << endl;
+	if (enemies.size() > 0){
+		for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+			cout << "There is a " << enemies[enemy]->classname << " here!" << endl;
+		}
+	}
 	if (attcount == 0){
 		//throw NO_ROOMS_ATTACHED;
 		return NULL;
@@ -74,9 +78,8 @@ Room * Room::start(Player * playera){
 
 bool Room::addper(Entity * person){
 	bool success = true;
-	if (percount < ROOM_MAX){
-		enimies[percount] = person;
-		percount++;
+	if (enemies.size() < ROOM_MAX){
+		enemies.push_back(person);
 	}
 	else{
 		success = false;
@@ -103,6 +106,9 @@ Room::~Room(void){
 		attached[i] = NULL;
 		at_dir[i] = NONE;
 	}
+	for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+		delete enemies[enemy];
+	}
 }
 
 Room * Room::getRoomAtDir(room_dir dir){
@@ -117,21 +123,21 @@ Room * Room::getRoomAtDir(room_dir dir){
 }
 
 vector<string> tokenize(string msg){
-    vector<string> words;
-    char * mesg = new char[msg.size() + 1];
-    strcpy(mesg, msg.c_str());
-    for (unsigned int character = 0; character < msg.size(); character++){
-        mesg[character] = tolower(mesg[character]);
-    }
-    char * tok = strtok(mesg, " ");
-    while (tok != NULL){
-        if (strcmp(tok, "the")){
-            words.push_back(tok);
-        }
-        tok = strtok(NULL, " ");
-    }
-    delete mesg;
-    return words;
+	vector<string> words;
+	char * mesg = new char[msg.size() + 1];
+	strcpy(mesg, msg.c_str());
+	for (unsigned int character = 0; character < msg.size(); character++){
+		mesg[character] = tolower(mesg[character]);
+	}
+	char * tok = strtok(mesg, " ");
+	while (tok != NULL){
+		if (strcmp(tok, "the")){
+			words.push_back(tok);
+		}
+		tok = strtok(NULL, " ");
+	}
+	delete[] mesg;
+	return words;
 }
 
 void Room::idleLoop(Player *play){
@@ -155,7 +161,7 @@ void Room::idleLoop(Player *play){
 				}
 				tok = strtok(NULL, " ");
 			}
-			delete mesg;
+			delete[] mesg;
 
 			unsigned int token;
 			for (token = 0; token < tokens.size(); token++){
@@ -176,9 +182,10 @@ void Room::idleLoop(Player *play){
 					cout << "you can't go that way" << endl;
 				}
 				break;
-			case 4:
+			case 4: //quit
 				loop = false;
 				next = NULL;
+				return;
 				break;
 			case 5:
 				cout << "The commands are:" << endl;
@@ -203,30 +210,63 @@ void Room::idleLoop(Player *play){
 				break;
 			case 9: //look
 				cout << description << endl;
+				if (enemies.size() > 0){
+					for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+						cout << "There is a " << enemies[enemy]->classname << " here!" << endl;
+					}
+				}
 				break;
 			case 10: //attack
-            { //encapsulate the initialization of target
-                string targetMesg = "";
-                string target = "";
-                vector<string> targets;
-				if (words.size() < 2){
-					cout << "Attack what?: " << endl;
-                    getline(cin,targetMesg);
-                    targets = tokenize(targetMesg);
-                    target = targets[0];
+				if (enemies.size() > 0){
+					string targetMesg = "";
+					string target = "";
+					vector<string> targets;
+					if (words.size() < 2){
+						cout << "Attack what?: " << endl;
+						for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+							cout << enemies[enemy]->classname << endl;
+						}
+						cout << endl;
+						getline(cin, targetMesg);
+						targets = tokenize(targetMesg);
+						target = targets[0];
+					}
+					else{
+						target = words[1];
+					}
+					unsigned int enemy;
+					for (enemy = 0; enemy < enemies.size(); enemy++){
+						if (enemies[enemy]->classname == target){
+							break;
+						}
+					}
+					if (enemy < enemies.size()){
+						cout << "Attacking the " << target << endl;
+						if (play->attack(enemies[enemy])){
+							delete enemies[enemy];
+							enemies.erase(enemies.begin() + enemy);
+						}
+					}
+					else{
+						cout << "Couldn't find the " << target << endl;
+					}
 				}
 				else{
-                    target = words[1];
+					cout << "There isn't any one to attack!" << endl;
 				}
-                if(percount > 0){
-                    cout << "Attacking the " << target << endl;
-                }else{
-                    cout << "The " << target << " isn't something to attack!" << endl;
-                }
-            }
 				break;
 			default:
 				cout << "I don't know " << words[0] << endl;
+			}//end switch
+
+			if (enemies.size() > 0){
+				for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+					if (enemies[enemy]->attack(play)){
+						cout << endl << "GAME OVER!" << endl;
+						next = NULL;
+						loop = false;
+					}
+				}
 			}
 		}
 	}

@@ -24,6 +24,10 @@
 
 using namespace std;
 
+Entity::Entity(){
+    isalive =true;
+}
+
 Entity::~Entity(){
     for(unsigned int ctr =0; ctr < inventory.size();ctr++){
         delete inventory[ctr];
@@ -35,20 +39,20 @@ bool Entity::attack(Entity * defender){
 }
 bool Entity::defend(Entity * attacker){
     int temphp = hp;
-	cout << attacker->classname << " is attacking!\t";
+    cout << attacker->classname << " is attacking! ";
 	temphp -= (attacker->getatt() - def);
 	if (temphp >= hp){
-		cout << "A MASSIVE 0 damage\t";
+        cout << "A MASSIVE 0 damage ";
 	}
 	else{
-		cout << "A Whopping " << (hp - temphp) << " damage!\t";
+        cout << "A Whopping " << (hp - temphp) << " damage! ";
 		hp = temphp;
 	}
 	if (hp <= 0){
-		cout << this->classname << " has been defeated!" << endl;
+        cout << classname << " has been defeated!" << endl;
 		isalive = false;
 		return true;
 	}
-	cout << this->classname << " has " << hp << " remaining!" << endl;
+    cout << classname << " has " << hp << " remaining!" << endl;
 	return false;
 }
