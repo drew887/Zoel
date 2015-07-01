@@ -1,5 +1,5 @@
 CC:= g++
-CXXFLAGS:= -Wall -g -lopenal
+CXXFLAGS:= -Wall -g -lopenal -std=c++0x
 .PHONY: clean
 obj:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.cpp)))
 dep:= $(foreach dir,$(CURDIR), $(notdir $(wildcard $(CURDIR)/*.h)))
