@@ -32,16 +32,14 @@ void enter();
 
 int main() {
 	atexit(enter);
-	soundEng::getInstance().addSong("sub.wav");
-	soundEng::getInstance().addSong("sfat.wav");
 	Map test("TEST");
 	test.load("test.zmap");
 	Map town("TOWN");
 	town.load("town.zmap");
 	test.rooms[1]->addper(new Zombie());
 	town.rooms.push_back(new Exitroom("TX", &test, 1));
-	test.rooms.push_back(new Exitroom("TX", &town, 3, 1));
-	town.connectRoom(3, 5, SOUTH, false);
+	test.rooms.push_back(new Exitroom("TX", &town, 2));
+	town.connectRoom(2, 3, SOUTH, false);
 	test.connectRoom(1, 3, NORTH, false);
 	Player one;
 	soundEng::getInstance().play(0);

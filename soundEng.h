@@ -41,6 +41,7 @@ public:
 	void addSong(std::string path);
     soundEng(soundEng const&);
     void operator=(soundEng const&);
+	unsigned int getNumSongs();
 };
 
 #endif

@@ -30,7 +30,7 @@
 using namespace std;
 
 Player::Player(void) {
-	srand(time(NULL));
+	srand(int(time(NULL)));
 	cout << "Hello there!\nWhat is your name?" << endl;
 	getline(cin, classname);
 	cout << endl;
@@ -64,7 +64,7 @@ bool Player::defend(Entity * attacker) {
 		//throw DEAD_PLAYER;
 		return true;
 	}
-	cout << classname << " has " << hp << " remaining!" << endl;
+	cout << classname << " has " << hp << " remaining!" << endl << endl;
 	return false;
 }
 

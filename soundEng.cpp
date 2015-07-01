@@ -47,3 +47,7 @@ void soundEng::play(unsigned int song){
 void soundEng::addSong(std::string path){
 	sources.push_back(new Source(path.c_str()));
 }
+
+unsigned int soundEng::getNumSongs(){
+	return sources.size();
+}

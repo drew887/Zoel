@@ -23,11 +23,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
+#include "soundEng.h"
 
 using namespace std;
 using std::string;
 Map::Map(string desc) :description(desc){
-
+	songNo = 0;
 }
 
 
@@ -69,13 +70,27 @@ room_dir determineDir(char dir){
 }
 
 bool Map::load(std::string filename){
-	bool loaded = false;
+	bool loaded = true;
 	vector<room_t> room_types;
 	FILE * filePointer = fopen(filename.c_str(), "rb");
 	if (filePointer){
 		char check[5] = {};
 		fread(check, 4, 1, filePointer);
 		if (!strncmp(check, "ZMAP", 4)){
+			fread(check, 4, 1, filePointer);
+			if (!strncmp(check, "SONG", 4)){
+				unsigned int songLength = 0;
+				fread(&songLength, sizeof(int), 1, filePointer);
+				char * songName = new char[songLength + 1];
+				songName[songLength] = 0;
+				fread(songName, songLength, 1, filePointer);
+				string song = songName;
+				songNo = soundEng::getInstance().getNumSongs();
+				soundEng::getInstance().addSong(song);
+			}
+			else{ 
+				fseek(filePointer, -4, SEEK_CUR);
+			}
 			unsigned int numRooms = 0;
 			fread(&numRooms, sizeof(int), 1, filePointer);
 			for (unsigned int loop = 0; loop < numRooms; loop++){
@@ -114,11 +129,13 @@ bool Map::load(std::string filename){
 		}
 		else{
 			cout << "File is not a valid ZMAP" << endl;
+			loaded = false;
 		}
 		fclose(filePointer);
 	}
 	else{
         cout << "File " << filename << " not found!" << endl;
+		loaded = false;
 	}
 	return loaded;
 }

@@ -39,7 +39,7 @@ bool Entity::attack(Entity * defender){
 }
 bool Entity::defend(Entity * attacker){
     int temphp = hp;
-    cout << attacker->classname << " is attacking! ";
+    cout  << attacker->classname << " is attacking! ";
 	temphp -= (attacker->getatt() - def);
 	if (temphp >= hp){
         cout << "A MASSIVE 0 damage ";
@@ -49,10 +49,10 @@ bool Entity::defend(Entity * attacker){
 		hp = temphp;
 	}
 	if (hp <= 0){
-        cout << classname << " has been defeated!" << endl;
+        cout << classname << " has been defeated!" << endl << endl;
 		isalive = false;
 		return true;
 	}
-    cout << classname << " has " << hp << " remaining!" << endl;
+    cout << classname << " has " << hp << " remaining!" << endl << endl;
 	return false;
 }

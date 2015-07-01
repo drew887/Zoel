@@ -28,12 +28,10 @@
 
 class Exitroom: public Room{
  public:
-  Exitroom(const char * desc, Map * next, unsigned int start = 0, unsigned int nextSong = 0);
+  Exitroom(const char * desc, Map * next, unsigned int start = 0);
   Map * nextMap;
-  unsigned int songNo;
   unsigned int startingRoom;
   virtual Room * start(Player * play);
-
 };
 
 

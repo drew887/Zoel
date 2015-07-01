@@ -20,7 +20,7 @@ void printRoom(Room room);
 void readRoom();
 
 int main(int argc, char * argv[]){
-
+	string songName = "";
 	bool loop = true;
 	char te = 0;
 	while (loop){
@@ -35,6 +35,11 @@ int main(int argc, char * argv[]){
 				printRoom(rooms[0]);
 			}
 			break;
+		case 'm':
+			cout << endl << "Enter filename: ";
+			cin >> songName;
+			cout << songName << endl;
+			break;
 		case 'r':
 			readRoom();
 			break;
@@ -46,27 +51,34 @@ int main(int argc, char * argv[]){
 		}
 	}
 	string filename;
-	cout << "Enter a filename: ";
-	cin >> filename;
-	FILE * filePointer = fopen(filename.c_str(), "wb");
-	if (filePointer){
-		fwrite("ZMAP", 4, 1, filePointer);
-		unsigned int numRooms = rooms.size();
-		fwrite(&numRooms, sizeof(int), 1, filePointer);
-		for (auto a : rooms){
-			fwrite("ROOM", 4, 1, filePointer);
-			int length = a.desc.length();
-			fwrite(&length, sizeof(int), 1, filePointer);
-			fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
-			unsigned int conSize = a.connections.size();
-			fwrite(&conSize, sizeof(int), 1, filePointer);
-			for (unsigned int ctr = 0; ctr < conSize; ctr++){
-				fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
-				fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
+	cout << "Enter a filename (empty for no save): ";
+	cin.ignore(80, '\n');
+	getline(cin, filename);
+	if (filename.length() > 0){
+		FILE * filePointer = fopen(filename.c_str(), "wb");
+		if (filePointer){
+			fwrite("ZMAP", 4, 1, filePointer);
+			fwrite("SONG", 4, 1, filePointer);
+			int songLength = songName.length();
+			fwrite(&songLength, sizeof(int), 1, filePointer);
+			fwrite(songName.c_str(), songLength, 1, filePointer);
+			unsigned int numRooms = rooms.size();
+			fwrite(&numRooms, sizeof(int), 1, filePointer);
+			for (auto a : rooms){
+				fwrite("ROOM", 4, 1, filePointer);
+				int length = a.desc.length();
+				fwrite(&length, sizeof(int), 1, filePointer);
+				fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
+				unsigned int conSize = a.connections.size();
+				fwrite(&conSize, sizeof(int), 1, filePointer);
+				for (unsigned int ctr = 0; ctr < conSize; ctr++){
+					fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
+					fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
+				}
 			}
+			fwrite("END", 3, 1, filePointer);
+			fclose(filePointer);
 		}
-		fwrite("END", 3, 1, filePointer);
-		fclose(filePointer);
 	}
 	return 0;
 }

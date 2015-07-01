@@ -33,5 +33,6 @@ public:
 	std::string description;
 	void connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay = true);
     bool load(std::string filename);
+	unsigned int songNo;
 };
 #endif

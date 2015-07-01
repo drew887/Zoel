@@ -241,7 +241,7 @@ void Room::idleLoop(Player *play){
 						}
 					}
 					if (enemy < enemies.size()){
-						cout << "Attacking the " << target << endl;
+						//cout << "Attacking the " << target << endl;
 						if (play->attack(enemies[enemy])){
 							delete enemies[enemy];
 							enemies.erase(enemies.begin() + enemy);
