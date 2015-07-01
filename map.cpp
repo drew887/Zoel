@@ -85,10 +85,11 @@ bool Map::load(std::string filename){
 				songName[songLength] = 0;
 				fread(songName, songLength, 1, filePointer);
 				string song = songName;
+				delete[] songName;
 				songNo = soundEng::getInstance().getNumSongs();
 				soundEng::getInstance().addSong(song);
 			}
-			else{ 
+			else{
 				fseek(filePointer, -4, SEEK_CUR);
 			}
 			unsigned int numRooms = 0;
@@ -134,7 +135,7 @@ bool Map::load(std::string filename){
 		fclose(filePointer);
 	}
 	else{
-        cout << "File " << filename << " not found!" << endl;
+		cout << "File " << filename << " not found!" << endl;
 		loaded = false;
 	}
 	return loaded;

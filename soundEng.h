@@ -39,8 +39,8 @@ public:
 
 	void play(unsigned int song);
 	void addSong(std::string path);
-    soundEng(soundEng const&);
-    void operator=(soundEng const&);
+	soundEng(soundEng const&);
+	void operator=(soundEng const&);
 	unsigned int getNumSongs();
 };
 

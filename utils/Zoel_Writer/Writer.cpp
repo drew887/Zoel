@@ -113,7 +113,7 @@ void readRoom(){
 					tDesc[descLength] = 0;
 					fread(tDesc, descLength, 1, filePointer);
 					room.desc = tDesc;
-					delete [] tDesc;
+					delete[] tDesc;
 					unsigned int roomCount = 0;
 					fread(&roomCount, sizeof(int), 1, filePointer);
 					for (unsigned int ctr = 0; ctr < roomCount; ctr++){
