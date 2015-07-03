@@ -55,29 +55,39 @@ int main(int argc, char * argv[]){
 	cin.ignore(80, '\n');
 	getline(cin, filename);
 	if (filename.length() > 0){
-		FILE * filePointer = fopen(filename.c_str(), "wb");
-		if (filePointer){
-			fwrite("ZMAP", 4, 1, filePointer);
-			fwrite("SONG", 4, 1, filePointer);
-			int songLength = songName.length();
-			fwrite(&songLength, sizeof(int), 1, filePointer);
-			fwrite(songName.c_str(), songLength, 1, filePointer);
-			unsigned int numRooms = rooms.size();
-			fwrite(&numRooms, sizeof(int), 1, filePointer);
-			for (auto a : rooms){
-				fwrite("ROOM", 4, 1, filePointer);
-				int length = a.desc.length();
-				fwrite(&length, sizeof(int), 1, filePointer);
-				fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
-				unsigned int conSize = a.connections.size();
-				fwrite(&conSize, sizeof(int), 1, filePointer);
-				for (unsigned int ctr = 0; ctr < conSize; ctr++){
-					fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
-					fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
+		if (rooms.size() > 0){
+			FILE * filePointer = fopen(filename.c_str(), "wb");
+			if (filePointer){
+				fwrite("ZMAP", 4, 1, filePointer);
+				int songLength = songName.length();
+				if (songLength > 0){
+					fwrite("SONG", 4, 1, filePointer);
+					fwrite(&songLength, sizeof(int), 1, filePointer);
+					fwrite(songName.c_str(), songLength, 1, filePointer);
+				}
+				unsigned int numRooms = rooms.size();
+				fwrite(&numRooms, sizeof(int), 1, filePointer);
+				for (auto a : rooms){
+					fwrite("ROOM", 4, 1, filePointer);
+					int length = a.desc.length();
+					fwrite(&length, sizeof(int), 1, filePointer);
+					fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
+					unsigned int conSize = a.connections.size();
+					fwrite(&conSize, sizeof(int), 1, filePointer);
+					for (unsigned int ctr = 0; ctr < conSize; ctr++){
+						fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
+						fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
+					}
 				}
 			}
 			fwrite("END", 3, 1, filePointer);
 			fclose(filePointer);
+		}
+		else
+		{
+			cout << endl << "ERROR WRITING, NO ROOMS WERE ADDED, FILE WON'T BE SAVED!\n\nPress enter to continue..." << endl << endl;
+			cin.ignore(80, '\n');
+			exit(-1);
 		}
 	}
 	return 0;
@@ -94,6 +104,7 @@ void printRoom(Room room){
 
 void readRoom(){
 	string filename;
+	string song = "";
 	cout << "Enter a filename: ";
 	cin >> filename;
 	FILE * filePointer = fopen(filename.c_str(), "rb");
@@ -101,6 +112,19 @@ void readRoom(){
 		char check[5] = {};
 		fread(check, 4, 1, filePointer);
 		if (!strncmp(check, "ZMAP", 4)){
+			fread(check, 4, 1, filePointer);
+			if (!strncmp(check, "SONG", 4)){
+				unsigned int songLength = 0;
+				fread(&songLength, sizeof(int), 1, filePointer);
+				char * songName = new char[songLength + 1];
+				songName[songLength] = 0;
+				fread(songName, songLength, 1, filePointer);
+				song = songName;
+				delete[] songName;
+			}
+			else{
+				fseek(filePointer, -4, SEEK_CUR);
+			}
 			unsigned int numRooms = 0;
 			fread(&numRooms, sizeof(int), 1, filePointer);
 			for (unsigned int loop = 0; loop < numRooms; loop++){
@@ -125,6 +149,9 @@ void readRoom(){
 						room.directions.push_back(dir);
 					}
 					printRoom(room);
+					if (song.length() > 0){
+						cout << "Song name: " << song << endl;
+					}
 				}
 				else{
 					cout << "ERR READING ROOM" << endl;

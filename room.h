@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-// TODO rewrite this class to make more sense
 
 #ifndef ROOM_H
 #define ROOM_H
@@ -30,7 +29,7 @@
 #ifndef ROOM_MAX
 #define ROOM_MAX 4
 #endif 
-enum ROOM_ERR{ ALL_CON_USED, CON_ALREADY_USED, ROOM_FULL, DEAD_PLAYER, ROOM_DONE, NO_ROOMS_ATTACHED, MAIN_STREET, SUBWAY, LOADED_RES };
+enum ROOM_ERR{ ALL_CON_USED, CON_ALREADY_USED, ROOM_FULL, DEAD_PLAYER, ROOM_DONE };
 enum room_dir{ NORTH = 0, EAST, SOUTH, WEST, NONE = 4 };
 using std::string;
 using std::vector;
@@ -39,21 +38,21 @@ using std::vector;
 
 class Room {
 public:
-    Room(const char * descr);
-    virtual ~Room(void);
+	Room(const char * descr);
+	virtual ~Room(void);
 	bool addper(Entity * person);
-    bool attach(Room * ar, room_dir direc, bool connectBack = false);
-    virtual Room * start(Player * play);
-    Room * getRoomAtDir(room_dir dir);
-    string description;
+	bool attach(Room * ar, room_dir direc, bool connectBack = false);
+	virtual Room * start(Player * play);
+	Room * getRoomAtDir(room_dir dir);
+	string description;
 protected:
-    void idleLoop(Player * play);
-    Room * next;
-    vector<Entity *> enemies;
-    Room * attached[4];
+	void idleLoop(Player * play);
+	Room * next;
+	vector<Entity *> enemies;
+	Room * attached[4];
 	room_dir at_dir[4];
-    unsigned int attcount;
-    static vector<string> tokens;
+	unsigned int attcount;
+	static vector<string> tokens;
 };
 #pragma pack()
 #endif
