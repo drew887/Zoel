@@ -34,7 +34,7 @@ void WeaponRoom::addwep(Weapon * weps){
 Room * WeaponRoom::start(Player *){
 	cout << "*****\n" << description << "\n*****" << endl;
 	if (attcount == 0){
-		throw NO_ROOMS_ATTACHED;
+		return NULL;
 	}
 	return this->next;
 }

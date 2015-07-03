@@ -30,7 +30,7 @@ HealRoom::HealRoom(const char * descr):Room(descr){
 Room * HealRoom::start(Player *){
     cout << "*****\n" << description << "\n*****" <<endl;
     if(attcount == 0){
-		throw NO_ROOMS_ATTACHED;
+		return NULL;
 	}
     this->next = NULL;
     return this->next;
