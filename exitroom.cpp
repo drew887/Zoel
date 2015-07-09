@@ -37,7 +37,7 @@ Exitroom::Exitroom(const char * desc, Map * next, unsigned int start):Room(desc)
 #include "soundEng.h"
 
 Room * Exitroom::start(Player *){
-	std::cout << "Now entering the " << nextMap->description << "\n\n";
+	std::cout << "Now entering the " << nextMap->name << "\n\n";
 	soundEng::getInstance().play(nextMap->songNo);
     return nextMap->rooms[startingRoom];
 }

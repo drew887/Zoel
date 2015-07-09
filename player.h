@@ -36,10 +36,8 @@ public:
     ~Player(void);
 	void tellwep();
 	void giveWep(Weapon wepa);
-    //bool attack(Entity * defender);
     bool defend(Entity * attacker);
-	unsigned int getatt();
-	unsigned int reatt();
+	unsigned int getAttack();
 };
 #pragma pack()
 #endif

@@ -41,9 +41,9 @@ public:
     virtual ~Entity();
     virtual bool attack(Entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
     virtual bool defend(Entity * attacker);
-	virtual unsigned int getatt(){return att;}//misc getter functions
-	virtual unsigned int getdef(){return def;}
-	virtual unsigned int gethp(){return hp;}
+	virtual unsigned int getAttack();
+	virtual unsigned int getDefence();
+	virtual unsigned int getHp();
 
 };
 #endif

@@ -32,21 +32,21 @@ void enter();
 
 int main() {
 	atexit(enter);
-	Map test("TEST");
+    Map test("TEST");
 	test.load("test.zmap");
 	Map town("TOWN");
-	town.load("town.zmap");
-	test.rooms[1]->addper(new Zombie());
-	town.rooms.push_back(new Exitroom("TX", &test, 1));
-	test.rooms.push_back(new Exitroom("TX", &town, 2));
-	town.connectRoom(2, 3, SOUTH, false);
-	test.connectRoom(1, 3, NORTH, false);
-	Player one;
-	soundEng::getInstance().play(0);
-	Room * currentRoom = test.rooms[0];
+    town.load("town.zmap");
+    test.rooms[1]->addper(new Zombie());
+    town.rooms.push_back(new Exitroom("TX", &test, 1));
+    test.rooms.push_back(new Exitroom("TX", &town, 1));
+    test.connectRoom(1, test.rooms.size()-1, NORTH, false);
+    town.connectRoom(1, town.rooms.size()-1, SOUTH, false);
+    soundEng::getInstance().play(0);
+    Player one;
+    Room * currentRoom = test.rooms[0];
 	while (currentRoom != NULL){
 		currentRoom = currentRoom->start(&one);
-	}
+    }
 	return 0;
 }
 

@@ -1,0 +1,68 @@
+/*
+* world.cpp
+* This file is part of Zoel
+*
+* Copyright (C) 2013 - 2015 - Andrew Mcdonald
+*
+* Zoel is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
+* (at your option) any later version.
+*
+* Zoel is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with Zoel; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin St, Fifth Floor,
+* Boston, MA  02110-1301  USA
+*/
+
+#include "world.h"
+#include <fstream>
+#include <iostream>
+
+using namespace std;
+
+World::World(){
+	
+}
+
+World::~World(){
+	for (unsigned int map = 0; map < maps.size(); map++){
+		delete maps[map];
+	}
+}
+
+bool World::load(string filename){
+	bool result = true;
+	ifstream fin(filename);
+	if (fin.is_open()){
+		string input;
+		getline(fin, input);
+		while (!fin.eof() && input.length() > 1){
+			maps.push_back(new Map(input));
+			Map * last = maps.back();
+			last->load(input);
+			getline(fin, input);
+		}
+	}
+	else{
+		cout << "ERROR " << filename << " NOT FOUND!" << endl;
+		result = false;
+	}
+	return result;
+}
+
+Map * World::getMapByName(string name){
+	Map * result = NULL;
+	for (unsigned int map = 0; map < maps.size(); map++){
+		if (maps[map]->name == name){
+			result = maps[map];
+			break;
+		}
+	}
+	return result;
+}

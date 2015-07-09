@@ -27,10 +27,10 @@
 #include "room.h"
 class Map {
 public:
-    Map(std::string description);
+    Map(std::string Name);
     ~Map();
 	std::vector<Room*> rooms;
-	std::string description;
+	std::string name;
 	void connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay = true);
     bool load(std::string filename);
 	unsigned int songNo;

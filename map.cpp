@@ -26,8 +26,41 @@
 #include "soundEng.h"
 
 using namespace std;
-using std::string;
-Map::Map(string desc) :description(desc){
+
+class zoelMapVersion{
+public:
+    zoelMapVersion(char letter, char major, char minor){
+        CUR_VER_LETTER = letter;
+        CUR_VER_MAJOR = major;
+        CUR_VER_MINOR = minor;
+    }
+    void print(){
+        cout << "VERSION " << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
+    }
+    void write(FILE * filePointer) const {
+        fwrite(&CUR_VER_LETTER, 1, 1, filePointer);
+        fwrite(&CUR_VER_MAJOR, 1, 1, filePointer);
+        fwrite(&CUR_VER_MINOR, 1, 1, filePointer);
+    }
+    bool operator== (const zoelMapVersion & other){
+        bool result = false;
+        if(CUR_VER_LETTER == other.CUR_VER_LETTER){
+            if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
+                if(CUR_VER_MINOR == other.CUR_VER_MINOR){
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+    unsigned char CUR_VER_LETTER;
+    unsigned char CUR_VER_MAJOR;
+    unsigned char CUR_VER_MINOR;
+};
+
+
+
+Map::Map(string Name) :name(Name){
 	songNo = 0;
 }
 
@@ -77,6 +110,18 @@ bool Map::load(std::string filename){
 		char check[5] = {};
 		fread(check, 4, 1, filePointer);
 		if (!strncmp(check, "ZMAP", 4)){
+            //---
+            char ver[3] = {};
+            fread(&ver, 3, 1, filePointer);
+            zoelMapVersion version(ver[0], ver[1], ver[2]);
+            unsigned int nameSize = 0;
+            fread(&nameSize, sizeof(int), 1, filePointer);
+            char * cname = new char[nameSize+1];
+            cname[nameSize] = 0;
+            fread(cname, nameSize, 1, filePointer);
+            name = cname;
+            delete[] cname;
+            //---
 			fread(check, 4, 1, filePointer);
 			if (!strncmp(check, "SONG", 4)){
 				unsigned int songLength = 0;

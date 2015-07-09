@@ -27,12 +27,13 @@ using namespace std;
 HealRoom::HealRoom(const char * descr):Room(descr){
 
 }
-Room * HealRoom::start(Player *){
+Room * HealRoom::start(Player * play){
     cout << "*****\n" << description << "\n*****" <<endl;
     if(attcount == 0){
 		return NULL;
 	}
-    this->next = NULL;
+	play->heal();
+	idleLoop(play);
     return this->next;
 }
 

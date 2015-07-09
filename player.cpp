@@ -40,7 +40,7 @@ Player::Player(void) {
 	strcpy(wep.name, "None");
 	wep.att = 0;
 	wep.spd = 0;
-	cout << "Welcome " << classname << ", to the world of ZOEL." << endl << endl;
+    cout << "Welcome " << classname << ", to the world of ZOEL.\nEnter 'help' for a list of commands." << endl << endl;
 }
 
 Player::~Player(void) {
@@ -50,7 +50,7 @@ Player::~Player(void) {
 bool Player::defend(Entity * attacker) {
 	int temphp = hp;
 	cout << attacker->classname << " is attacking! ";
-	temphp -= (attacker->getatt() - def);
+	temphp -= (attacker->getAttack() - def);
 	if (temphp >= hp) {
 		cout << "A SUPER FUN 0 damage ";
 	}
@@ -61,7 +61,6 @@ bool Player::defend(Entity * attacker) {
 	if (hp <= 0) {
 		cout << classname << " has been defeated!" << endl;
 		isalive = false;
-		//throw DEAD_PLAYER;
 		return true;
 	}
 	cout << classname << " has " << hp << " remaining!" << endl << endl;
@@ -78,14 +77,15 @@ void Player::tellwep() {
 	cout << wep.name << endl;
 }
 
-unsigned int Player::getatt() {
-	return this->reatt();
-}
-unsigned int Player::reatt() {
-	if (wep.spd == 0){
-		return att + wep.att - 1;
+unsigned int Player::getAttack() {
+	unsigned int result = 0;
+	if (wep.spd > 0){
+		result = att + wep.att + (rand() % wep.spd);
 	}
-	return att + wep.att + (rand() % wep.spd);
+	else {
+		result = att + wep.att;
+	}
+	return result;
 }
 
 void Player::save() {
@@ -102,26 +102,29 @@ void Player::save() {
 		}
 		if (input == 'n'){
 			cout << "okay, did not overwrite" << endl;
+			fclose(filePointer);
 			return;
 		}
 		fclose(filePointer);
 	}
 	filePointer = fopen(classname.c_str(), "wb");
-	if (!filePointer){
-		throw 4;
+	if (filePointer){
+		char check[] = "zoel";
+		fwrite(check, sizeof(check), 1, filePointer);
+		fwrite(&att, sizeof(att), 1, filePointer);
+		fwrite(&def, sizeof(def), 1, filePointer);
+		fwrite(&maxhp, sizeof(maxhp), 1, filePointer);
+		fwrite(&hp, sizeof(hp), 1, filePointer);
+		fwrite(&wep, sizeof(Weapon), 1, filePointer);
+		int nameLength = classname.length();
+		fwrite(&nameLength, sizeof(int), 1, filePointer);
+		fwrite(classname.c_str(), classname.length(), 1, filePointer);
+		fclose(filePointer);
+		cout << "Save complete!" << endl;
 	}
-	char check[] = "zoel";
-	fwrite(check, sizeof(check), 1, filePointer);
-	fwrite(&att, sizeof(att), 1, filePointer);
-	fwrite(&def, sizeof(def), 1, filePointer);
-	fwrite(&maxhp, sizeof(maxhp), 1, filePointer);
-	fwrite(&hp, sizeof(hp), 1, filePointer);
-	fwrite(&wep, sizeof(Weapon), 1, filePointer);
-	int nameLength = classname.length();
-	fwrite(&nameLength, sizeof(int), 1, filePointer);
-	fwrite(classname.c_str(), classname.length(), 1, filePointer);
-	fclose(filePointer);
-	cout << "Save complete!" << endl;
+	else{
+		cout << "Error writing save, aborting!" << endl;
+	}
 }
 
 bool Player::load(const char *name){

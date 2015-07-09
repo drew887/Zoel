@@ -19,26 +19,80 @@ void addRoom();
 void printRoom(Room room);
 void readRoom();
 
+class zoelMapVersion{
+public:
+	zoelMapVersion(char letter, char major, char minor){
+		CUR_VER_LETTER = letter;
+		CUR_VER_MAJOR = major;
+		CUR_VER_MINOR = minor;
+	}
+	void print(){
+		cout << "VERSION " << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
+	}
+	void write(FILE * filePointer) const {
+		fwrite(&CUR_VER_LETTER, 1, 1, filePointer);
+		fwrite(&CUR_VER_MAJOR, 1, 1, filePointer);
+		fwrite(&CUR_VER_MINOR, 1, 1, filePointer);
+	}
+	bool operator== (const zoelMapVersion & other){
+		bool result = false;
+		if(CUR_VER_LETTER == other.CUR_VER_LETTER){
+			if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
+				if(CUR_VER_MINOR == other.CUR_VER_MINOR){
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+	unsigned char CUR_VER_LETTER;
+	unsigned char CUR_VER_MAJOR;
+	unsigned char CUR_VER_MINOR;
+};
+
+const zoelMapVersion CUR_VER('c', 1, 0);
+
 int main(int argc, char * argv[]){
 	string songName = "";
+	string mapName = "";
 	bool loop = true;
 	char te = 0;
-	while (loop){
+	cout << "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit" << endl << endl;
+	while(loop){
 		cout << "Enter state: ";
 		cin >> te;
-		switch (te){
+		cin.ignore(80, '\n');
+		switch(te){
 		case 'a':
 			addRoom();
 			break;
+		case 'e':
+			if(rooms.size() > 0){
+				cout << "Remove all rooms?" << endl;
+				char response = 0;
+				while((response != 'y' && response != 'n') || cin.fail()){
+					cin.clear();
+					cout << "Please enter 'y' or 'n': ";
+					cin >> response;
+					cin.ignore(80, '\n');
+				}
+				if(response == 'y'){
+					rooms.clear();
+					cout << "Emptied!" << endl;
+				}
+			}
+			else{
+				cout << "No rooms to empty!" << endl;
+			}
+			break;
 		case 'p':
-			if (rooms.size() > 0){
-				printRoom(rooms[0]);
+			for(unsigned int room = 0; room < rooms.size(); room++){
+				printRoom(rooms[room]);
 			}
 			break;
 		case 'm':
 			cout << endl << "Enter filename: ";
-			cin >> songName;
-			cout << songName << endl;
+			getline(cin, songName);
 			break;
 		case 'r':
 			readRoom();
@@ -47,34 +101,39 @@ int main(int argc, char * argv[]){
 			loop = false;
 			break;
 		default:
-			cout << "I dont know " << te << endl;
+			cout << "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit" << endl << endl;
 		}
 	}
 	string filename;
 	cout << "Enter a filename (empty for no save): ";
-	cin.ignore(80, '\n');
 	getline(cin, filename);
-	if (filename.length() > 0){
-		if (rooms.size() > 0){
+	if(filename.length() > 0){
+		if(rooms.size() > 0){
 			FILE * filePointer = fopen(filename.c_str(), "wb");
-			if (filePointer){
+			if(filePointer){
 				fwrite("ZMAP", 4, 1, filePointer);
+				CUR_VER.write(filePointer);
+				cout << "Enter Map name:" << endl;
+				getline(cin, mapName);
+				int mapNameLength = mapName.length();
+				fwrite(&mapNameLength, sizeof(int), 1, filePointer);
+				fwrite(mapName.c_str(), mapNameLength, 1, filePointer);
 				int songLength = songName.length();
-				if (songLength > 0){
+				if(songLength > 0){
 					fwrite("SONG", 4, 1, filePointer);
 					fwrite(&songLength, sizeof(int), 1, filePointer);
 					fwrite(songName.c_str(), songLength, 1, filePointer);
 				}
 				unsigned int numRooms = rooms.size();
 				fwrite(&numRooms, sizeof(int), 1, filePointer);
-				for (auto a : rooms){
+				for(auto a : rooms){
 					fwrite("ROOM", 4, 1, filePointer);
 					int length = a.desc.length();
 					fwrite(&length, sizeof(int), 1, filePointer);
 					fwrite(a.desc.c_str(), a.desc.length(), 1, filePointer);
 					unsigned int conSize = a.connections.size();
 					fwrite(&conSize, sizeof(int), 1, filePointer);
-					for (unsigned int ctr = 0; ctr < conSize; ctr++){
+					for(unsigned int ctr = 0; ctr < conSize; ctr++){
 						fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
 						fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
 					}
@@ -96,7 +155,7 @@ int main(int argc, char * argv[]){
 void printRoom(Room room){
 	cout << room.desc << endl;
 	cout << "num cons: " << room.connections.size() << endl;
-	for (unsigned int ctr = 0; ctr < room.connections.size(); ctr++){
+	for(unsigned int ctr = 0; ctr < room.connections.size(); ctr++){
 		cout << room.connections[ctr] << room.directions[ctr] << " ";
 	}
 	cout << endl;
@@ -105,15 +164,29 @@ void printRoom(Room room){
 void readRoom(){
 	string filename;
 	string song = "";
+	string name = "";
 	cout << "Enter a filename: ";
 	cin >> filename;
 	FILE * filePointer = fopen(filename.c_str(), "rb");
-	if (filePointer){
+	if(filePointer){
 		char check[5] = {};
 		fread(check, 4, 1, filePointer);
-		if (!strncmp(check, "ZMAP", 4)){
+		if(!strncmp(check, "ZMAP", 4)){
+			char ver[3] = {};
+			fread(&ver, 3, 1, filePointer);
+			zoelMapVersion version(ver[0], ver[1], ver[2]);
+			cout << endl;
+			version.print();
+			unsigned int nameSize = 0;
+			fread(&nameSize, sizeof(int), 1, filePointer);
+			char * cname = new char[nameSize + 1];
+			cname[nameSize] = 0;
+			fread(cname, nameSize, 1, filePointer);
+			name = cname;
+			delete[] cname;
+			cout << "Map name: " << name << endl;
 			fread(check, 4, 1, filePointer);
-			if (!strncmp(check, "SONG", 4)){
+			if(!strncmp(check, "SONG", 4)){
 				unsigned int songLength = 0;
 				fread(&songLength, sizeof(int), 1, filePointer);
 				char * songName = new char[songLength + 1];
@@ -127,9 +200,9 @@ void readRoom(){
 			}
 			unsigned int numRooms = 0;
 			fread(&numRooms, sizeof(int), 1, filePointer);
-			for (unsigned int loop = 0; loop < numRooms; loop++){
+			for(unsigned int loop = 0; loop < numRooms; loop++){
 				fread(check, 4, 1, filePointer);
-				if (!strncmp(check, "ROOM", 4)){
+				if(!strncmp(check, "ROOM", 4)){
 					Room room;
 					unsigned int descLength = 0;
 					fread(&descLength, sizeof(int), 1, filePointer);
@@ -140,7 +213,7 @@ void readRoom(){
 					delete[] tDesc;
 					unsigned int roomCount = 0;
 					fread(&roomCount, sizeof(int), 1, filePointer);
-					for (unsigned int ctr = 0; ctr < roomCount; ctr++){
+					for(unsigned int ctr = 0; ctr < roomCount; ctr++){
 						unsigned int num = 0;
 						char dir = 'N';
 						fread(&num, sizeof(int), 1, filePointer);
@@ -149,13 +222,13 @@ void readRoom(){
 						room.directions.push_back(dir);
 					}
 					printRoom(room);
-					if (song.length() > 0){
-						cout << "Song name: " << song << endl;
-					}
 				}
 				else{
 					cout << "ERR READING ROOM" << endl;
 				}
+			}
+			if(song.length() > 0){
+				cout << "Song name: " << song << endl;
 			}
 		}
 		else{
@@ -171,20 +244,19 @@ void readRoom(){
 void addRoom(){
 	Room room;
 	cout << "Enter Description of room: " << endl;
-	cin.ignore(80, '\n');
 	getline(cin, room.desc);
 	int input = 0;
 	int curCon = 0;
-	while (curCon < 4){
+	while(curCon < 4){
 		cout << "Enter connection number (-1 to quit): ";
 		cin >> input;
-		while (cin.fail()){
+		while(cin.fail()){
 			cin.clear();
 			cin.ignore(80, '\n');
 			cout << "Please enter only positive numbers or any negative to quit: ";
 			cin >> input;
 		}
-		if (input < 0){
+		if(input < 0){
 			break;
 		}
 		room.connections.push_back(input);
@@ -192,8 +264,8 @@ void addRoom(){
 		cout << "Enter the direction it lies: ";
 		cin >> dir;
 		bool loop = true;
-		while (loop){
-			switch (dir){
+		while(loop){
+			switch(dir){
 			case 'N':
 			case 'E':
 			case 'S':

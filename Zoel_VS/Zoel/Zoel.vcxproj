@@ -100,7 +100,7 @@
     <ClCompile Include="..\..\room.cpp" />
     <ClCompile Include="..\..\soundEng.cpp" />
     <ClCompile Include="..\..\wavloader.cpp" />
-    <ClCompile Include="..\..\weproom.cpp" />
+    <ClCompile Include="..\..\world.cpp" />
     <ClCompile Include="..\..\Zoel.cpp" />
     <ClCompile Include="..\..\zombie.cpp" />
   </ItemGroup>
@@ -114,7 +114,7 @@
     <ClInclude Include="..\..\player.h" />
     <ClInclude Include="..\..\room.h" />
     <ClInclude Include="..\..\soundEng.h" />
-    <ClInclude Include="..\..\weproom.h" />
+    <ClInclude Include="..\..\world.h" />
     <ClInclude Include="..\..\zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
