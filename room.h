@@ -46,6 +46,7 @@ public:
 	Room * getRoomAtDir(room_dir dir);
 	string description;
 protected:
+	void printDescription();
 	void idleLoop(Player * play);
 	Room * next;
 	vector<Entity *> enemies;

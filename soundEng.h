@@ -35,7 +35,7 @@ class soundEng{
 	std::vector<Source *> sources;
 	unsigned int currentSong;
 public:
-	static soundEng & getInstance();
+    static soundEng & getInstance();
 
 	void play(unsigned int song);
 	void addSong(std::string path);

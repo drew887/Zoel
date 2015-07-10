@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\map.cpp" />
     <ClCompile Include="..\..\player.cpp" />
     <ClCompile Include="..\..\room.cpp" />
+    <ClCompile Include="..\..\slowout.cpp" />
     <ClCompile Include="..\..\soundEng.cpp" />
     <ClCompile Include="..\..\wavloader.cpp" />
     <ClCompile Include="..\..\world.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="..\..\map.h" />
     <ClInclude Include="..\..\player.h" />
     <ClInclude Include="..\..\room.h" />
+    <ClInclude Include="..\..\slowout.h" />
     <ClInclude Include="..\..\soundEng.h" />
     <ClInclude Include="..\..\world.h" />
     <ClInclude Include="..\..\zombie.h" />

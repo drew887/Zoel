@@ -28,29 +28,26 @@
 #include "zombie.h"
 #include <iostream>
 
-void enter();
-
 int main() {
-	atexit(enter);
-    Map test("TEST");
-	test.load("test.zmap");
-	Map town("TOWN");
-    town.load("town.zmap");
-    test.rooms[1]->addper(new Zombie());
-    town.rooms.push_back(new Exitroom("TX", &test, 1));
-    test.rooms.push_back(new Exitroom("TX", &town, 1));
-    test.connectRoom(1, test.rooms.size()-1, NORTH, false);
-    town.connectRoom(1, town.rooms.size()-1, SOUTH, false);
-    soundEng::getInstance().play(0);
-    Player one;
-    Room * currentRoom = test.rooms[0];
-	while (currentRoom != NULL){
-		currentRoom = currentRoom->start(&one);
-    }
+	Map test("TEST");
+	if(test.load("test.zmap")){
+		Map town("TOWN");
+		if(town.load("town.zmap")){
+			test.rooms[1]->addper(new Zombie());
+			town.rooms.push_back(new Exitroom("TX", &test, 1));
+			test.rooms.push_back(new Exitroom("TX", &town, 1));
+			test.connectRoom(1, test.rooms.size() - 1, NORTH, false);
+			town.connectRoom(1, town.rooms.size() - 1, SOUTH, false);
+			soundEng::getInstance().play(0);
+			Player one;
+			Room * currentRoom = test.rooms[0];
+			while(currentRoom != NULL){
+				currentRoom = currentRoom->start(&one);
+			}
+		}
+	}
+	std::cout << "\nPress enter to continue...\n";
+	std::cin.ignore(80, '\n');
 	return 0;
 }
 
-void enter(void) {
-	std::cout << "\nPress enter to continue...\n";
-	std::cin.ignore(80, '\n');
-}

@@ -26,11 +26,13 @@
 
 #include "room.h"
 #include "player.h"
+#include "slowout.h"
 
 using namespace std;
+using zoel::SlowOut;
+vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack", "faster", "slower" };
 
-vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack" };
-
+SlowOut slow;
 
 Room::Room(const char * descr) :description(descr){
 	attcount = 0;
@@ -62,18 +64,55 @@ inline room_dir directionSwap(room_dir tw){
 }
 
 Room * Room::start(Player * playera){
-	cout << description << endl;
+
+	printDescription();
 	if (enemies.size() > 0){
-		for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-			cout << "There is a " << enemies[enemy]->classname << " here!" << endl;
+        for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+            slow << "There is a " << enemies[enemy]->classname << " here!" << endl;
+            slow.print();
 		}
 	}
-	if (attcount == 0){
-		//throw NO_ROOMS_ATTACHED;
-		return NULL;
+    if (attcount == 0){
+        return NULL;
 	}
 	idleLoop(playera);
 	return this->next;
+}
+
+void Room::printDescription(){
+	slow << description;
+	if(attcount > 0){
+		if(attcount > 1){
+			slow << " There are paths to the ";
+		}
+		else{
+			slow << " There is a path to the ";
+		}
+		for(unsigned int curCon = 0; curCon < attcount; curCon++){
+			switch(at_dir[curCon]){
+			case NORTH:
+				slow << "North";
+				break;
+			case EAST:
+				slow << "East";
+				break;
+			case SOUTH:
+				slow << "South";
+				break;
+			case WEST:
+				slow << "West";
+				break;
+			}
+			if(curCon < attcount - 1){
+				slow << ", ";
+			}
+			else{
+				slow << ".";
+			}
+		}
+	}
+	slow << endl;
+	slow.print();
 }
 
 bool Room::addper(Entity * person){
@@ -179,7 +218,8 @@ void Room::idleLoop(Player *play){
 					loop = false;
 				}
 				else{
-					cout << "you can't go that way" << endl;
+                    slow << "you can't go that way" << endl;
+                    slow.print();
 				}
 				break;
 			case 4: //quit
@@ -188,9 +228,11 @@ void Room::idleLoop(Player *play){
 				return;
 				break;
 			case 5:
-				cout << "The commands are:" << endl;
+                slow << "The commands are:" << endl;
+                slow.print();
 				for (unsigned int ctr = 0; ctr < tokens.size(); ctr++){
-					cout << "  " << tokens[ctr] << endl;
+                    slow << "  " << tokens[ctr] << endl;
+                    slow.print();
 				}
 				break;
 			case 6:
@@ -200,7 +242,8 @@ void Room::idleLoop(Player *play){
 				play->save();
 				break;
 			case 8:
-				cout << "please enter a name to load: "; { //cordon off this block to stop cross label initialization errors
+                slow << "please enter a name to load: ";
+                slow.print(); { //cordon off this block to stop cross label initialization errors
 					std::string name;
 					getline(cin, name);
 					if (play->load(name.c_str())){
@@ -209,10 +252,11 @@ void Room::idleLoop(Player *play){
 				}
 				break;
 			case 9: //look
-				cout << description << endl;
+				printDescription();
 				if (enemies.size() > 0){
 					for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-						cout << "There is a " << enemies[enemy]->classname << " here!" << endl;
+                        slow << "There is a " << enemies[enemy]->classname << " here!" << endl;
+                        slow.print();
 					}
 				}
 				break;
@@ -222,9 +266,11 @@ void Room::idleLoop(Player *play){
 					string target = "";
 					vector<string> targets;
 					if (words.size() < 2){
-						cout << "Attack what?: " << endl;
+                        slow << "Attack what?: " << endl;
+                        slow.print();
 						for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-							cout << enemies[enemy]->classname << endl;
+                            slow << enemies[enemy]->classname << endl;
+                            slow.print();
 						}
 						cout << endl;
 						getline(cin, targetMesg);
@@ -241,28 +287,43 @@ void Room::idleLoop(Player *play){
 						}
 					}
 					if (enemy < enemies.size()){
-						//cout << "Attacking the " << target << endl;
-						if (play->attack(enemies[enemy])){
+                        if (play->attack(enemies[enemy])){
 							delete enemies[enemy];
 							enemies.erase(enemies.begin() + enemy);
 						}
 					}
 					else{
-						cout << "Couldn't find the " << target << endl;
+                        slow << "Couldn't find the " << target << endl;
+                        slow.print();
 					}
 				}
 				else{
-					cout << "There isn't any one to attack!" << endl;
+                    slow << "There isn't any one to attack!" << endl;
+                    slow.print();
 				}
 				break;
+			case 11: //faster
+				if(slow.timeStep > 0){
+					slow.timeStep -= 5;
+				}
+				slow << "The speed is now: " << slow.timeStep << endl;
+				slow.print();
+				break;
+			case 12: //slower
+				slow.timeStep += 5;
+				slow << "The speed is now: " << slow.timeStep << endl;
+				slow.print();
+				break; 
 			default:
-				cout << "I don't know " << words[0] << endl;
+                slow << "I don't know " << words[0] << endl;
+                slow.print();
 			}//end switch
 
 			if (enemies.size() > 0){
 				for (unsigned int enemy = 0; enemy < enemies.size(); enemy++){
 					if (enemies[enemy]->attack(play)){
-						cout << endl << "GAME OVER!" << endl;
+                        slow << endl << "GAME OVER!" << endl;
+                        slow.print();
 						next = NULL;
 						loop = false;
 					}

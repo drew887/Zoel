@@ -20,6 +20,7 @@
  * Boston, MA  02110-1301  USA
  */
 #include "entity.h"
+#include "slowout.h"
 #include <iostream>
 
 using namespace std;
@@ -38,22 +39,25 @@ bool Entity::attack(Entity * defender){
 	return defender->defend(this);
 }
 bool Entity::defend(Entity * attacker){
+    zoel::SlowOut slow;
     int temphp = hp;
-    cout  << attacker->classname << " is attacking! ";
+    slow  << attacker->classname << " is attacking! ";
 	temphp -= (attacker->getAttack() - def);
 	if (temphp >= hp){
-        cout << "A MASSIVE 0 damage ";
+        slow << "A MASSIVE 0 damage ";
 	}
 	else{
-        cout << "A Whopping " << (hp - temphp) << " damage! ";
+        slow << "A Whopping " << (hp - temphp) << " damage! ";
 		hp = temphp;
 	}
 	if (hp <= 0){
-        cout << classname << " has been defeated!" << endl << endl;
+        slow << classname << " has been defeated!" << endl << endl;
 		isalive = false;
+        slow.print();
 		return true;
 	}
-    cout << classname << " has " << hp << " remaining!" << endl << endl;
+    slow << classname << " has " << hp << " remaining!" << endl << endl;
+    slow.print();
 	return false;
 }
 

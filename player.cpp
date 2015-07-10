@@ -21,6 +21,8 @@
  */
 #include "room.h"
 #include "player.h"
+#include "slowout.h"
+
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
@@ -29,9 +31,12 @@
 
 using namespace std;
 
+extern zoel::SlowOut slow;
+
 Player::Player(void) {
 	srand(int(time(NULL)));
-	cout << "Hello there!\nWhat is your name?" << endl;
+    slow << "Hello there!\nWhat is your name?" << endl;
+    slow.print();
 	getline(cin, classname);
 	cout << endl;
 	hp = maxhp = (rand() % 8) + 30;
@@ -40,7 +45,8 @@ Player::Player(void) {
 	strcpy(wep.name, "None");
 	wep.att = 0;
 	wep.spd = 0;
-    cout << "Welcome " << classname << ", to the world of ZOEL.\nEnter 'help' for a list of commands." << endl << endl;
+    slow << "Welcome " << classname << ", to the world of ZOEL.\nEnter 'help' for a list of commands." << endl << endl;
+    slow.print();
 }
 
 Player::~Player(void) {
@@ -48,22 +54,24 @@ Player::~Player(void) {
 }
 
 bool Player::defend(Entity * attacker) {
-	int temphp = hp;
-	cout << attacker->classname << " is attacking! ";
+    int temphp = hp;
+    slow << attacker->classname << " is attacking! ";
 	temphp -= (attacker->getAttack() - def);
 	if (temphp >= hp) {
-		cout << "A SUPER FUN 0 damage ";
+        slow << "A SUPER FUN 0 damage ";
 	}
 	else {
-		cout << "A Whopping " << (hp - temphp) << " damage! ";
+        slow << "A Whopping " << (hp - temphp) << " damage! ";
 		hp = temphp;
 	}
 	if (hp <= 0) {
-		cout << classname << " has been defeated!" << endl;
+        slow << classname << " has been defeated!" << endl;
+        slow.print();
 		isalive = false;
 		return true;
 	}
-	cout << classname << " has " << hp << " remaining!" << endl << endl;
+    slow << classname << " has " << hp << " remaining!" << endl << endl;
+    slow.print();
 	return false;
 }
 
@@ -74,7 +82,7 @@ void Player::giveWep(Weapon wepa) {
 }
 
 void Player::tellwep() {
-	cout << wep.name << endl;
+    slow << wep.name << endl;
 }
 
 unsigned int Player::getAttack() {
@@ -92,16 +100,19 @@ void Player::save() {
 	FILE * filePointer = fopen(classname.c_str(), "r");
 	char input;
 	if (filePointer) {
-		cout << "File already exsists. Overwrite? y/n" << endl;
+        slow << "File already exsists. Overwrite? y/n" << endl;
+        slow.print();
 		cin >> input;
 		cin.ignore(80, '\n');
 		while (input != 'y' && input != 'n'){
-			cout << "please enter y or n : ";
+            slow << "please enter y or n : ";
+            slow.print();
 			cin >> input;
 			cin.ignore(80, '\n');
 		}
 		if (input == 'n'){
-			cout << "okay, did not overwrite" << endl;
+            slow << "okay, did not overwrite" << endl;
+            slow.print();
 			fclose(filePointer);
 			return;
 		}
@@ -120,31 +131,34 @@ void Player::save() {
 		fwrite(&nameLength, sizeof(int), 1, filePointer);
 		fwrite(classname.c_str(), classname.length(), 1, filePointer);
 		fclose(filePointer);
-		cout << "Save complete!" << endl;
+        slow << "Save complete!" << endl;
 	}
 	else{
-		cout << "Error writing save, aborting!" << endl;
+        slow << "Error writing save, aborting!" << endl;
 	}
+    slow.print();
 }
 
 bool Player::load(const char *name){
 	FILE * filePointer = fopen(name, "rb");
 	if (!filePointer){
-		cout << "File not found, aborting load!" << endl;
+        slow << "File not found, aborting load!" << endl;
+        slow.print();
 		return false;
 	}
 	char check[5] = {};
 	fread(check, 5, 1, filePointer);
 	if (strncmp(check, "zoel", 4)){
-		cout << "CORRUPT OR IMPROPERLY MODDED SAVE" << endl;
-		return false;
+        slow << "CORRUPT OR IMPROPERLY MODDED SAVE" << endl;
+        slow.print();
+        return false;
 	}
 	fread(&att, sizeof(int), 1, filePointer);
 	fread(&def, sizeof(int), 1, filePointer);
 	fread(&maxhp, sizeof(int), 1, filePointer);
 	fread(&hp, sizeof(int), 1, filePointer);
 	if (hp > maxhp){
-		cout << "Modded save file, you can't have more hp then your max hp silly!" << endl;
+        cout << "Modded save file, you can't have more hp then your max hp silly!" << endl;
 		exit(0xDEAD);
 	}
 	fread(&this->wep, sizeof(Weapon), 1, filePointer);
@@ -155,13 +169,15 @@ bool Player::load(const char *name){
 	fread(tempName, nameLength, 1, filePointer);
 	classname = tempName;
 	delete[] tempName;
-	cout << "Loaded " << classname << " save!" << endl;
+    slow << "Loaded " << classname << " save!" << endl;
+    slow.print();
 	stats();
 	fclose(filePointer);
 	return true;
 }
 void Player::stats(){
-	cout << "Stats:\nName: " << classname << endl << "Maxhp: " << maxhp << "\thp: " << hp << "\natt: " << att << " \t def: " << def << "\nweapon: " << wep.name << "\t att: " << wep.att << endl;
+    slow << "Stats:\nName: " << classname << endl << "Maxhp: " << maxhp << "\thp: " << hp << "\natt: " << att << " \t def: " << def << "\nweapon: " << wep.name << "\t att: " << wep.att << endl;
+    slow.print();
 }
 void Player::heal(){
 	hp = maxhp;
