@@ -87,8 +87,8 @@ bool World::load(string filename){
 						if(in){
 							Map * con = getMapByName(connection);
 							if(con){
-								in->rooms.push_back(new Exitroom("TX", con, roomNo));
-								in->connectRoom(conNo, in->rooms.size() - 1, determineDir(direction), false);
+								in->rooms.push_back(new Exitroom("TX", con, conNo));
+								in->connectRoom(roomNo, in->rooms.size() - 1, determineDir(direction), false);
 							}
 							else{
 								cerr << "ERR MAP " << connection << " NOT FOUND" << endl;
