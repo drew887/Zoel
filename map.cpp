@@ -61,128 +61,128 @@ public:
 
 
 Map::Map(string Name) :name(Name){
-	songNo = 0;
+    songNo = 0;
 }
 
 
 Map::~Map(){
-	for (unsigned int ctr = 0; ctr < rooms.size(); ctr++){
-		delete rooms[ctr];
-	}
+    for(unsigned int ctr = 0; ctr < rooms.size(); ctr++){
+        delete rooms[ctr];
+    }
 }
 
 void Map::connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay){
-	if ((one != two) && (one < rooms.size()) && (two < rooms.size())){
-		rooms[one]->attach(rooms[two], dir, twoWay);
-	}
+    if((one != two) && (one < rooms.size()) && (two < rooms.size())){
+        rooms[one]->attach(rooms[two], dir, twoWay);
+    }
 }
 
 struct room_t{
-	string desc;
-	vector<int> connections;
-	vector<char>directions;
+    string desc;
+    vector<int> connections;
+    vector<char>directions;
 };
 
 room_dir determineDir(char dir){
-	room_dir direction = NONE;
-	switch (dir){
-	case 'N':
-		direction = NORTH;
-		break;
-	case 'E':
-		direction = EAST;
-		break;
-	case 'S':
-		direction = SOUTH;
-		break;
-	case 'W':
-		direction = WEST;
-		break;
-	}
-	return direction;
+    room_dir direction = NONE;
+    switch(dir){
+    case 'N':
+        direction = NORTH;
+        break;
+    case 'E':
+        direction = EAST;
+        break;
+    case 'S':
+        direction = SOUTH;
+        break;
+    case 'W':
+        direction = WEST;
+        break;
+    }
+    return direction;
 }
 
 bool Map::load(std::string filename){
-	bool loaded = true;
-	vector<room_t> room_types;
-	FILE * filePointer = fopen(filename.c_str(), "rb");
-	if (filePointer){
-		char check[5] = {};
-		fread(check, 4, 1, filePointer);
-		if (!strncmp(check, "ZMAP", 4)){
+    bool loaded = true;
+    vector<room_t> room_types;
+    FILE * filePointer = fopen(filename.c_str(), "rb");
+    if(filePointer){
+        char check[5] = {};
+        fread(check, 4, 1, filePointer);
+        if(!strncmp(check, "ZMAP", 4)){
             //---
             char ver[3] = {};
             fread(&ver, 3, 1, filePointer);
             zoelMapVersion version(ver[0], ver[1], ver[2]);
             unsigned int nameSize = 0;
             fread(&nameSize, sizeof(int), 1, filePointer);
-            char * cname = new char[nameSize+1];
+            char * cname = new char[nameSize + 1];
             cname[nameSize] = 0;
             fread(cname, nameSize, 1, filePointer);
             name = cname;
             delete[] cname;
             //---
-			fread(check, 4, 1, filePointer);
-			if (!strncmp(check, "SONG", 4)){
-				unsigned int songLength = 0;
-				fread(&songLength, sizeof(int), 1, filePointer);
-				char * songName = new char[songLength + 1];
-				songName[songLength] = 0;
-				fread(songName, songLength, 1, filePointer);
-				string song = songName;
-				delete[] songName;
-				songNo = soundEng::getInstance().getNumSongs();
-				soundEng::getInstance().addSong(song);
-			}
-			else{
-				fseek(filePointer, -4, SEEK_CUR);
-			}
-			unsigned int numRooms = 0;
-			fread(&numRooms, sizeof(int), 1, filePointer);
-			for (unsigned int loop = 0; loop < numRooms; loop++){
-				fread(check, 4, 1, filePointer);
-				if (!strncmp(check, "ROOM", 4)){
-					room_t room;
-					unsigned int descLength = 1;
-					fread(&descLength, sizeof(int), 1, filePointer);
-					char * tDesc = new char[descLength + 1];
-					tDesc[descLength] = 0;
-					fread(tDesc, descLength, 1, filePointer);
-					room.desc = tDesc;
-					delete[] tDesc;
-					unsigned int roomCount = 0;
-					fread(&roomCount, sizeof(int), 1, filePointer);
-					for (unsigned int ctr = 0; ctr < roomCount; ctr++){
-						unsigned int num = 0;
-						char dir = 'N';
-						fread(&num, sizeof(int), 1, filePointer);
-						fread(&dir, sizeof(char), 1, filePointer);
-						room.connections.push_back(num);
-						room.directions.push_back(dir);
-					}
-					room_types.push_back(room);
-					rooms.push_back(new Room(room.desc.c_str()));
-				}
-				else{
-					cout << "ERR READING ROOM" << endl;
-				}
-			}
-			for (unsigned int ctr = 0; ctr < room_types.size(); ctr++){
-				for (unsigned int loop = 0; loop < room_types[ctr].connections.size(); loop++){
-					connectRoom(ctr, room_types[ctr].connections[loop], determineDir(room_types[ctr].directions[loop]), false);
-				}
-			}
-		}
-		else{
-			cout << "File is not a valid ZMAP" << endl;
-			loaded = false;
-		}
-		fclose(filePointer);
-	}
-	else{
-		cout << "File " << filename << " not found!" << endl;
-		loaded = false;
-	}
-	return loaded;
+            fread(check, 4, 1, filePointer);
+            if(!strncmp(check, "SONG", 4)){
+                unsigned int songLength = 0;
+                fread(&songLength, sizeof(int), 1, filePointer);
+                char * songName = new char[songLength + 1];
+                songName[songLength] = 0;
+                fread(songName, songLength, 1, filePointer);
+                string song = songName;
+                delete[] songName;
+                songNo = soundEng::getInstance().getNumSongs();
+                soundEng::getInstance().addSong(song);
+            }
+            else{
+                fseek(filePointer, -4, SEEK_CUR);
+            }
+            unsigned int numRooms = 0;
+            fread(&numRooms, sizeof(int), 1, filePointer);
+            for(unsigned int loop = 0; loop < numRooms; loop++){
+                fread(check, 4, 1, filePointer);
+                if(!strncmp(check, "ROOM", 4)){
+                    room_t room;
+                    unsigned int descLength = 1;
+                    fread(&descLength, sizeof(int), 1, filePointer);
+                    char * tDesc = new char[descLength + 1];
+                    tDesc[descLength] = 0;
+                    fread(tDesc, descLength, 1, filePointer);
+                    room.desc = tDesc;
+                    delete[] tDesc;
+                    unsigned int roomCount = 0;
+                    fread(&roomCount, sizeof(int), 1, filePointer);
+                    for(unsigned int ctr = 0; ctr < roomCount; ctr++){
+                        unsigned int num = 0;
+                        char dir = 'N';
+                        fread(&num, sizeof(int), 1, filePointer);
+                        fread(&dir, sizeof(char), 1, filePointer);
+                        room.connections.push_back(num);
+                        room.directions.push_back(dir);
+                    }
+                    room_types.push_back(room);
+                    rooms.push_back(new Room(room.desc.c_str()));
+                }
+                else{
+                    cout << "ERR READING ROOM" << endl;
+                }
+            }
+            for(unsigned int ctr = 0; ctr < room_types.size(); ctr++){
+                for(unsigned int loop = 0; loop < room_types[ctr].connections.size(); loop++){
+                    connectRoom(ctr, room_types[ctr].connections[loop], determineDir(room_types[ctr].directions[loop]), false);
+                }
+            }
+        }
+        else{
+            cout << "File is not a valid ZMAP" << endl;
+            loaded = false;
+        }
+        fclose(filePointer);
+    }
+    else{
+        cout << "File " << filename << " not found!" << endl;
+        loaded = false;
+    }
+    return loaded;
 }
 

@@ -29,10 +29,10 @@ class Map {
 public:
     Map(std::string Name);
     ~Map();
-	std::vector<Room*> rooms;
-	std::string name;
-	void connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay = true);
+    std::vector<Room*> rooms;
+    std::string name;
+    void connectRoom(unsigned int one, unsigned int two, room_dir dir, bool twoWay = true);
     bool load(std::string filename);
-	unsigned int songNo;
+    unsigned int songNo;
 };
 #endif

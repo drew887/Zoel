@@ -29,19 +29,18 @@
 
 //a singleton for handling sound
 class soundEng{
-	soundEng();
-	~soundEng();
-	Hoot2d hoot;
-	std::vector<Source *> sources;
-	unsigned int currentSong;
+    soundEng();
+    ~soundEng();
+    Hoot2d hoot;
+    std::vector<Source *> sources;
+    unsigned int currentSong;
 public:
     static soundEng & getInstance();
-
-	void play(unsigned int song);
-	void addSong(std::string path);
-	soundEng(soundEng const&);
-	void operator=(soundEng const&);
-	unsigned int getNumSongs();
+    void play(unsigned int song);
+    void addSong(std::string path);
+    soundEng(soundEng const&);
+    void operator=(soundEng const&);
+    unsigned int getNumSongs();
 };
 
 #endif

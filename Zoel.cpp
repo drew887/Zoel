@@ -31,18 +31,18 @@
 #include "world.h"
 
 int main(){
-	World world;
-	if(world.load("zoel.ini")){
-		soundEng::getInstance().play(0);
-		Player one;
-		Room * currentRoom = world.maps[0]->rooms[0];
-		world.getMapByName("Small town")->rooms[0]->addper(new Zombie());
-		while(currentRoom != NULL){
-			currentRoom = currentRoom->start(&one);
-		}
-	}
-	std::cout << "\nPress enter to continue...\n";
-	std::cin.ignore(80, '\n');
-	return 0;
+    World world;
+    if(world.load("zoel.ini")){
+        soundEng::getInstance().play(0);
+        Player one;
+        Room * currentRoom = world.maps[0]->rooms[0];
+        world.getMapByName("Small town")->rooms[0]->addper(new Zombie());
+        while(currentRoom != NULL){
+            currentRoom = currentRoom->start(&one);
+        }
+    }
+    std::cout << "\nPress enter to continue...\n";
+    std::cin.ignore(80, '\n');
+    return 0;
 }
 

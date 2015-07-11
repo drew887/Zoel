@@ -26,12 +26,12 @@
 #include "map.h"
 #include "player.h"
 
-class Exitroom: public Room{
- public:
-  Exitroom(const char * desc, Map * next, unsigned int start = 0);
-  Map * nextMap;
-  unsigned int startingRoom;
-  virtual Room * start(Player * play);
+class Exitroom : public Room{
+public:
+    Exitroom(const char * desc, Map * next, unsigned int start = 0);
+    Map * nextMap;
+    unsigned int startingRoom;
+    virtual Room * start(Player * play);
 };
 
 

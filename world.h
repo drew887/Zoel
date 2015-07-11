@@ -30,13 +30,12 @@
 using namespace std;
 
 class World{
-public:	
-	World();
-	virtual ~World();
-	
-	bool load(string filename);
-	Map * getMapByName(string name);
-	vector<Map * > maps;
+public:
+    World();
+    virtual ~World();
+    bool load(string filename);
+    Map * getMapByName(string name);
+    vector<Map * > maps;
 };
 
 #endif

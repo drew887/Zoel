@@ -26,49 +26,49 @@
 using namespace std;
 
 Entity::Entity(){
-    isalive =true;
+    isalive = true;
 }
 
 Entity::~Entity(){
-    for(unsigned int ctr =0; ctr < inventory.size();ctr++){
+    for(unsigned int ctr = 0; ctr < inventory.size(); ctr++){
         delete inventory[ctr];
     }
 }
 
 bool Entity::attack(Entity * defender){
-	return defender->defend(this);
+    return defender->defend(this);
 }
 bool Entity::defend(Entity * attacker){
     zoel::SlowOut slow;
     int temphp = hp;
-    slow  << attacker->classname << " is attacking! ";
-	temphp -= (attacker->getAttack() - def);
-	if (temphp >= hp){
+    slow << attacker->classname << " is attacking! ";
+    temphp -= (attacker->getAttack() - def);
+    if(temphp >= hp){
         slow << "A MASSIVE 0 damage ";
-	}
-	else{
+    }
+    else{
         slow << "A Whopping " << (hp - temphp) << " damage! ";
-		hp = temphp;
-	}
-	if (hp <= 0){
+        hp = temphp;
+    }
+    if(hp <= 0){
         slow << classname << " has been defeated!" << endl << endl;
-		isalive = false;
+        isalive = false;
         slow.print();
-		return true;
-	}
+        return true;
+    }
     slow << classname << " has " << hp << " remaining!" << endl << endl;
     slow.print();
-	return false;
+    return false;
 }
 
 unsigned int Entity::getAttack(){
-	return att;
+    return att;
 }
 
 unsigned int Entity::getDefence(){
-	return def;
+    return def;
 }
 
 unsigned int Entity::getHp(){
-	return hp;
+    return hp;
 }

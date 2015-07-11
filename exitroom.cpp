@@ -23,24 +23,24 @@
 #include "exitroom.h"
 #include <iostream>
 
-Exitroom::Exitroom(const char * desc, Map * next, unsigned int start):Room(desc){
-  nextMap = next;
-  if (start < next->rooms.size()){
-	  startingRoom = start;
-  }
-  else{
-	  std::cerr << "WARNING STARTING ROOM LARGER THAN AMOUNT OF ROOMS!!" << std::endl;
-	  startingRoom = next->rooms.size();
-  }
+Exitroom::Exitroom(const char * desc, Map * next, unsigned int start) :Room(desc){
+    nextMap = next;
+    if(start < next->rooms.size()){
+        startingRoom = start;
+    }
+    else{
+        std::cerr << "WARNING STARTING ROOM LARGER THAN AMOUNT OF ROOMS!!" << std::endl;
+        startingRoom = next->rooms.size();
+    }
 }
 
 #include "soundEng.h"
 #include "slowout.h"
 
 Room * Exitroom::start(Player *){
-	zoel::SlowOut slow;
-	soundEng::getInstance().play(nextMap->songNo);
-	slow << "Now entering the " << nextMap->name << "\n\n";
-	slow.print();
+    zoel::SlowOut slow;
+    soundEng::getInstance().play(nextMap->songNo);
+    slow << "Now entering the " << nextMap->name << "\n\n";
+    slow.print();
     return nextMap->rooms[startingRoom];
 }

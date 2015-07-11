@@ -22,7 +22,7 @@ SlowOut::SlowOut(){
 
 void SlowOut::print(){
     string output = str();
-    for(unsigned int letter = 0; letter < output.size(); letter ++){
+    for(unsigned int letter = 0; letter < output.size(); letter++){
         putchar(output[letter]);
         fflush(stdout);
         safesleep(timeStep);

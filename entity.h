@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
 
@@ -29,21 +29,21 @@
 
 class Entity {
 protected:
-	int maxhp;//i think this is all self explanitory
-	int hp;
-	unsigned int def;
-	unsigned int att;
+    int maxhp;//i think this is all self explanitory
+    int hp;
+    unsigned int def;
+    unsigned int att;
 public:
     std::vector<Item *> inventory;
     std::string classname;
-	bool isalive;
+    bool isalive;
     Entity();
     virtual ~Entity();
     virtual bool attack(Entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
     virtual bool defend(Entity * attacker);
-	virtual unsigned int getAttack();
-	virtual unsigned int getDefence();
-	virtual unsigned int getHp();
+    virtual unsigned int getAttack();
+    virtual unsigned int getDefence();
+    virtual unsigned int getHp();
 
 };
 #endif

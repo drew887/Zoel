@@ -29,57 +29,51 @@
 
 #pragma pack(1)
 struct buffI{
-	short format;
-	short channelnum;
-	int freq;
-	int byterate;
-	short BlockAlign;
-	short bytesper;
+    short format;
+    short channelnum;
+    int freq;
+    int byterate;
+    short BlockAlign;
+    short bytesper;
 };
 #pragma pack()
 //
 #pragma pack(1)
 struct buffD {
-	int size;
-	int * data;
+    int size;
+    int * data;
 };
 #pragma pack()
 
 class Wav {
-	public:
-		Wav(const char * loc);
-		~Wav();
-		buffI Bufdat;
-		buffD data;
-		ALenum format;
-	protected:
-		void detfmt();		//detect format
+public:
+    Wav(const char * loc);
+    ~Wav();
+    buffI Bufdat;
+    buffD data;
+    ALenum format;
+protected:
+    void detfmt();		//detect format
 };
 
 class Hoot2d {
-	public:
-		Hoot2d (); 
-		~Hoot2d ();
-		ALCdevice * device; 
-		ALCcontext * context;
+public:
+    Hoot2d();
+    ~Hoot2d();
+    ALCdevice * device;
+    ALCcontext * context;
 };
 
 class Source {
-	public:
-		Source (const char * loc);
-		~Source ();
-		Wav * wave;
-		ALuint buffer, source;
-		void play();	
-		void pause();
-		void stop();
-	private:
+public:
+    Source(const char * loc);
+    ~Source();
+    Wav * wave;
+    ALuint buffer, source;
+    void play();
+    void pause();
+    void stop();
+private:
 };
 
 #endif
-
-
-
-
-
-

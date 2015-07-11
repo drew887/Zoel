@@ -38,22 +38,22 @@ using std::vector;
 
 class Room {
 public:
-	Room(const char * descr);
-	virtual ~Room(void);
-	bool addper(Entity * person);
-	bool attach(Room * ar, room_dir direc, bool connectBack = false);
-	virtual Room * start(Player * play);
-	Room * getRoomAtDir(room_dir dir);
-	string description;
+    Room(const char * descr);
+    virtual ~Room(void);
+    bool addper(Entity * person);
+    bool attach(Room * ar, room_dir direc, bool connectBack = false);
+    virtual Room * start(Player * play);
+    Room * getRoomAtDir(room_dir dir);
+    string description;
 protected:
-	void printDescription();
-	void idleLoop(Player * play);
-	Room * next;
-	vector<Entity *> enemies;
-	Room * attached[4];
-	room_dir at_dir[4];
-	unsigned int attcount;
-	static vector<string> tokens;
+    void printDescription();
+    void idleLoop(Player * play);
+    Room * next;
+    vector<Entity *> enemies;
+    Room * attached[4];
+    room_dir at_dir[4];
+    unsigned int attcount;
+    static vector<string> tokens;
 };
 #pragma pack()
 #endif

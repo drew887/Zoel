@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Zoel; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, 
+ * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
 #ifndef INVEN
@@ -31,7 +31,6 @@ public:
     Item(std::string pname){
         name = pname;
     }
-
     virtual ~Item(){}
     std::string name;
 };
@@ -42,9 +41,9 @@ public:
 
 struct Weapon {
 public:
-	unsigned int att;
-	unsigned int spd;
-	char name[9];
+    unsigned int att;
+    unsigned int spd;
+    char name[9];
 };
 #pragma pack()
 #endif
