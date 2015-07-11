@@ -21,32 +21,91 @@
 */
 
 #include "world.h"
+#include "exitroom.h"
 #include <fstream>
 #include <iostream>
 
 using namespace std;
 
 World::World(){
-	
+
 }
 
 World::~World(){
-	for (unsigned int map = 0; map < maps.size(); map++){
+	for(unsigned int map = 0; map < maps.size(); map++){
 		delete maps[map];
 	}
 }
 
+extern room_dir determineDir(char d);
+
 bool World::load(string filename){
 	bool result = true;
 	ifstream fin(filename);
-	if (fin.is_open()){
+	if(fin.is_open()){
 		string input;
 		getline(fin, input);
-		while (!fin.eof() && input.length() > 1){
-			maps.push_back(new Map(input));
-			Map * last = maps.back();
-			last->load(input);
-			getline(fin, input);
+		if(input == "maps"){
+			while(!fin.eof()){
+				getline(fin, input);
+				if(input.empty()){
+					continue;
+				}
+				if(input == "spam"){
+					break;
+				}
+				maps.push_back(new Map(input));
+				Map * last = maps.back();
+				last->load(input);
+			}
+			if(!fin.eof()){
+				getline(fin, input);
+				if(input == "exit"){
+					string connection;
+					while(!fin.eof()){
+						string line, cons;
+						getline(fin, line);
+						int lineBreak, chevron, roomNo, conNo;
+						char direction = 0;
+						if(line == "tixe" || input == "tixe" || connection == "tixe"){
+							break;
+						}
+						chevron = line.find(">");
+						lineBreak = line.find("|");
+						input = line.substr(0, chevron);
+						connection = line.substr(chevron + 1, lineBreak - chevron - 1);
+						cons = line.substr(lineBreak + 1);
+						roomNo = atoi(cons.c_str());
+						chevron = cons.find(">");
+						lineBreak = cons.find("|");
+						conNo = atoi(cons.substr(chevron+1).c_str());
+						direction = cons.substr(lineBreak + 1)[0];
+						if(input.empty() || connection.empty() || line.empty()){
+							continue;
+						}
+						Map * in = getMapByName(input);
+						if(in){
+							Map * con = getMapByName(connection);
+							if(con){
+								in->rooms.push_back(new Exitroom("TX", con, roomNo));
+								in->connectRoom(conNo, in->rooms.size() - 1, determineDir(direction), false);
+							}
+							else{
+								cerr << "ERR MAP " << connection << " NOT FOUND" << endl;
+								result = false;
+							}
+						}
+						else{
+							cerr << "ERR MAP " << input << " NOT FOUND" << endl;
+							result = false;
+						}
+					}
+				}
+			}
+		}
+		else{
+			cerr << "ERR NO MAPS IN " << filename << ". OR IT IS IMPROPERLY WRITTEN" << endl;
+			result = false;
 		}
 	}
 	else{
@@ -58,8 +117,8 @@ bool World::load(string filename){
 
 Map * World::getMapByName(string name){
 	Map * result = NULL;
-	for (unsigned int map = 0; map < maps.size(); map++){
-		if (maps[map]->name == name){
+	for(unsigned int map = 0; map < maps.size(); map++){
+		if(maps[map]->name == name){
 			result = maps[map];
 			break;
 		}

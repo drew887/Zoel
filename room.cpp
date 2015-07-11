@@ -130,6 +130,12 @@ bool Room::attach(Room * ar, room_dir direct, bool connectBack){
 	if (attcount >= 4){
 		return false;
 	}
+	for(unsigned int con = 0; con < attcount; con++){
+		if(direct == at_dir[con]){
+			cerr << "ERR CON ALREADY USED!" << endl;
+			return false;
+		}
+	}
 	attached[attcount] = ar;
 	at_dir[attcount] = direct;
 	attcount++;
@@ -306,12 +312,12 @@ void Room::idleLoop(Player *play){
 				if(slow.timeStep > 0){
 					slow.timeStep -= 5;
 				}
-				slow << "The speed is now: " << slow.timeStep << endl;
+				slow << "The text speed is now: " << slow.timeStep << endl;
 				slow.print();
 				break;
 			case 12: //slower
 				slow.timeStep += 5;
-				slow << "The speed is now: " << slow.timeStep << endl;
+				slow << "The text speed is now: " << slow.timeStep << endl;
 				slow.print();
 				break; 
 			default:

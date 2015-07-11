@@ -5,8 +5,14 @@ Just a small little Zork clone, based on Zork.
 
 ### FOR VISUAL STUDIO USERS
 
-When running through visual studio, Zoel will report that its missing files if you don't copy them from the root into the Zoel_VS\Zoel folder
+When running through visual studio, Zoel will report that its missing files if you don't copy them from the root into the Zoel_VS\Zoel folder. Note that these are just the demo provided files, if you make your own zmaps and change zoel.ini you don't need these.
 
+* zoel.ini
+* town.zmap
+* sfat.wav
+* test.zmap
+* sub.wav
+    
 #### TODO:
 
 * Make a nice default story.

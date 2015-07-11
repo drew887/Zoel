@@ -28,22 +28,17 @@
 #include "zombie.h"
 #include <iostream>
 
-int main() {
-	Map test("TEST");
-	if(test.load("test.zmap")){
-		Map town("TOWN");
-		if(town.load("town.zmap")){
-			test.rooms[1]->addper(new Zombie());
-			town.rooms.push_back(new Exitroom("TX", &test, 1));
-			test.rooms.push_back(new Exitroom("TX", &town, 1));
-			test.connectRoom(1, test.rooms.size() - 1, NORTH, false);
-			town.connectRoom(1, town.rooms.size() - 1, SOUTH, false);
-			soundEng::getInstance().play(0);
-			Player one;
-			Room * currentRoom = test.rooms[0];
-			while(currentRoom != NULL){
-				currentRoom = currentRoom->start(&one);
-			}
+#include "world.h"
+
+int main(){
+	World world;
+	if(world.load("zoel.ini")){
+		soundEng::getInstance().play(0);
+		Player one;
+		Room * currentRoom = world.maps[0]->rooms[0];
+		world.getMapByName("Small town")->rooms[0]->addper(new Zombie());
+		while(currentRoom != NULL){
+			currentRoom = currentRoom->start(&one);
 		}
 	}
 	std::cout << "\nPress enter to continue...\n";
