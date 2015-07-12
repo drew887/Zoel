@@ -26,11 +26,15 @@
 #include "exitroom.h"
 #include "soundEng.h"
 #include "zombie.h"
+#include <fstream>
 #include <iostream>
 
 #include "world.h"
 
-int main(){
+void opening(int,char**);
+
+int main(int argc, char * argv[]){
+    opening(argc,argv);
     World world;
     if(world.load("zoel.ini")){
         soundEng::getInstance().play(0);
@@ -46,3 +50,29 @@ int main(){
     return 0;
 }
 
+#include <string>
+
+extern void crossPlatformGetLine(ifstream &, string &);
+
+void opening(int argc, char * argv[]){
+    if(argc < 2){
+        cout << "Zoel  Copyright (C) 2013 - 2015 Andrew Mcdonald < drew887121@gmail.com >\nThis program comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions. See COPYING  or rerun with -legal for details" << endl << endl << endl;
+    }
+    else if(!strncmp(argv[1],"-legal",6)){
+        ifstream fin("COPYING");
+        if(fin.is_open()){
+            string line;
+            while(!fin.eof()){
+                crossPlatformGetLine(fin, line);
+                cout << line << endl;
+            }
+            exit(0);
+        }
+        else{
+            cerr << "ERR COPYING is supposed to be included with the release of Zoel\nPlease check with your distributor as to why it is missing" << endl;
+        }
+    }
+    else{
+        cerr << "ERR usage is " << argv[0] << endl << "or " << argv[0] << " -legal for legal and copyright info" << endl;
+    }
+}

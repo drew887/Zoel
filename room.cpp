@@ -102,6 +102,8 @@ void Room::printDescription(){
             case WEST:
                 slow << "West";
                 break;
+            default:
+                break;
             }
             if(curCon < attcount - 1){
                 slow << ", ";

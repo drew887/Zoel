@@ -39,15 +39,26 @@ World::~World(){
 
 extern room_dir determineDir(char d);
 
+void crossPlatformGetLine(ifstream & fin, string & line){
+    string tempLine;
+    getline(fin, tempLine);
+    if(tempLine[tempLine.size() - 1] == '\r'){ //lets get rid of those pesky CR's windows likes to stick everywhere
+        line = tempLine.substr(0, tempLine.size() - 1);
+    }
+    else{
+        line = tempLine;
+    }
+}
+
 bool World::load(string filename){
     bool result = true;
     ifstream fin(filename);
     if(fin.is_open()){
         string input;
-        getline(fin, input);
+        crossPlatformGetLine(fin, input);
         if(input == "maps"){
             while(!fin.eof()){
-                getline(fin, input);
+                crossPlatformGetLine(fin, input);
                 if(input.empty()){
                     continue;
                 }
@@ -59,12 +70,12 @@ bool World::load(string filename){
                 last->load(input);
             }
             if(!fin.eof()){
-                getline(fin, input);
+                crossPlatformGetLine(fin, input);
                 if(input == "exit"){
                     string connection;
                     while(!fin.eof()){
                         string line, cons;
-                        getline(fin, line);
+                        crossPlatformGetLine(fin, line);
                         int lineBreak, chevron, roomNo, conNo;
                         char direction = 0;
                         if(line == "tixe" || input == "tixe" || connection == "tixe"){
