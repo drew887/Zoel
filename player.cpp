@@ -19,15 +19,16 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#include "room.h"
+
 #include "player.h"
 #include "slowout.h"
 
-#include <stdlib.h>
+
 #include <time.h>
+#include <iostream>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <iostream>
 
 using namespace std;
 

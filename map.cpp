@@ -19,11 +19,12 @@
 * Foundation, Inc., 51 Franklin St, Fifth Floor,
 * Boston, MA  02110-1301  USA
 */
+
 #include "map.h"
-#include <stdio.h>
-#include <string.h>
-#include <iostream>
 #include "soundEng.h"
+
+#include <iostream>
+#include <string.h>
 
 using namespace std;
 

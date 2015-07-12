@@ -29,7 +29,6 @@
 #ifndef ROOM_MAX
 #define ROOM_MAX 4
 #endif 
-enum ROOM_ERR{ ALL_CON_USED, CON_ALREADY_USED, ROOM_FULL, DEAD_PLAYER, ROOM_DONE };
 enum room_dir{ NORTH = 0, EAST, SOUTH, WEST, NONE = 4 };
 using std::string;
 using std::vector;

@@ -20,16 +20,14 @@
  * Boston, MA  02110-1301  USA
  */
 #include "player.h"
-#include "room.h"
-#include "hoot.h"
-#include "map.h"
-#include "exitroom.h"
 #include "soundEng.h"
 #include "zombie.h"
-#include <fstream>
-#include <iostream>
-
 #include "world.h"
+
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
 
 void opening(int,char**);
 
@@ -50,8 +48,6 @@ int main(int argc, char * argv[]){
     return 0;
 }
 
-#include <string>
-
 extern void crossPlatformGetLine(ifstream &, string &);
 
 void opening(int argc, char * argv[]){
@@ -70,9 +66,11 @@ void opening(int argc, char * argv[]){
         }
         else{
             cerr << "ERR COPYING is supposed to be included with the release of Zoel\nPlease check with your distributor as to why it is missing" << endl;
+            exit(-1);
         }
     }
     else{
         cerr << "ERR usage is " << argv[0] << endl << "or " << argv[0] << " -legal for legal and copyright info" << endl;
+        exit(-1);
     }
 }

@@ -22,7 +22,6 @@
 
 #ifndef HOOT_H
 #define HOOT_H
-#include <stdlib.h>
 #include <stdio.h>
 #include <AL/al.h>
 #include <AL/alc.h>

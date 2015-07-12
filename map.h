@@ -22,9 +22,11 @@
 
 #ifndef MAP_H
 #define MAP_H
+
 #include <vector>
 #include <string>
 #include "room.h"
+
 class Map {
 public:
     Map(std::string Name);

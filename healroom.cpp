@@ -20,7 +20,6 @@
  * Boston, MA  02110-1301  USA
  */
 #include "healroom.h"
-#include <iostream>
 
 using namespace std;
 
@@ -28,7 +27,7 @@ HealRoom::HealRoom(const char * descr) :Room(descr){
 
 }
 Room * HealRoom::start(Player * play){
-    cout << "*****\n" << description << "\n*****" << endl;
+    printDescription();
     if(attcount == 0){
         return NULL;
     }

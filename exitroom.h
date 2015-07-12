@@ -24,7 +24,6 @@
 
 #include "room.h"
 #include "map.h"
-#include "player.h"
 
 class Exitroom : public Room{
 public:
