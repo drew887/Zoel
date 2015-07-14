@@ -26,7 +26,7 @@ Zombie::Zombie(){
     hp = maxhp = (rand() % 5) + 8;
     def = (rand() % 2) + 1;
     att = (rand() % 2) + 1;
-    inventory.push_back(new Item());
+    inventory.push_back(Item("Rotten flesh"));
 }
 
 

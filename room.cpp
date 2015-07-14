@@ -29,7 +29,7 @@
 
 using namespace std;
 using zoel::SlowOut;
-vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack", "faster", "slower" };
+vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack", "faster", "slower", "inventory", "take", "drop" };
 
 SlowOut slow;
 
@@ -65,12 +65,6 @@ inline room_dir directionSwap(room_dir tw){
 Room * Room::start(Player * playera){
 
     printDescription();
-    if(enemies.size() > 0){
-        for(unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-            slow << "There is a " << enemies[enemy]->classname << " here!" << endl;
-            slow.print();
-        }
-    }
     if(attcount == 0){
         return NULL;
     }
@@ -114,9 +108,23 @@ void Room::printDescription(){
     }
     slow << endl;
     slow.print();
+    if(enemies.size() > 0){
+        slow << endl;
+        for(unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+            slow << "There is a " << enemies[enemy]->classname << " here!" << endl;
+        }
+        slow.print();
+    }
+    if(items.size() > 0){
+        slow << endl;
+        for(unsigned int item = 0; item < items.size(); item++){
+            slow << "There is a " << items[item].name << " here!" << endl;
+        }
+        slow.print();
+    }
 }
 
-bool Room::addper(Entity * person){
+bool Room::addPerson(Entity * person){
     bool success = true;
     if(enemies.size() < ROOM_MAX){
         enemies.push_back(person);
@@ -125,6 +133,10 @@ bool Room::addper(Entity * person){
         success = false;
     }
     return success;
+}
+
+void Room::addItem(Item item){
+    items.push_back(item);
 }
 
 bool Room::attach(Room * ar, room_dir direct, bool connectBack){
@@ -195,20 +207,7 @@ void Room::idleLoop(Player *play){
         cout << endl;
         if(msg.size() > 0){
             vector<string> words;
-            char * mesg = new char[msg.size() + 1];
-            strcpy(mesg, msg.c_str());
-            for(unsigned int character = 0; character < msg.size(); character++){
-                mesg[character] = tolower(mesg[character]);
-            }
-            char * tok = strtok(mesg, " ");
-            while(tok != NULL){
-                if(strcmp(tok, "the")){
-                    words.push_back(tok);
-                }
-                tok = strtok(NULL, " ");
-            }
-            delete[] mesg;
-
+            words = tokenize(msg);
             unsigned int token;
             for(token = 0; token < tokens.size(); token++){
                 if(words[0] == tokens[token]){
@@ -249,23 +248,21 @@ void Room::idleLoop(Player *play){
                 play->save();
                 break;
             case 8:
-                slow << "please enter a name to load: ";
-                slow.print(); { //cordon off this block to stop cross label initialization errors
+                if(words.size() < 2){
+                    slow << "please enter a name to load: ";
+                    slow.print();
                     std::string name;
                     getline(cin, name);
                     if(play->load(name.c_str())){
                         //figure out a good way to handle loading
                     }
                 }
+                else{
+                    play->load(words[1].c_str());
+                }
                 break;
             case 9: //look
                 printDescription();
-                if(enemies.size() > 0){
-                    for(unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-                        slow << "There is a " << enemies[enemy]->classname << " here!" << endl;
-                        slow.print();
-                    }
-                }
                 break;
             case 10: //attack
                 if(enemies.size() > 0){
@@ -319,7 +316,66 @@ void Room::idleLoop(Player *play){
             case 12: //slower
                 slow.timeStep += 5;
                 slow << "The text speed is now: " << slow.timeStep << endl;
-                slow.print();
+                slow.
+                    print();
+                break;
+            case 13: // inventory
+                play->printInventory();
+                break;
+            case 14: //take
+                if(items.size() > 0){
+                    string takeItem;
+                    if(words.size() < 2){
+                        slow << "Take what?" << endl;
+                        for(unsigned int ctr = 0; ctr < items.size(); ctr++){
+                            slow << items[ctr].name << endl;
+                        }
+                        slow.print();
+                        getline(cin, takeItem);
+                    }
+                    else{
+                        takeItem = msg.substr(msg.find(" ") + 1);
+                    }
+                    unsigned int ctr;
+                    for(ctr = 0; ctr < items.size(); ctr++){
+                        if(takeItem == items[ctr].name){
+                            break;
+                        }
+                    }
+                    if(ctr < items.size()){
+                        play->giveItem(takeItem);
+                        items.erase(items.begin() + ctr);
+                    }
+                    else{
+                        slow << "There is no " << takeItem << " here" << endl;
+                        slow.print();
+                    }
+                }
+                else{
+                    slow << "There's nothing to take!" << endl;
+                    slow.print();
+                }
+                break;
+            case 15: //drop
+                if(play->inventory.size() > 0){
+                    string dropName;
+                    if(words.size() < 2){
+                        slow << "Drop what?" << endl;
+                        slow.print();
+                        play->printInventory();
+                        getline(cin, dropName);
+                    }
+                    else{
+                        dropName = msg.substr(msg.find(' ') + 1);
+                    }
+                    if(play->dropItem(dropName)){
+                        items.push_back(dropName);
+                    }
+                }
+                else{
+                    slow << play->classname << " doesn't have any items to drop" << endl;
+                    slow.print();
+                }
                 break;
             default:
                 slow << "I don't know " << words[0] << endl;

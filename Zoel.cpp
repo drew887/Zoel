@@ -23,6 +23,8 @@
 #include "soundEng.h"
 #include "zombie.h"
 #include "world.h"
+#include "inventory.h"
+#include "enemyFactory.h"
 
 #include <iostream>
 #include <fstream>
@@ -34,11 +36,13 @@ void opening(int,char**);
 int main(int argc, char * argv[]){
     opening(argc,argv);
     World world;
+    enemyFactory factory;
     if(world.load("zoel.ini")){
         soundEng::getInstance().play(0);
         Player one;
         Room * currentRoom = world.maps[0]->rooms[0];
-        world.getMapByName("Small town")->rooms[0]->addper(new Zombie());
+        world.getMapByName("Small town")->rooms[0]->addPerson(factory.spawnRandom());
+        world.maps[0]->rooms[0]->addItem(Item("Key"));
         while(currentRoom != NULL){
             currentRoom = currentRoom->start(&one);
         }

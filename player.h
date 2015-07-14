@@ -27,17 +27,17 @@
 
 class Player :public Entity{
 public:
+    Player(void);
+    ~Player(void);
     void save();
     bool load(const char * name);
     void stats();
     void heal();
-    Weapon wep;
-    Player(void);
-    ~Player(void);
-    void tellwep();
-    void giveWep(Weapon wepa);
+    void printInventory();
     bool defend(Entity * attacker);
     unsigned int getAttack();
+
+    Weapon wep;
 };
 #pragma pack()
 #endif

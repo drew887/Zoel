@@ -14,7 +14,7 @@
 using std::string;
 using namespace zoel;
 
-unsigned int SlowOut::timeStep = 20;
+unsigned int SlowOut::timeStep = 10;
 
 SlowOut::SlowOut(){
 

@@ -30,9 +30,7 @@ Entity::Entity(){
 }
 
 Entity::~Entity(){
-    for(unsigned int ctr = 0; ctr < inventory.size(); ctr++){
-        delete inventory[ctr];
-    }
+
 }
 
 bool Entity::attack(Entity * defender){
@@ -54,11 +52,47 @@ bool Entity::defend(Entity * attacker){
         slow << classname << " has been defeated!" << endl << endl;
         isalive = false;
         slow.print();
+        for(unsigned int ctr = 0; ctr < inventory.size(); ctr++){
+            attacker->giveItem(inventory[ctr]);
+        }
         return true;
     }
     slow << classname << " has " << hp << " remaining!" << endl << endl;
     slow.print();
     return false;
+}
+
+void Entity::giveItem(Item item) {
+    zoel::SlowOut slow;
+    slow << classname << " has recieved: " << item.name << endl;
+    slow.print();
+    inventory.push_back(item);
+}
+
+bool Entity::dropItem(string item){
+    zoel::SlowOut slow;
+    bool result = false;
+    if(inventory.size() > 0){
+        unsigned int ctr;
+        for(ctr = 0; ctr < inventory.size(); ctr++){
+            if(inventory[ctr].name == item){
+                break;
+            }
+        }
+        if(ctr < inventory.size()){
+            slow << "Dropped " << inventory[ctr].name << endl;
+            inventory.erase(inventory.begin() + ctr);
+            result = true;
+        }
+        else{
+            slow << classname << " doesn't have " << item << endl;
+        }
+    }
+    else{
+        slow << classname << " doesn't have any items!" << endl;
+    }
+    slow.print();
+    return result;
 }
 
 unsigned int Entity::getAttack(){
