@@ -36,7 +36,7 @@ public:
         CUR_VER_MINOR = minor;
     }
     void print(){
-        cout << "VERSION " << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
+        cout << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
     }
     void write(FILE * filePointer) const {
         fwrite(&CUR_VER_LETTER, 1, 1, filePointer);
@@ -54,6 +54,7 @@ public:
         }
         return result;
     }
+
     unsigned char CUR_VER_LETTER;
     unsigned char CUR_VER_MAJOR;
     unsigned char CUR_VER_MINOR;
@@ -82,6 +83,7 @@ struct room_t{
     string desc;
     vector<int> connections;
     vector<char>directions;
+    vector<char> enemies;
 };
 
 room_dir determineDir(char dir){
@@ -103,9 +105,12 @@ room_dir determineDir(char dir){
     return direction;
 }
 
+#include "enemyFactory.h"
+
 bool Map::load(std::string filename){
     bool loaded = true;
     vector<room_t> room_types;
+    EnemyFactory factory;
     FILE * filePointer = fopen(filename.c_str(), "rb");
     if(filePointer){
         char check[5] = {};
@@ -114,7 +119,17 @@ bool Map::load(std::string filename){
             //---
             char ver[3] = {};
             fread(&ver, 3, 1, filePointer);
-            zoelMapVersion version(ver[0], ver[1], ver[2]);
+            zoelMapVersion version(ver[0], ver[1], ver[2]),cur_ver('c',2,0);
+            if(!(version == cur_ver)){
+                cout << "ERR Map version is ";
+                version.print();
+                cout << "And version of this software is ";
+                cur_ver.print();
+                cout << "Please update map " << filename << " or Zoel to the current version" << endl;
+                cout << "\nPress enter to continue...\n";
+                cin.ignore(80, '\n');
+                exit(-1);
+            }
             unsigned int nameSize = 0;
             fread(&nameSize, sizeof(int), 1, filePointer);
             char * cname = new char[nameSize + 1];
@@ -161,6 +176,12 @@ bool Map::load(std::string filename){
                         room.connections.push_back(num);
                         room.directions.push_back(dir);
                     }
+                    fread(&roomCount, sizeof(int), 1, filePointer);
+                    for(unsigned int ctr = 0; ctr < roomCount; ctr++){
+                      char enemy;
+                      fread(&enemy, sizeof(char), 1, filePointer);
+                      room.enemies.push_back(enemy);
+                    }
                     room_types.push_back(room);
                     rooms.push_back(new Room(room.desc.c_str()));
                 }
@@ -168,9 +189,13 @@ bool Map::load(std::string filename){
                     cout << "ERR READING ROOM" << endl;
                 }
             }
+
             for(unsigned int ctr = 0; ctr < room_types.size(); ctr++){
                 for(unsigned int loop = 0; loop < room_types[ctr].connections.size(); loop++){
                     connectRoom(ctr, room_types[ctr].connections[loop], determineDir(room_types[ctr].directions[loop]), false);
+                }
+                for(unsigned int enemy = 0; enemy < room_types[ctr].enemies.size(); enemy++){
+                    rooms[ctr]->addPerson(factory.spawnRandom());
                 }
             }
         }

@@ -9,9 +9,10 @@
 using namespace std;
 
 struct Room{
-    string desc;
-    vector<int> connections;
-    vector<char>directions;
+  string desc;
+  vector<int> connections;
+  vector<char> directions;
+  vector<char> enemies;
 };
 
 vector<Room> rooms;
@@ -45,12 +46,22 @@ public:
         }
         return result;
     }
+
+  bool operator< (const zoelMapVersion & other){
+    bool result = false;
+    if(CUR_VER_MAJOR < other.CUR_VER_MAJOR){
+      if(CUR_VER_MINOR < other.CUR_VER_MINOR){
+        result = true;
+      }
+    }
+    return result;
+  }
     unsigned char CUR_VER_LETTER;
     unsigned char CUR_VER_MAJOR;
     unsigned char CUR_VER_MINOR;
 };
 
-const zoelMapVersion CUR_VER('c', 1, 0);
+const zoelMapVersion CUR_VER('c', 2, 0);
 
 int main(int argc, char * argv[]){
     string songName = "";
@@ -138,6 +149,11 @@ int main(int argc, char * argv[]){
                         fwrite(&a.connections[ctr], sizeof(int), 1, filePointer);
                         fwrite(&a.directions[ctr], sizeof(char), 1, filePointer);
                     }
+                    conSize = a.enemies.size();
+                    fwrite(&conSize, sizeof(int), 1, filePointer);
+                    for(unsigned int ctr = 0; ctr < conSize; ctr++){
+                        fwrite(&a.enemies[ctr], sizeof(char), 1, filePointer);
+                    }
                 }
             }
             fwrite("END", 3, 1, filePointer);
@@ -155,9 +171,14 @@ int main(int argc, char * argv[]){
 
 void printRoom(Room room){
     cout << room.desc << endl;
-    cout << "num cons: " << room.connections.size() << endl;
+    cout << "num cons: " << room.connections.size() << " Num enemies: " << room.enemies.size() << endl;
+    cout << "Connections:" << endl;
     for(unsigned int ctr = 0; ctr < room.connections.size(); ctr++){
         cout << room.connections[ctr] << room.directions[ctr] << " ";
+    }
+    cout << "\nEnemies" << endl;
+    for(unsigned int ctr = 0; ctr < room.enemies.size(); ctr++){
+        cout << room.enemies[ctr] << " ";
     }
     cout << endl;
 }
@@ -222,6 +243,12 @@ void readRoom(){
                         room.connections.push_back(num);
                         room.directions.push_back(dir);
                     }
+                    fread(&roomCount, sizeof(int), 1, filePointer);
+                    for(unsigned int ctr = 0; ctr < roomCount; ctr++){
+                      char enemy;
+                      fread(&enemy, sizeof(char), 1, filePointer);
+                      room.enemies.push_back(enemy);
+                    }
                     printRoom(room);
                 }
                 else{
@@ -256,10 +283,10 @@ void addRoom(){
         cout << "Enter command: ";
         cin >> command;
         cin.ignore(80, '\n');
-        switch(command){
+        switch(command){ 
         case 'a':
             if(curCon < 4){
-                cout << "Enter connection number: ";
+                cout << "Enter connection number (any negative to abort): ";
                 cin >> input;
                 while(cin.fail()){
                     cin.clear();
@@ -296,12 +323,19 @@ void addRoom(){
             }
             curCon++;
             break;
+        case 'e':
+          cout << "s for slime\nz for zombie" << endl;
+          char enemy;
+          cin >> enemy;
+          room.enemies.push_back(enemy);
+          break;
         case 'p':
             printRoom(room);
             break;
         case 'r':
             room.connections.clear();
             room.directions.clear();
+            room.enemies.clear();
             cout << "Enter description of room" << endl;
             getline(cin, room.desc);
             break;

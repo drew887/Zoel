@@ -36,12 +36,11 @@ void opening(int,char**);
 int main(int argc, char * argv[]){
     opening(argc,argv);
     World world;
-    EnemyFactory factory;
+    //EnemyFactory factory;
     if(world.load("zoel.ini")){
         SoundEng::getInstance().play(0);
         Player one;
         Room * currentRoom = world.maps[0]->rooms[0];
-        world.getMapByName("Small town")->rooms[0]->addPerson(factory.spawnRandom());
         world.maps[0]->rooms[0]->addItem(Item("Key"));
         while(currentRoom != NULL){
             currentRoom = currentRoom->start(&one);
