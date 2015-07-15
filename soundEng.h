@@ -1,5 +1,5 @@
 /*
-* soundEng.h
+* SoundEng.h
 * This file is part of Zoel
 *
 * Copyright (C) 2013 - 2015 - Andrew Mcdonald
@@ -20,26 +20,26 @@
 * Boston, MA  02110-1301  USA
 */
 
-#ifndef SOUNDENG_H
-#define SOUNDENG_H
+#ifndef SoundEng_H
+#define SoundEng_H
 
 #include "hoot.h"
 #include <vector>
 #include <string>
 
 //a singleton for handling sound
-class soundEng{
-    soundEng();
-    ~soundEng();
+class SoundEng{
+    SoundEng();
+    ~SoundEng();
     Hoot2d hoot;
     std::vector<Source *> sources;
     unsigned int currentSong;
 public:
-    static soundEng & getInstance();
+    static SoundEng & getInstance();
     void play(unsigned int song);
     void addSong(std::string path);
-    soundEng(soundEng const&);
-    void operator=(soundEng const&);
+    SoundEng(SoundEng const&);
+    void operator=(SoundEng const&);
     unsigned int getNumSongs();
 };
 

@@ -23,10 +23,10 @@
 #include "enemyFactory.h"
 
 
-enemyFactory::enemyFactory(){
+EnemyFactory::EnemyFactory(){
 }
 
-Entity * enemyFactory::spawnRandom(){
+Entity * EnemyFactory::spawnRandom(){
     unsigned int type = rand() % 2;
     Entity * result = NULL;
     switch(type){
@@ -40,10 +40,10 @@ Entity * enemyFactory::spawnRandom(){
     return result;
 }
 
-Zombie * enemyFactory::spawnZombie(){
+Zombie * EnemyFactory::spawnZombie(){
     return new Zombie();
 }
 
-Slime * enemyFactory::spawnSlime(){
+Slime * EnemyFactory::spawnSlime(){
     return new Slime();
 }

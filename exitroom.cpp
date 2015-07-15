@@ -39,7 +39,7 @@ Exitroom::Exitroom(const char * desc, Map * next, unsigned int start) :Room(desc
 
 Room * Exitroom::start(Player *){
     zoel::SlowOut slow;
-    soundEng::getInstance().play(nextMap->songNo);
+    SoundEng::getInstance().play(nextMap->songNo);
     slow << "Now entering the " << nextMap->name << "\n\n";
     slow.print();
     return nextMap->rooms[startingRoom];

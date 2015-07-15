@@ -39,7 +39,7 @@ using std::vector;
 
 class Room {
 public:
-    Room(const char * descr);
+    Room(string Description);
     virtual ~Room(void);
     bool addPerson(Entity * person);
     void addItem(Item item);

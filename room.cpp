@@ -33,7 +33,7 @@ vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help"
 
 SlowOut slow;
 
-Room::Room(const char * descr) :description(descr){
+Room::Room(string Description) :description(Description){
     attcount = 0;
     next = NULL;
     for(unsigned int i = 0; i < 4; i++){
@@ -66,6 +66,7 @@ Room * Room::start(Player * playera){
 
     printDescription();
     if(attcount == 0){
+        cerr << "ERR You've fallen into a room with no exits!\nGame over!" << endl;
         return NULL;
     }
     idleLoop(playera);

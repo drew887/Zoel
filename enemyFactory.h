@@ -20,17 +20,17 @@
 * Boston, MA  02110-1301  USA
 */
 
-#ifndef ENEMYFACTORY_H
-#define ENEMYFACTORY_H
+#ifndef EnemyFactory_H
+#define EnemyFactory_H
 
 #include "entity.h"
 #include "zombie.h"
 #include "slime.h"
 
-class enemyFactory{
+class EnemyFactory{
 
 public:
-    enemyFactory();
+    EnemyFactory();
     Entity * spawnRandom();
     Zombie * spawnZombie();
     Slime * spawnSlime();

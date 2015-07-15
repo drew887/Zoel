@@ -132,8 +132,8 @@ bool Map::load(std::string filename){
                 fread(songName, songLength, 1, filePointer);
                 string song = songName;
                 delete[] songName;
-                songNo = soundEng::getInstance().getNumSongs();
-                soundEng::getInstance().addSong(song);
+                songNo = SoundEng::getInstance().getNumSongs();
+                SoundEng::getInstance().addSong(song);
             }
             else{
                 fseek(filePointer, -4, SEEK_CUR);

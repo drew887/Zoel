@@ -22,21 +22,21 @@
 
 #include "soundEng.h"
 
-soundEng::soundEng(){
+SoundEng::SoundEng(){
     currentSong = 0;
 }
-soundEng::~soundEng(){
+SoundEng::~SoundEng(){
     for(unsigned int ctr = 0; ctr < sources.size(); ctr++){
         delete sources[ctr];
     }
 }
 
-soundEng & soundEng::getInstance(){
-    static soundEng instance;
+SoundEng & SoundEng::getInstance(){
+    static SoundEng instance;
     return instance;
 }
 
-void soundEng::play(unsigned int song){
+void SoundEng::play(unsigned int song){
     if(song < sources.size()){
         sources[currentSong]->stop();
         sources[song]->play();
@@ -44,10 +44,10 @@ void soundEng::play(unsigned int song){
     }
 }
 
-void soundEng::addSong(std::string path){
+void SoundEng::addSong(std::string path){
     sources.push_back(new Source(path.c_str()));
 }
 
-unsigned int soundEng::getNumSongs(){
+unsigned int SoundEng::getNumSongs(){
     return sources.size();
 }

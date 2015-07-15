@@ -57,7 +57,8 @@ int main(int argc, char * argv[]){
     string mapName = "";
     bool loop = true;
     char te = 0;
-    cout << "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit" << endl << endl;
+    string commands = "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit\n";
+    cout << commands << endl;
     while(loop){
         cout << "Enter state: ";
         cin >> te;
@@ -101,7 +102,7 @@ int main(int argc, char * argv[]){
             loop = false;
             break;
         default:
-            cout << "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit" << endl << endl;
+            cout << commands << endl;
         }
     }
     string filename;
@@ -247,39 +248,70 @@ void addRoom(){
     getline(cin, room.desc);
     int input = 0;
     int curCon = 0;
-    while(curCon < 4){
-        cout << "Enter connection number (-1 to quit): ";
-        cin >> input;
-        while(cin.fail()){
-            cin.clear();
-            cin.ignore(80, '\n');
-            cout << "Please enter only positive numbers or any negative to quit: ";
-            cin >> input;
-        }
-        if(input < 0){
-            break;
-        }
-        room.connections.push_back(input);
-        char dir = 0;
-        cout << "Enter the direction it lies: ";
-        cin >> dir;
-        bool loop = true;
-        while(loop){
-            switch(dir){
-            case 'N':
-            case 'E':
-            case 'S':
-            case 'W':
-                room.directions.push_back(dir);
-                loop = false;
-                break;
-            default:
-                cout << "Please enter N, S, W, or E: ";
-                cin.ignore(80, '\n');
+    bool loop = true;
+    char command;
+    string commands = "\na to add a connection\np to print the current room info\nr to reset the current room\nq to finish editing the room\n";
+    cout << commands << endl;
+    while(loop){
+        cout << "Enter command: ";
+        cin >> command;
+        cin.ignore(80, '\n');
+        switch(command){
+        case 'a':
+            if(curCon < 4){
+                cout << "Enter connection number: ";
+                cin >> input;
+                while(cin.fail()){
+                    cin.clear();
+                    cin.ignore(80, '\n');
+                    cout << "Please enter only positive numbers: ";
+                    cin >> input;
+                }
+                if(input < 0){
+                    break;
+                }
+                room.connections.push_back(input);
+                char dir = 0;
+                cout << "Enter the direction it lies: ";
                 cin >> dir;
+                bool loop = true;
+                while(loop){
+                    switch(dir){
+                    case 'N':
+                    case 'E':
+                    case 'S':
+                    case 'W':
+                        room.directions.push_back(dir);
+                        loop = false;
+                        break;
+                    default:
+                        cout << "Please enter N, S, W, or E: ";
+                        cin.ignore(80, '\n');
+                        cin >> dir;
+                    }
+                }
             }
-        }
-        curCon++;
+            else{
+                cout << "Already filled all 4 connections!" << endl;
+            }
+            curCon++;
+            break;
+        case 'p':
+            printRoom(room);
+            break;
+        case 'r':
+            room.connections.clear();
+            room.directions.clear();
+            cout << "Enter description of room" << endl;
+            getline(cin, room.desc);
+            break;
+        case 'q':
+            loop = false;
+            break;
+        default:
+            cout << commands << endl;
+            break;
+        }//end switch(command)
     }
     rooms.push_back(room);
 
