@@ -40,7 +40,6 @@ public:
 #pragma pack(1)
 
 struct Weapon {
-public:
     unsigned int att;
     unsigned int spd;
     char name[9];

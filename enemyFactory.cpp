@@ -32,6 +32,9 @@ Entity * EnemyFactory::spawn(char type){
     case 's':
         result = spawnSlime();
         break;
+    case 't':
+        result = spawnThief();
+        break;
     case 'z':
         result = spawnZombie();
         break;
@@ -49,6 +52,9 @@ Entity * EnemyFactory::spawnRandom(){
     case 0:
         result = new Slime();
         break;
+    case 1:
+        result = new Thief();
+        break;
     default:
         result = new Zombie();
         break;
@@ -62,4 +68,8 @@ Zombie * EnemyFactory::spawnZombie(){
 
 Slime * EnemyFactory::spawnSlime(){
     return new Slime();
+}
+
+Thief * EnemyFactory::spawnThief() { 
+    return new Thief();
 }

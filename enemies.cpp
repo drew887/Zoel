@@ -30,6 +30,14 @@ Slime::Slime(){
     inventory.push_back(Item("Slime ball"));
 }
 
+Thief::Thief(){
+    classname = "Thief";
+    hp = maxhp = (rand() % 10) + 5;
+    def = (rand() % 1) + 3;
+    att = (rand() % 2) + 2;
+    inventory.push_back(Item("Lock pick"));
+}
+
 Zombie::Zombie(){
     classname = "zombie";
     hp = maxhp = (rand() % 5) + 8;

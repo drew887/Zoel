@@ -37,5 +37,10 @@ public:
     virtual ~Slime(){}
 };
 
+class Thief : public Entity{
+public:
+    Thief();
+    virtual ~Thief(){}
+};
 
 #endif

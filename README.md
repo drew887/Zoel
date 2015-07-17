@@ -16,8 +16,9 @@ When running through visual studio, Zoel will report that its missing files if y
 #### TODO:
 
 * Make a nice default story.
-* Make zmaps store enemies.
+* Make zmaps store [Items](https://github.com/drew887/Zoel/wiki/Inventory).
 * Devise a good way to save room location in save files.
+* Make switches that connect rooms together when pressed.
 
 ##### Notes
 

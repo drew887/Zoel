@@ -71,7 +71,7 @@ int main(int argc, char * argv[]){
     string commands = "a add room\ne erase all rooms!\np print room\nm add music\nr read in a zmap\nq quit\n";
     cout << commands << endl;
     while(loop){
-        cout << "Enter state: ";
+        cout << "Enter state (h for help): ";
         cin >> te;
         cin.ignore(80, '\n');
         switch(te){
@@ -277,10 +277,10 @@ void addRoom(){
     int curCon = 0;
     bool loop = true;
     char command;
-    string commands = "\na to add a connection\np to print the current room info\nr to reset the current room\nq to finish editing the room\n";
+    string commands = "\na to add a connection\ne to add an enemy\np to print the current room info\nr to reset the current room\nq to finish editing the room\n";
     cout << commands << endl;
     while(loop){
-        cout << "Enter command: ";
+        cout << room.desc << " (h for help): ";
         cin >> command;
         cin.ignore(80, '\n');
         switch(command){ 
@@ -324,9 +324,10 @@ void addRoom(){
             curCon++;
             break;
         case 'e':
-          cout << "s for slime\nz for zombie" << endl;
+          cout << "s for slime\nt for thief\nz for zombie\nor anything else for random" << endl;
           char enemy;
           cin >> enemy;
+          cin.ignore(80, '\n');
           room.enemies.push_back(enemy);
           break;
         case 'p':

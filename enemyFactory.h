@@ -31,8 +31,10 @@ public:
     EnemyFactory();
     Entity * spawn(char type);
     Entity * spawnRandom();
-    Zombie * spawnZombie();
     Slime * spawnSlime();
+    Thief * spawnThief();
+    Zombie * spawnZombie();
+    
 };
 
 
