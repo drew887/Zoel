@@ -36,9 +36,6 @@
     <ClCompile Include="..\..\Zoel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\zombie.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,14 +54,11 @@
     <ClCompile Include="..\..\enemyFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\slime.cpp">
+    <ClCompile Include="..\..\enemies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\zombie.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\room.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -101,7 +95,7 @@
     <ClInclude Include="..\..\enemyFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\slime.h">
+    <ClInclude Include="..\..\enemies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

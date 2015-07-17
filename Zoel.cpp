@@ -21,10 +21,8 @@
  */
 #include "player.h"
 #include "soundEng.h"
-#include "zombie.h"
 #include "world.h"
 #include "inventory.h"
-#include "enemyFactory.h"
 
 #include <iostream>
 #include <fstream>
@@ -36,7 +34,6 @@ void opening(int,char**);
 int main(int argc, char * argv[]){
     opening(argc,argv);
     World world;
-    //EnemyFactory factory;
     if(world.load("zoel.ini")){
         SoundEng::getInstance().play(0);
         Player one;

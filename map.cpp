@@ -195,7 +195,7 @@ bool Map::load(std::string filename){
                     connectRoom(ctr, room_types[ctr].connections[loop], determineDir(room_types[ctr].directions[loop]), false);
                 }
                 for(unsigned int enemy = 0; enemy < room_types[ctr].enemies.size(); enemy++){
-                    rooms[ctr]->addPerson(factory.spawnRandom());
+                    rooms[ctr]->addPerson(factory.spawn(room_types[ctr].enemies[enemy]));
                 }
             }
         }

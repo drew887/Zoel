@@ -26,6 +26,22 @@
 EnemyFactory::EnemyFactory(){
 }
 
+Entity * EnemyFactory::spawn(char type){
+    Entity * result = NULL;
+    switch(type){
+    case 's':
+        result = spawnSlime();
+        break;
+    case 'z':
+        result = spawnZombie();
+        break;
+    default:
+        result = spawnRandom();
+        break;
+    }
+    return result;
+}
+
 Entity * EnemyFactory::spawnRandom(){
     unsigned int type = rand() % 2;
     Entity * result = NULL;

@@ -1,5 +1,5 @@
 /*
-* enemyFactory.h
+* enemies.h
 * This file is part of Zoel
 *
 * Copyright (C) 2013 - 2015 - Andrew Mcdonald
@@ -20,19 +20,21 @@
 * Boston, MA  02110-1301  USA
 */
 
-#ifndef EnemyFactory_H
-#define EnemyFactory_H
+#ifndef ENEMIES_H
+#define ENEMIES_H
 
-#include "enemies.h"
+#include "entity.h"
 
-class EnemyFactory{
-
+class Zombie : public Entity{
 public:
-    EnemyFactory();
-    Entity * spawn(char type);
-    Entity * spawnRandom();
-    Zombie * spawnZombie();
-    Slime * spawnSlime();
+    Zombie();
+    virtual ~Zombie(){}
+};
+
+class Slime : public Entity{
+public:
+    Slime();
+    virtual ~Slime(){}
 };
 
 

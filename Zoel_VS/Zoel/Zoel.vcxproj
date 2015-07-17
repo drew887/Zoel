@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\enemies.cpp" />
     <ClCompile Include="..\..\enemyFactory.cpp" />
     <ClCompile Include="..\..\entity.cpp" />
     <ClCompile Include="..\..\exitroom.cpp" />
@@ -99,15 +100,14 @@
     <ClCompile Include="..\..\map.cpp" />
     <ClCompile Include="..\..\player.cpp" />
     <ClCompile Include="..\..\room.cpp" />
-    <ClCompile Include="..\..\slime.cpp" />
     <ClCompile Include="..\..\slowout.cpp" />
     <ClCompile Include="..\..\soundEng.cpp" />
     <ClCompile Include="..\..\wavloader.cpp" />
     <ClCompile Include="..\..\world.cpp" />
     <ClCompile Include="..\..\Zoel.cpp" />
-    <ClCompile Include="..\..\zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\enemies.h" />
     <ClInclude Include="..\..\enemyFactory.h" />
     <ClInclude Include="..\..\entity.h" />
     <ClInclude Include="..\..\exitroom.h" />
@@ -117,11 +117,9 @@
     <ClInclude Include="..\..\map.h" />
     <ClInclude Include="..\..\player.h" />
     <ClInclude Include="..\..\room.h" />
-    <ClInclude Include="..\..\slime.h" />
     <ClInclude Include="..\..\slowout.h" />
     <ClInclude Include="..\..\soundEng.h" />
     <ClInclude Include="..\..\world.h" />
-    <ClInclude Include="..\..\zombie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

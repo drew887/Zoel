@@ -1,5 +1,5 @@
 /*
-* enemyFactory.h
+* enemies.cpp
 * This file is part of Zoel
 *
 * Copyright (C) 2013 - 2015 - Andrew Mcdonald
@@ -20,20 +20,20 @@
 * Boston, MA  02110-1301  USA
 */
 
-#ifndef EnemyFactory_H
-#define EnemyFactory_H
-
 #include "enemies.h"
 
-class EnemyFactory{
+Slime::Slime(){
+    classname = "slime";
+    hp = maxhp = (rand() % 6) + 10;
+    def = (rand() % 2) + 1;
+    att = (rand() % 1) + 1;
+    inventory.push_back(Item("Slime ball"));
+}
 
-public:
-    EnemyFactory();
-    Entity * spawn(char type);
-    Entity * spawnRandom();
-    Zombie * spawnZombie();
-    Slime * spawnSlime();
-};
-
-
-#endif
+Zombie::Zombie(){
+    classname = "zombie";
+    hp = maxhp = (rand() % 5) + 8;
+    def = (rand() % 2) + 1;
+    att = (rand() % 2) + 1;
+    inventory.push_back(Item("Rotten flesh"));
+}
