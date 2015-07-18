@@ -43,10 +43,8 @@ Player::Player(void) {
     hp = maxhp = (rand() % 8) + 30;
     def = (rand() % 3) + 3;
     att = (rand() % 5) + 4;
-    inventory.push_back(Item("Clothes"));
-    strcpy(wep.name, "None");
-    wep.att = 0;
-    wep.spd = 0;
+    wep = NULL;
+    inventory.push_back(new Item("Clothes"));
     slow << "Welcome " << classname << ", to the world of ZOEL.\nEnter 'help' for a list of commands." << endl << endl;
     slow.print();
 }
@@ -79,11 +77,16 @@ bool Player::defend(Entity * attacker) {
 
 unsigned int Player::getAttack() {
     unsigned int result = 0;
-    if(wep.spd > 0){
-        result = att + wep.att + (rand() % wep.spd);
+    if(wep){
+        if(wep->speed > 0){
+            result = att + wep->attack + (rand() % wep->speed);
+        }
+        else {
+            result = att + wep->attack;
+        }
     }
-    else {
-        result = att + wep.att;
+    else{
+        result = att;
     }
     return result;
 }
@@ -163,9 +166,14 @@ bool Player::load(const char *name){
 }
 
 void Player::stats(){
-    slow << left << "Name: " << classname << endl << "Maxhp: " << maxhp << " Hp: " << hp << endl;
+    slow << "Name: " << classname << endl << "Maxhp: " << maxhp << " Hp: " << hp << endl;
     slow << "Attack: " << att << " Defence: " << def << endl;
-    slow << "Weapon: " << wep.name << " Attack: +" << wep.att << endl;
+    if(wep){
+        slow << "Weapon: " << wep->name << " Attack: +" << wep->attack << endl;
+    }
+    else{
+        slow << "No Weapon equipped" << endl;
+    }
     slow.print();
 }
 
@@ -176,7 +184,44 @@ void Player::heal(){
 void Player::printInventory(){
     slow << "Current inventory:" << endl;
     for(unsigned int ctr = 0; ctr < inventory.size(); ctr++){
-        slow << inventory[ctr].name << endl;
+        slow << inventory[ctr]->name << endl;
     }
     slow.print();
+}
+
+#include <typeinfo>
+
+void Player::giveItem(Item * item){
+    zoel::SlowOut slow;
+    slow << classname << " has recieved: " << item->name << endl;
+    if(typeid(Weapon) == typeid(*item)){
+        wep = (Weapon*)item;
+        slow << "Equiping: " << item->name << endl;
+    }
+    slow.print();
+    inventory.push_back(item);
+}
+
+Item * Player::dropItem(string item){
+    zoel::SlowOut slow;
+    Item * result = NULL;
+    if(inventory.size() > 0){
+        unsigned int ctr;
+        for(ctr = 0; ctr < inventory.size(); ctr++){
+            if(inventory[ctr]->name == item){
+                break;
+            }
+        }
+        if(ctr < inventory.size()){
+            result = inventory[ctr];
+            slow << "Dropped " << result->name << endl;
+            if(wep == result){
+                wep = NULL;
+            }
+            inventory.erase(inventory.begin() + ctr);
+
+        }
+    }
+    slow.print();
+    return result;
 }

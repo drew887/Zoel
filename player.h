@@ -36,8 +36,9 @@ public:
     void printInventory();
     bool defend(Entity * attacker);
     unsigned int getAttack();
-
-    Weapon wep;
+    virtual void giveItem(Item * item);
+    virtual Item * dropItem(std::string item);
+    Weapon * wep;
 };
 #pragma pack()
 #endif

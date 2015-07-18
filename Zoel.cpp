@@ -38,7 +38,8 @@ int main(int argc, char * argv[]){
         SoundEng::getInstance().play(0);
         Player one;
         Room * currentRoom = world.maps[0]->rooms[0];
-        world.maps[0]->rooms[0]->addItem(Item("Key"));
+        world.maps[0]->rooms[0]->addItem(new Item("Key"));
+        world.maps[0]->rooms[0]->addItem(new Weapon("Knife", 2, 1));
         while(currentRoom != NULL){
             currentRoom = currentRoom->start(&one);
         }

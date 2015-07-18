@@ -25,12 +25,11 @@
 
 #pragma pack(1)
 
+using std::string;
+
 class Item {
 public:
-    Item(){}
-    Item(std::string pname){
-        name = pname;
-    }
+    Item(string Name);
     virtual ~Item(){}
     std::string name;
 };
@@ -39,10 +38,12 @@ public:
 
 #pragma pack(1)
 
-struct Weapon {
-    unsigned int att;
-    unsigned int spd;
-    char name[9];
+class Weapon :public Item{
+public:
+    Weapon();
+    Weapon(string name, unsigned int att = 0, unsigned int spd = 0);
+    unsigned int attack;
+    unsigned int speed;
 };
 #pragma pack()
 #endif

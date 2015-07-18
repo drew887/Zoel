@@ -23,11 +23,11 @@
 #include "enemies.h"
 
 Slime::Slime(){
-    classname = "slime";
+    classname = "Slime";
     hp = maxhp = (rand() % 6) + 10;
     def = (rand() % 2) + 1;
     att = (rand() % 1) + 1;
-    inventory.push_back(Item("Slime ball"));
+    inventory.push_back(new Item("Slime ball"));
 }
 
 Thief::Thief(){
@@ -35,13 +35,13 @@ Thief::Thief(){
     hp = maxhp = (rand() % 10) + 5;
     def = (rand() % 1) + 3;
     att = (rand() % 2) + 2;
-    inventory.push_back(Item("Lock pick"));
+    inventory.push_back(new Item("Lock pick"));
 }
 
 Zombie::Zombie(){
-    classname = "zombie";
+    classname = "Zombie";
     hp = maxhp = (rand() % 5) + 8;
     def = (rand() % 2) + 1;
     att = (rand() % 2) + 1;
-    inventory.push_back(Item("Rotten flesh"));
+    inventory.push_back(new Item("Rotten flesh"));
 }

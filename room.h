@@ -42,7 +42,7 @@ public:
     Room(string Description);
     virtual ~Room(void);
     bool addPerson(Entity * person);
-    void addItem(Item item);
+    void addItem(Item * item);
     bool attach(Room * ar, room_dir direc, bool connectBack = false);
     virtual Room * start(Player * play);
     Room * getRoomAtDir(room_dir dir);
@@ -52,7 +52,7 @@ protected:
     void idleLoop(Player * play);
     Room * next;
     vector<Entity *> enemies;
-    vector<Item> items;
+    vector<Item *> items;
     Room * attached[4];
     room_dir at_dir[4];
     unsigned int attcount;

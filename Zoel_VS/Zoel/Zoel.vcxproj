@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\exitroom.cpp" />
     <ClCompile Include="..\..\healroom.cpp" />
     <ClCompile Include="..\..\hoot.cpp" />
+    <ClCompile Include="..\..\inventory.cpp" />
     <ClCompile Include="..\..\map.cpp" />
     <ClCompile Include="..\..\player.cpp" />
     <ClCompile Include="..\..\room.cpp" />

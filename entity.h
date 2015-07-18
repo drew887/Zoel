@@ -34,15 +34,15 @@ protected:
     unsigned int def;
     unsigned int att;
 public:
-    std::vector<Item> inventory;
+    std::vector<Item *> inventory;
     std::string classname;
     bool isalive;
     Entity();
     virtual ~Entity();
     virtual bool attack(Entity * defender);//this is the method for attacking, just calls defend for the defender normally, truth be told, kinda useless; but i wanted it anyway just to keep things straight.
     virtual bool defend(Entity * attacker);
-    virtual void giveItem(Item item);
-    virtual bool dropItem(std::string item);
+    virtual void giveItem(Item * item);
+    virtual Item * dropItem(std::string item);
     virtual unsigned int getAttack();
     virtual unsigned int getDefence();
     virtual unsigned int getHp();

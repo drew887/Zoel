@@ -42,6 +42,19 @@ Room::Room(string Description) :description(Description){
     }
 }
 
+Room::~Room(void){
+    for(int i = 0; i < 4; i++){
+        attached[i] = NULL;
+        at_dir[i] = NONE;
+    }
+    for(unsigned int enemy = 0; enemy < enemies.size(); enemy++){
+        delete enemies[enemy];
+    }
+    for(unsigned int item = 0; item < items.size(); item++){
+        delete items[item];
+    }
+}
+
 inline room_dir directionSwap(room_dir tw){
     switch(tw){
     case NORTH:
@@ -119,7 +132,7 @@ void Room::printDescription(){
     if(items.size() > 0){
         slow << endl;
         for(unsigned int item = 0; item < items.size(); item++){
-            slow << "There is a " << items[item].name << " here!" << endl;
+            slow << "There is a " << items[item]->name << " here!" << endl;
         }
         slow.print();
     }
@@ -136,7 +149,7 @@ bool Room::addPerson(Entity * person){
     return success;
 }
 
-void Room::addItem(Item item){
+void Room::addItem(Item * item){
     items.push_back(item);
 }
 
@@ -160,15 +173,7 @@ bool Room::attach(Room * ar, room_dir direct, bool connectBack){
     return true;
 }
 
-Room::~Room(void){
-    for(int i = 0; i < 4; i++){
-        attached[i] = NULL;
-        at_dir[i] = NONE;
-    }
-    for(unsigned int enemy = 0; enemy < enemies.size(); enemy++){
-        delete enemies[enemy];
-    }
-}
+
 
 Room * Room::getRoomAtDir(room_dir dir){
     Room * temp = NULL;
@@ -278,12 +283,10 @@ void Room::idleLoop(Player *play){
                             slow.print();
                         }
                         cout << endl;
-                        getline(cin, targetMesg);
-                        targets = tokenize(targetMesg);
-                        target = targets[0];
+                        getline(cin, target);
                     }
                     else{
-                        target = words[1];
+                        target = msg.substr(msg.find(' ')+1);
                     }
                     unsigned int enemy;
                     for(enemy = 0; enemy < enemies.size(); enemy++){
@@ -329,7 +332,7 @@ void Room::idleLoop(Player *play){
                     if(words.size() < 2){
                         slow << "Take what?" << endl;
                         for(unsigned int ctr = 0; ctr < items.size(); ctr++){
-                            slow << items[ctr].name << endl;
+                            slow << items[ctr]->name << endl;
                         }
                         slow.print();
                         getline(cin, takeItem);
@@ -339,12 +342,12 @@ void Room::idleLoop(Player *play){
                     }
                     unsigned int ctr;
                     for(ctr = 0; ctr < items.size(); ctr++){
-                        if(takeItem == items[ctr].name){
+                        if(takeItem == items[ctr]->name){
                             break;
                         }
                     }
                     if(ctr < items.size()){
-                        play->giveItem(takeItem);
+                        play->giveItem(items[ctr]);
                         items.erase(items.begin() + ctr);
                     }
                     else{
@@ -369,8 +372,9 @@ void Room::idleLoop(Player *play){
                     else{
                         dropName = msg.substr(msg.find(' ') + 1);
                     }
-                    if(play->dropItem(dropName)){
-                        items.push_back(dropName);
+                    Item * drop = play->dropItem(dropName);
+                    if(drop != NULL){
+                        items.push_back(drop);
                     }
                 }
                 else{
