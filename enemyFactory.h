@@ -24,12 +24,16 @@
 #define EnemyFactory_H
 
 #include "enemies.h"
+#include <string>
+#include <vector>
+
+using namespace std;
 
 class EnemyFactory{
-
+    static vector<string> enemyTypes;
 public:
     EnemyFactory();
-    Entity * spawn(char type);
+    Entity * spawn(string type);
     Entity * spawnRandom();
     Slime * spawnSlime();
     Thief * spawnThief();

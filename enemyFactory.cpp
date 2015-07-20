@@ -22,20 +22,27 @@
 
 #include "enemyFactory.h"
 
+vector<string> EnemyFactory::enemyTypes = { "Slime", "Thief", "Zombie" };
 
 EnemyFactory::EnemyFactory(){
 }
 
-Entity * EnemyFactory::spawn(char type){
+Entity * EnemyFactory::spawn(string type){
     Entity * result = NULL;
-    switch(type){
-    case 's':
+    unsigned int enemy;
+    for(enemy = 0; enemy < enemyTypes.size(); enemy++){
+        if(type == enemyTypes[enemy]){
+            break;
+        }
+    }
+    switch(enemy){
+    case 0:
         result = spawnSlime();
         break;
-    case 't':
+    case 1:
         result = spawnThief();
         break;
-    case 'z':
+    case 2:
         result = spawnZombie();
         break;
     default:
@@ -70,6 +77,6 @@ Slime * EnemyFactory::spawnSlime(){
     return new Slime();
 }
 
-Thief * EnemyFactory::spawnThief() { 
+Thief * EnemyFactory::spawnThief() {
     return new Thief();
 }

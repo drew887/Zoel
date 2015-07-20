@@ -35,7 +35,7 @@ public:
         CUR_VER_MAJOR = major;
         CUR_VER_MINOR = minor;
     }
-    void print(){
+    void print() const{
         cout << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
     }
     void write(FILE * filePointer) const {
@@ -49,6 +49,18 @@ public:
             if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
                 if(CUR_VER_MINOR == other.CUR_VER_MINOR){
                     result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    bool operator!=(const zoelMapVersion & other){
+        bool result = true;
+        if(CUR_VER_LETTER == other.CUR_VER_LETTER){
+            if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
+                if(CUR_VER_MINOR == other.CUR_VER_MINOR){
+                    result = false;
                 }
             }
         }
@@ -83,7 +95,7 @@ struct room_t{
     string desc;
     vector<int> connections;
     vector<char>directions;
-    vector<char> enemies;
+    vector<string> enemies;
 };
 
 room_dir determineDir(char dir){
@@ -119,13 +131,13 @@ bool Map::load(std::string filename){
             //---
             char ver[3] = {};
             fread(&ver, 3, 1, filePointer);
-            zoelMapVersion version(ver[0], ver[1], ver[2]),cur_ver('c',2,0);
-            if(!(version == cur_ver)){
+            zoelMapVersion version(ver[0], ver[1], ver[2]),cur_ver('c',2,2);
+            if(version != cur_ver){
                 cout << "ERR Map version is ";
                 version.print();
                 cout << "And version of this software is ";
                 cur_ver.print();
-                cout << "Please update map " << filename << " or Zoel to the current version" << endl;
+                cout << "Please update map " << filename << " or Zoel to the same version" << endl;
                 cout << "\nPress enter to continue...\n";
                 cin.ignore(80, '\n');
                 exit(-1);
@@ -178,8 +190,14 @@ bool Map::load(std::string filename){
                     }
                     fread(&roomCount, sizeof(int), 1, filePointer);
                     for(unsigned int ctr = 0; ctr < roomCount; ctr++){
-                      char enemy;
-                      fread(&enemy, sizeof(char), 1, filePointer);
+                      string enemy;
+                      unsigned int enemyLength;
+                      fread(&enemyLength, sizeof(int), 1, filePointer);
+                      char * name = new char[enemyLength + 1];
+                      name[enemyLength] = 0;
+                      fread(name, 1, enemyLength, filePointer);
+                      enemy = name;
+                      delete[] name;
                       room.enemies.push_back(enemy);
                     }
                     room_types.push_back(room);

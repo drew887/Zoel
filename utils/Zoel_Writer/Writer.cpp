@@ -9,10 +9,10 @@
 using namespace std;
 
 struct Room{
-  string desc;
-  vector<int> connections;
-  vector<char> directions;
-  vector<char> enemies;
+    string desc;
+    vector<int> connections;
+    vector<char> directions;
+    vector<string> enemies;
 };
 
 vector<Room> rooms;
@@ -27,8 +27,8 @@ public:
         CUR_VER_MAJOR = major;
         CUR_VER_MINOR = minor;
     }
-    void print(){
-        cout << "VERSION " << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
+    void print() const{
+        cout << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
     }
     void write(FILE * filePointer) const {
         fwrite(&CUR_VER_LETTER, 1, 1, filePointer);
@@ -47,21 +47,33 @@ public:
         return result;
     }
 
-  bool operator< (const zoelMapVersion & other){
-    bool result = false;
-    if(CUR_VER_MAJOR < other.CUR_VER_MAJOR){
-      if(CUR_VER_MINOR < other.CUR_VER_MINOR){
-        result = true;
-      }
+    bool operator!=(const zoelMapVersion & other){
+        bool result = true;
+        if(CUR_VER_LETTER == other.CUR_VER_LETTER){
+            if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
+                if(CUR_VER_MINOR == other.CUR_VER_MINOR){
+                    result = false;
+                }
+            }
+        }
+        return result;
     }
-    return result;
-  }
+
+    bool operator< (const zoelMapVersion & other){
+        bool result = false;
+        if(CUR_VER_MAJOR < other.CUR_VER_MAJOR){
+            if(CUR_VER_MINOR < other.CUR_VER_MINOR){
+                result = true;
+            }
+        }
+        return result;
+    }
     unsigned char CUR_VER_LETTER;
     unsigned char CUR_VER_MAJOR;
     unsigned char CUR_VER_MINOR;
 };
 
-const zoelMapVersion CUR_VER('c', 2, 0);
+const zoelMapVersion CUR_VER('c', 2, 2);
 
 int main(int argc, char * argv[]){
     string songName = "";
@@ -98,8 +110,12 @@ int main(int argc, char * argv[]){
             }
             break;
         case 'p':
+            cout << "The current rooms are: " << endl;
             for(unsigned int room = 0; room < rooms.size(); room++){
                 printRoom(rooms[room]);
+            }
+            if(songName.length() > 0){
+                cout << "Song name: " << songName << endl;
             }
             break;
         case 'm':
@@ -152,7 +168,9 @@ int main(int argc, char * argv[]){
                     conSize = a.enemies.size();
                     fwrite(&conSize, sizeof(int), 1, filePointer);
                     for(unsigned int ctr = 0; ctr < conSize; ctr++){
-                        fwrite(&a.enemies[ctr], sizeof(char), 1, filePointer);
+                        unsigned int enemyLength = a.enemies[ctr].length();
+                        fwrite(&enemyLength, sizeof(int), 1, filePointer);
+                        fwrite(a.enemies[ctr].c_str(), a.enemies[ctr].length(), 1, filePointer);
                     }
                 }
             }
@@ -170,7 +188,7 @@ int main(int argc, char * argv[]){
 }
 
 void printRoom(Room room){
-    cout << room.desc << endl;
+    cout << "********************" << endl << room.desc << endl;
     cout << "num cons: " << room.connections.size() << " Num enemies: " << room.enemies.size() << endl;
     cout << "Connections:" << endl;
     for(unsigned int ctr = 0; ctr < room.connections.size(); ctr++){
@@ -181,6 +199,8 @@ void printRoom(Room room){
         cout << room.enemies[ctr] << " ";
     }
     cout << endl;
+    cout << "********************" << endl << endl;
+    
 }
 
 void readRoom(){
@@ -197,6 +217,13 @@ void readRoom(){
             char ver[3] = {};
             fread(&ver, 3, 1, filePointer);
             zoelMapVersion version(ver[0], ver[1], ver[2]);
+            if(version != CUR_VER){
+                cout << "ERR version of map is ";
+                version.print();
+                cout << "And the version of this software is ";
+                CUR_VER.print();
+                return;
+            }
             cout << endl;
             version.print();
             unsigned int nameSize = 0;
@@ -245,9 +272,15 @@ void readRoom(){
                     }
                     fread(&roomCount, sizeof(int), 1, filePointer);
                     for(unsigned int ctr = 0; ctr < roomCount; ctr++){
-                      char enemy;
-                      fread(&enemy, sizeof(char), 1, filePointer);
-                      room.enemies.push_back(enemy);
+                        string enemy;
+                        unsigned int enemyLength;
+                        fread(&enemyLength, sizeof(int), 1, filePointer);
+                        char * name = new char[enemyLength + 1];
+                        name[enemyLength] = 0;
+                        fread(name, 1, enemyLength, filePointer);
+                        enemy = name;
+                        delete[] name;
+                        room.enemies.push_back(enemy);
                     }
                     printRoom(room);
                 }
@@ -277,13 +310,14 @@ void addRoom(){
     int curCon = 0;
     bool loop = true;
     char command;
+    string enemy;
     string commands = "\na to add a connection\ne to add an enemy\np to print the current room info\nr to reset the current room\nq to finish editing the room\n";
     cout << commands << endl;
     while(loop){
         cout << room.desc << " (h for help): ";
         cin >> command;
         cin.ignore(80, '\n');
-        switch(command){ 
+        switch(command){
         case 'a':
             if(curCon < 4){
                 cout << "Enter connection number (any negative to abort): ";
@@ -324,12 +358,10 @@ void addRoom(){
             curCon++;
             break;
         case 'e':
-          cout << "s for slime\nt for thief\nz for zombie\nor anything else for random" << endl;
-          char enemy;
-          cin >> enemy;
-          cin.ignore(80, '\n');
-          room.enemies.push_back(enemy);
-          break;
+            cout << "enter the \'classname\' of the enemy class or anything else for a random enemy." << endl;
+            getline(cin, enemy);
+            room.enemies.push_back(enemy);
+            break;
         case 'p':
             printRoom(room);
             break;

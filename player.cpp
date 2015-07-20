@@ -170,6 +170,7 @@ void Player::stats(){
     slow << "Attack: " << att << " Defence: " << def << endl;
     if(wep){
         slow << "Weapon: " << wep->name << " Attack: +" << wep->attack << endl;
+        slow << "Total attack: " << getAttack() << endl;
     }
     else{
         slow << "No Weapon equipped" << endl;
