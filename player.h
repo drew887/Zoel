@@ -25,6 +25,8 @@
 #include "entity.h"
 #pragma pack(1)
 
+using std::string;
+
 class Player :public Entity{
 public:
     Player(void);
@@ -37,7 +39,8 @@ public:
     bool defend(Entity * attacker);
     unsigned int getAttack();
     virtual void giveItem(Item * item);
-    virtual Item * dropItem(std::string item);
+    virtual Item * dropItem(string item);
+    virtual void equipItem(string equipment);
     Weapon * wep;
 };
 #pragma pack()

@@ -26,7 +26,6 @@
 
 #include <time.h>
 #include <iostream>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -169,8 +168,8 @@ void Player::stats(){
     slow << "Name: " << classname << endl << "Maxhp: " << maxhp << " Hp: " << hp << endl;
     slow << "Attack: " << att << " Defence: " << def << endl;
     if(wep){
-        slow << "Weapon: " << wep->name << " Attack: +" << wep->attack << endl;
-        slow << "Total attack: " << getAttack() << endl;
+        slow << "Weapon: " << wep->name << " Attack: " << wep->attack << "-" << wep->attack+wep->speed << endl;
+        slow << "Total attack: " << att+wep->attack << "-" <<att+ wep->attack+wep->speed << endl;
     }
     else{
         slow << "No Weapon equipped" << endl;
@@ -193,18 +192,12 @@ void Player::printInventory(){
 #include <typeinfo>
 
 void Player::giveItem(Item * item){
-    zoel::SlowOut slow;
     slow << classname << " has recieved: " << item->name << endl;
-    if(typeid(Weapon) == typeid(*item)){
-        wep = (Weapon*)item;
-        slow << "Equiping: " << item->name << endl;
-    }
     slow.print();
     inventory.push_back(item);
 }
 
 Item * Player::dropItem(string item){
-    zoel::SlowOut slow;
     Item * result = NULL;
     if(inventory.size() > 0){
         unsigned int ctr;
@@ -226,3 +219,25 @@ Item * Player::dropItem(string item){
     slow.print();
     return result;
 }
+
+void Player::equipItem(string equipment){
+    unsigned int item;
+    for(item = 0; item < inventory.size(); item++){
+        if(inventory[item]->name == equipment){
+            break;
+        }
+    }
+    if(item < inventory.size()){
+        if(typeid(Weapon) == typeid(*inventory[item])){
+            wep = (Weapon*)inventory[item];
+            slow << "Equiping: " << inventory[item]->name << endl;
+        }else{
+            slow << inventory[item]->name << " isn't an equipable item!" << endl;
+        }
+    }else{
+        slow << "You don't have " << equipment << endl;
+    }
+    slow.print();
+}
+
+

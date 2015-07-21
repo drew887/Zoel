@@ -29,7 +29,7 @@
 
 using namespace std;
 using zoel::SlowOut;
-vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack", "faster", "slower", "inventory", "take", "drop" };
+vector<string> Room::tokens = { "north", "east", "south", "west", "quit", "help", "stats", "save", "load", "look", "attack", "faster", "slower", "inventory", "take", "drop", "equip" };
 
 SlowOut slow;
 
@@ -379,6 +379,26 @@ void Room::idleLoop(Player *play){
                 }
                 else{
                     slow << play->classname << " doesn't have any items to drop" << endl;
+                    slow.print();
+                }
+                break;
+            case 16:
+                if(play->inventory.size() > 0){
+                    string equipName;
+                    if(words.size() < 2){
+                        slow << "Equip what?" << endl;
+                        slow.print();
+                        play->printInventory();
+                        getline(cin, equipName);
+                    }
+                    else{
+                        equipName = msg.substr(msg.find(' ') + 1);
+                    }
+                    play->equipItem(equipName);
+
+                }
+                else{
+                    slow << play->classname << " doesn't have any items to equip" << endl;
                     slow.print();
                 }
                 break;

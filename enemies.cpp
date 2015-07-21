@@ -35,7 +35,7 @@ Thief::Thief(){
     hp = maxhp = (rand() % 10) + 5;
     def = (rand() % 1) + 3;
     att = (rand() % 2) + 2;
-    inventory.push_back(new Item("Lock pick"));
+    inventory.push_back(new Weapon("Dagger",2,5));
 }
 
 Zombie::Zombie(){
