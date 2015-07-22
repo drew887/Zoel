@@ -116,13 +116,13 @@ void Player::save() {
     if(filePointer){
         char check[5] = "zoel";
         fwrite(check, sizeof(check), 1, filePointer);
+        int nameLength = classname.length();
+        fwrite(&nameLength, sizeof(int), 1, filePointer);
+        fwrite(classname.c_str(), classname.length(), 1, filePointer);
         fwrite(&att, sizeof(att), 1, filePointer);
         fwrite(&def, sizeof(def), 1, filePointer);
         fwrite(&maxhp, sizeof(maxhp), 1, filePointer);
         fwrite(&hp, sizeof(hp), 1, filePointer);
-        int nameLength = classname.length();
-        fwrite(&nameLength, sizeof(int), 1, filePointer);
-        fwrite(classname.c_str(), classname.length(), 1, filePointer);
         fclose(filePointer);
         slow << "Save complete!" << endl;
     }
@@ -146,10 +146,6 @@ bool Player::load(const char *name){
         slow.print();
         return false;
     }
-    fread(&att, sizeof(int), 1, filePointer);
-    fread(&def, sizeof(int), 1, filePointer);
-    fread(&maxhp, sizeof(int), 1, filePointer);
-    fread(&hp, sizeof(int), 1, filePointer);
     unsigned int nameLength = 0;
     fread(&nameLength, sizeof(int), 1, filePointer);
     char * tempName = new char[nameLength + 1];
@@ -157,6 +153,10 @@ bool Player::load(const char *name){
     fread(tempName, nameLength, 1, filePointer);
     classname = tempName;
     delete[] tempName;
+    fread(&att, sizeof(int), 1, filePointer);
+    fread(&def, sizeof(int), 1, filePointer);
+    fread(&maxhp, sizeof(int), 1, filePointer);
+    fread(&hp, sizeof(int), 1, filePointer);
     slow << "Loaded " << classname << " save!" << endl;
     slow.print();
     stats();
