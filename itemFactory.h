@@ -1,5 +1,5 @@
 /*
-* enemyFactory.h
+* itemFactory.h
 * This file is part of Zoel
 *
 * Copyright (C) 2013 - 2015 - Andrew Mcdonald
@@ -20,26 +20,16 @@
 * Boston, MA  02110-1301  USA
 */
 
-#ifndef ENEMYFACTORY_H
-#define ENEMYFACTORY_H
+#ifndef ITEMFACTORY_H
+#define ITEMFACTORY_H
 
-#include "enemies.h"
-#include <string>
-#include <vector>
+#include "inventory.h"
 
-using namespace std;
-
-class EnemyFactory{
-    static vector<string> enemyTypes;
+class ItemFactory {
 public:
-    EnemyFactory();
-    Entity * spawn(string type);
-    Entity * spawnRandom();
-    Slime * spawnSlime();
-    Thief * spawnThief();
-    Zombie * spawnZombie();
-    
+    Item * readFromFile(FILE * filePointer);
+    Item * spawnRandomItem();
+    Weapon * spawnRandomWeapon();
 };
-
 
 #endif

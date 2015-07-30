@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\healroom.cpp" />
     <ClCompile Include="..\..\hoot.cpp" />
     <ClCompile Include="..\..\inventory.cpp" />
+    <ClCompile Include="..\..\itemFactory.cpp" />
     <ClCompile Include="..\..\map.cpp" />
     <ClCompile Include="..\..\player.cpp" />
     <ClCompile Include="..\..\room.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="..\..\healroom.h" />
     <ClInclude Include="..\..\hoot.h" />
     <ClInclude Include="..\..\inventory.h" />
+    <ClInclude Include="..\..\itemFactory.h" />
     <ClInclude Include="..\..\map.h" />
     <ClInclude Include="..\..\player.h" />
     <ClInclude Include="..\..\room.h" />

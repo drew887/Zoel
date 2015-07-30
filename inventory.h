@@ -19,33 +19,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor,
  * Boston, MA  02110-1301  USA
  */
-#ifndef INVEN
-#define INVEN
+#ifndef INVENTORY_H
+#define INVENTORY_H
 #include <string>
-
-#pragma pack(1)
 
 using std::string;
 
 class Item {
 public:
     Item(string Name);
-    Item(FILE * filePointer);
     virtual ~Item(){}
-    void write(FILE * filePointer);
+    virtual void write(FILE * filePointer);
     std::string name;
 };
-
-#pragma pack()
-
-#pragma pack(1)
 
 class Weapon :public Item{
 public:
     Weapon();
     Weapon(string name, unsigned int att = 0, unsigned int spd = 0);
+    virtual void write(FILE * filePointer);
     unsigned int attack;
     unsigned int speed;
 };
-#pragma pack()
+
 #endif

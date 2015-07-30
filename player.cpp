@@ -137,6 +137,8 @@ void Player::save() {
     slow.print();
 }
 
+#include "itemFactory.h"
+
 bool Player::load(const char *name){
     FILE * filePointer = fopen(name, "rb");
     if(!filePointer){
@@ -168,8 +170,9 @@ bool Player::load(const char *name){
     inventory.clear();
     int inventorySize = 0;
     fread(&inventorySize, sizeof(int), 1, filePointer);
+    ItemFactory factory;
     for(int ctr = 0; ctr < inventorySize; ctr++){
-        inventory.push_back(new Item(filePointer));
+        inventory.push_back(factory.readFromFile(filePointer));
     }
     slow << "Loaded " << classname << " save!" << endl;
     slow.print();

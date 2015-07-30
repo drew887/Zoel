@@ -8,25 +8,10 @@ Item::Item(string Name){
     name = Name;
 }
 
-Item::Item(FILE * filePointer){
-    if(filePointer){
-        int nameSize = 0;
-        fread(&nameSize, sizeof(int), 1, filePointer);
-        if(nameSize > 0){
-            char * pName = new char[nameSize + 1];
-            pName[nameSize] = 0;
-            fread(pName, 1, nameSize, filePointer);
-            name = pName;
-            delete[] pName;
-        }
-    }
-    else{
-        name = "ERR READING FROM FILE";
-    }
-}
-
 void Item::write(FILE * filePointer){
     if(filePointer){
+        char type = 'I';
+        fwrite(&type, 1, 1, filePointer);
         int nameSize = name.length();
         fwrite(&nameSize, sizeof(int), 1, filePointer);
         fwrite(name.c_str(), 1, nameSize, filePointer);
@@ -44,4 +29,16 @@ Weapon::Weapon(string Name, unsigned int att, unsigned int spd) :Item(Name){
     speed = spd;
 }
 
-//Armour
+void Weapon::write(FILE * filePointer){
+    if(filePointer){
+        char type = 'W';
+        fwrite(&type, 1, 1, filePointer);
+        int nameSize = name.length();
+        fwrite(&nameSize, sizeof(int), 1, filePointer);
+        fwrite(name.c_str(), 1, nameSize, filePointer);
+        fwrite(&attack, sizeof(int), 1, filePointer);
+        fwrite(&speed, sizeof(int), 1, filePointer);
+    }
+}
+
+// TODO: Armour
