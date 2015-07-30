@@ -123,6 +123,11 @@ void Player::save() {
         fwrite(&def, sizeof(def), 1, filePointer);
         fwrite(&maxhp, sizeof(maxhp), 1, filePointer);
         fwrite(&hp, sizeof(hp), 1, filePointer);
+        unsigned int inventorySize = inventory.size();
+        fwrite(&inventorySize, sizeof(int), 1, filePointer);
+        for(unsigned int ctr = 0; ctr < inventorySize; ctr++){
+            inventory[ctr]->write(filePointer);
+        }
         fclose(filePointer);
         slow << "Save complete!" << endl;
     }
@@ -157,6 +162,15 @@ bool Player::load(const char *name){
     fread(&def, sizeof(int), 1, filePointer);
     fread(&maxhp, sizeof(int), 1, filePointer);
     fread(&hp, sizeof(int), 1, filePointer);
+    for(unsigned int ctr = 0; ctr < inventory.size(); ctr++){
+        delete inventory[ctr];
+    }
+    inventory.clear();
+    int inventorySize = 0;
+    fread(&inventorySize, sizeof(int), 1, filePointer);
+    for(int ctr = 0; ctr < inventorySize; ctr++){
+        inventory.push_back(new Item(filePointer));
+    }
     slow << "Loaded " << classname << " save!" << endl;
     slow.print();
     stats();

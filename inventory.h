@@ -30,7 +30,9 @@ using std::string;
 class Item {
 public:
     Item(string Name);
+    Item(FILE * filePointer);
     virtual ~Item(){}
+    void write(FILE * filePointer);
     std::string name;
 };
 

@@ -24,7 +24,7 @@
 
 SoundEng::SoundEng(){
     currentSong = 0;
-}
+ }
 SoundEng::~SoundEng(){
     for(unsigned int ctr = 0; ctr < sources.size(); ctr++){
         delete sources[ctr];
