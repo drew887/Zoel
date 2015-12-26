@@ -29,7 +29,7 @@
 #include <cstring>
 
 
-void opening(int,char**);
+void opening(int argc, char * argv[]);
 
 int main(int argc, char * argv[]){
     opening(argc,argv);

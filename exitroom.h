@@ -33,5 +33,4 @@ public:
     virtual Room * start(Player * play);
 };
 
-
 #endif

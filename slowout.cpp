@@ -16,12 +16,8 @@ using namespace zoel;
 
 unsigned int SlowOut::timeStep = 10;
 
-SlowOut::SlowOut(){
-
-}
-
 void SlowOut::print(){
-    string output = str();
+    string output = str(); //this is stringstream::str()
     for(unsigned int letter = 0; letter < output.size(); letter++){
         putchar(output[letter]);
         fflush(stdout);
@@ -30,3 +26,12 @@ void SlowOut::print(){
     str("");
 }
 
+ostream& operator<<(ostream& out, const SlowOut * slow){
+    string output = slow->str();
+    for(unsigned int letter = 0; letter < output.size(); letter++){
+        out << output[letter];
+        out.flush();
+        safesleep(slow->timeStep);
+    }
+    return out;
+}

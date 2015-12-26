@@ -48,15 +48,7 @@ public:
     }
 
     bool operator!=(const zoelMapVersion & other){
-        bool result = true;
-        if(CUR_VER_LETTER == other.CUR_VER_LETTER){
-            if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
-                if(CUR_VER_MINOR == other.CUR_VER_MINOR){
-                    result = false;
-                }
-            }
-        }
-        return result;
+        return !(*this == other);
     }
 
     bool operator< (const zoelMapVersion & other){

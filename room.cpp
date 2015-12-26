@@ -260,7 +260,7 @@ void Room::idleLoop(Player *play){
                     std::string name;
                     getline(cin, name);
                     if(play->load(name.c_str())){
-                        //figure out a good way to handle loading
+                        //TODO: figure out a good way to handle loading
                     }
                 }
                 else{
@@ -320,8 +320,7 @@ void Room::idleLoop(Player *play){
             case 12: //slower
                 slow.timeStep += 5;
                 slow << "The text speed is now: " << slow.timeStep << endl;
-                slow.
-                    print();
+                slow.print();
                 break;
             case 13: // inventory
                 play->printInventory();
@@ -395,7 +394,6 @@ void Room::idleLoop(Player *play){
                         equipName = msg.substr(msg.find(' ') + 1);
                     }
                     play->equipItem(equipName);
-
                 }
                 else{
                     slow << play->classname << " doesn't have any items to equip" << endl;

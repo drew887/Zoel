@@ -22,8 +22,9 @@
 
 #include "player.h"
 #include "slowout.h"
+#include "itemFactory.h"
 
-
+#include <typeinfo>
 #include <time.h>
 #include <iostream>
 #include <string.h>
@@ -137,7 +138,7 @@ void Player::save() {
     slow.print();
 }
 
-#include "itemFactory.h"
+
 
 bool Player::load(const char *name){
     FILE * filePointer = fopen(name, "rb");
@@ -206,8 +207,6 @@ void Player::printInventory(){
     slow.print();
 }
 
-#include <typeinfo>
-
 void Player::giveItem(Item * item){
     slow << classname << " has recieved: " << item->name << endl;
     slow.print();
@@ -230,7 +229,6 @@ Item * Player::dropItem(string item){
                 wep = NULL;
             }
             inventory.erase(inventory.begin() + ctr);
-
         }
     }
     slow.print();

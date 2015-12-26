@@ -35,14 +35,17 @@ public:
         CUR_VER_MAJOR = major;
         CUR_VER_MINOR = minor;
     }
+    
     void print() const{
         cout << CUR_VER_LETTER << (int)CUR_VER_MAJOR << '.' << (int)CUR_VER_MINOR << endl;
     }
+    
     void write(FILE * filePointer) const {
         fwrite(&CUR_VER_LETTER, 1, 1, filePointer);
         fwrite(&CUR_VER_MAJOR, 1, 1, filePointer);
         fwrite(&CUR_VER_MINOR, 1, 1, filePointer);
     }
+    
     bool operator== (const zoelMapVersion & other){
         bool result = false;
         if(CUR_VER_LETTER == other.CUR_VER_LETTER){
@@ -56,17 +59,14 @@ public:
     }
 
     bool operator!=(const zoelMapVersion & other){
-        bool result = true;
-        if(CUR_VER_LETTER == other.CUR_VER_LETTER){
-            if(CUR_VER_MAJOR == other.CUR_VER_MAJOR){
-                if(CUR_VER_MINOR == other.CUR_VER_MINOR){
-                    result = false;
-                }
-            }
-        }
-        return result;
+        return !(*this == other);
     }
 
+    friend ostream& operator<<(ostream& out, zoelMapVersion & ver){
+        out << ver.CUR_VER_LETTER << (int)ver.CUR_VER_MAJOR << '.' << (int)ver.CUR_VER_MINOR;
+        return out;
+    }
+    
     unsigned char CUR_VER_LETTER;
     unsigned char CUR_VER_MAJOR;
     unsigned char CUR_VER_MINOR;
@@ -133,10 +133,8 @@ bool Map::load(std::string filename){
             fread(&ver, 3, 1, filePointer);
             zoelMapVersion version(ver[0], ver[1], ver[2]),cur_ver('c',2,2);
             if(version != cur_ver){
-                cout << "ERR Map version is ";
-                version.print();
-                cout << "And version of this software is ";
-                cur_ver.print();
+                cout << "ERR Map version is " << version << endl;
+                cout << "And version of this software is " << cur_ver << endl;
                 cout << "Please update map " << filename << " or Zoel to the same version" << endl;
                 cout << "\nPress enter to continue...\n";
                 cin.ignore(80, '\n');
