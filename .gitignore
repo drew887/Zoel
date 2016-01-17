@@ -4,6 +4,7 @@
 *.user
 *.opensdf
 *.o
+*.d
 Zoel_VS/Zoel
 Zoel_VS/Debug
 Zoel_VS/Release

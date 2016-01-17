@@ -138,8 +138,6 @@ void Player::save() {
     slow.print();
 }
 
-
-
 bool Player::load(const char *name){
     FILE * filePointer = fopen(name, "rb");
     if(!filePointer){
@@ -254,5 +252,3 @@ void Player::equipItem(string equipment){
     }
     slow.print();
 }
-
-

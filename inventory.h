@@ -30,7 +30,7 @@ public:
     Item(string Name);
     virtual ~Item(){}
     virtual void write(FILE * filePointer);
-    std::string name;
+    string name;
 };
 
 class Weapon :public Item{
